@@ -1,0 +1,397 @@
+% This file contains figures setup that have issues to be rendered in HTML
+% Either multiple images and/or tabular layout.
+
+% Chap 3
+
+\newcommand{\mainfig}{
+\myfigure{h}{main}{\image{15}{img/main/atomes-main}
+\begin{tabular}{lclclclc}
+{\bf{a)}} & & \hspace{-1cm} {\bf{b)}} & & \hspace{-1cm} {\bf{c)}} & & \hspace{-1cm} {\bf{d)}}\\
+ & \hspace{-0.5cm} \image{4}{img/main/menu/m_workspace} &
+ & \hspace{-1cm} \image{4}{img/main/menu/m_edit} &
+ & \hspace{-1cm} \image{4}{img/main/menu/m_analyze} &
+ & \hspace{-1cm} \image{4}{img/main/menu/m_help}
+\end{tabular}}
+{Main window of the \atomes\ program.}{Main window of the \atomes\ program.}}
+
+\newcommand{\treefig}{
+\myfigure{h}{ptree}{\begin{tabular}{ccccc}
+ \hspace{-1.5cm}
+ \image{5}{img/p-tree/p-open} & \raisebox{6cm}{$\Longrightarrow$} &
+ \image{5}{img/p-tree/p-tree} & \raisebox{6cm}{$\Longrightarrow$} &
+ \image{5}{img/p-tree/p-tree-full}
+\end{tabular}}{Project tree in the \atomes\ program.}{Project tree in the \atomes\ program.}}
+
+\newcommand{\bpdfig}{
+\myfigure{h}{bpd}{\begin{tabular}{cc}
+\image{8}{img/main/atomes-bpd} &
+\image{8}{img/main/atomes-bpd2}
+\end{tabular}}{The \aob{Box and periodicity} dialog in the \atomes\ program.}{The \aob{Box and periodicity} dialog in the \atomes\ program.}}
+
+\newcommand{\oapfig}{
+\myfigure{h}{oapf}{
+\begin{tabular}{ccc}
+\hspace{-1.5cm}
+\image{9}{img/main/atomes-apf-1} & \raisebox{2.5cm}{$\Longrightarrow$} & 
+\image{8}{img/main/atomes-apf-2}
+\end{tabular}}
+{The \aob{Open Project File(s)} dialog in the \atomes\ program.}
+{The \aob{Open Project File(s)} dialog in the \atomes\ program.}}
+
+\newcommand{\owpfig}{
+\myfigure{h}{owpf}{
+\begin{tabular}{ccc}
+\hspace{-1.5cm}
+\image{9}{img/main/atomes-awf-1} & \raisebox{2.5cm}{$\Longrightarrow$} & 
+\image{8}{img/main/atomes-awf-2}
+\end{tabular}}
+{The \aob{Open Workspace} dialog in the \atomes\ program.}
+{The \aob{Open Workspace} dialog in the \atomes\ program.}}
+
+% Chap 4
+
+\newcommand{\toolfig}{
+\myfigure{h}{tools2}{
+\begin{tabular}{cp{0.5cm}cp{0.5cm}c}
+\hspace{-1cm}\image{5}{img/main/atomes-tools-2} & \raisebox{2.0cm}{$\Longrightarrow$} &
+\image{5}{img/main/atomes-tools-3} & \raisebox{2.0cm}{$\Longrightarrow$} &
+\image{5}{img/main/atomes-tools-4} \\
+\end{tabular}
+\begin{tabular}{cc}
+\image{12}{img/curves/gr} & \raisebox{10cm}{$\Swarrow$}
+\end{tabular}}
+{Interaction with the \aob{Toolboxes} dialog in the \atomes\ program.}
+{Interaction with the \aob{Toolboxes} dialog in the \atomes\ program.}}
+
+\newcommand{\dmenufig}{
+\myfigure{h}{dmenu}{
+\image{13}{img/curves/data-menu-open}
+\begin{tabular}{cc}
+ & $\Swarrow$ \\
+\includegraphics*[height=11.5cm, keepaspectratio=true, draft=\ddst]{img/curves/edit-win} &
+\includegraphics*[height=11.5cm, keepaspectratio=true, draft=\ddst]{img/curves/edit-menu}
+\end{tabular}}
+{\aob{Data} and \aob{Edit Data} menus, \aob{Data Edition} window.}
+{Top: The \aob{Data} and the \aob{Edit Data} menus in the top menu of the graph window. Bottom: the \aob{Data Edition} window and the associated contextual menu.}}
+
+\newcommand{\egrfig}{
+\myfigure{h}{egr}{
+\hspace{-1cm}
+\image{14}{img/curves/GeSe} \\ 
+\image{14}{img/curves/rc-edit}}
+{Examples of data plot edition in the \atomes\ program.}
+{Examples of data plot edition in the \atomes\ program.}}
+
+\newcommand{\setsfig}{
+\myfigure{h}{m-sets}{
+\begin{tabular}{lc}
+{\bf{a)}} \\
+  & \image{11}{img/curves/edit-set} \\
+{\bf{b)}} \\
+  & \image{11}{img/curves/add-set} \\
+{\bf{c)}} \\
+  & \image{11}{img/curves/remove-set}
+\end{tabular}}
+{The \aob{Edit Data} a), \aob{Add Data Set} b) and \aob{Remove Data Set} c) menus.}
+{The \aob{Edit Data} a), \aob{Add Data Set} b) and \aob{Remove Data Set} c) submenus in the graph window contextual menu for the example workspace [Fig.~\ref{lGeSe}].}}
+
+\newcommand{\zoomfig}{
+\myfigure{h}{lzoom}{\begin{tabular}{lcr}
+\image{6.5}{img/curves/1a} & \raisebox{2.5cm}{$\Longrightarrow$} &
+\image{6.5}{img/curves/1b} \\
+\image{6.5}{img/curves/2a} &  \raisebox{2.5cm}{$\Longrightarrow$} &
+\image{6.5}{img/curves/2b} \\
+\image{6.5}{img/curves/3a} &  \raisebox{2.5cm}{$\Longrightarrow$} &
+\image{6.5}{img/curves/3b} \\
+\image{6.5}{img/curves/4a} &  \raisebox{2.5cm}{$\Longrightarrow$} &
+\image{6.5}{img/curves/4b} \\
+\end{tabular}}
+{The mouse left button zoom in/out of the graph window in the \atomes\ program.}
+{The mouse left button zoom in/out of the graph window in the \atomes\ program.}}
+
+% Chap 5
+
+\newcommand{\moglfig}{
+\myfigure{h}{mogl}{
+\begin{tabular}{lccr}
+ & {\bf{a)}} \\
+\hspace{-1.5cm}\multirow{8}{5cm}{\image{5}{img/visu/menu/m_opengl}} & & \multicolumn{2}{r}{\image{12}{img/visu/menu/opengl/style}} \\
+ &  {\bf{b)}} \\
+& & \multicolumn{2}{r}{\image{12}{img/visu/menu/opengl/acmap}} \\
+& & \image{12}{img/visu/menu/opengl/pcmap} \\
+ & {\bf{c)}} \\
+& & \multicolumn{2}{r}{\image{12}{img/visu/menu/opengl/render}} \\
+ & {\bf{d)}} \\
+& &  \multicolumn{2}{r}{\image{12}{img/visu/menu/opengl/qual}} 
+\end{tabular}}{The \aob{OpenGL} menu and the attached submenus.}{The \aob{OpenGL} menu and the attached submenus.}}
+
+\newcommand{\cmapfig}{
+\myfigure{h}{cmaps}{
+\begin{tabular}{lp{0.5cm}l}
+\multicolumn{3}{c}{\image{8}{img/visu/cmap/cm-sp-b}} \\
+ \\
+\hspace{-1cm} {\bf{a)}} & & {\bf{b)}} \\
+\hspace{-1cm} \image{8}{img/visu/cmap/cm-tc-b} & & \image{8}{img/visu/cmap/cm-pc-b} \\
+\\
+\hspace{-1cm} {\bf{c)}} & & {\bf{d)}} \\
+\hspace{-1cm} \image{8}{img/visu/cmap/cm-frag-b} & & \image{8}{img/visu/cmap/cm-mol-b} \\
+\end{tabular}}
+{Standard color maps in the \atomes\ program.}
+{The standard Colors Maps (CM) for the atoms accessible using the \aob{Color scheme(s)} menu. 
+Top standard colors using the chemical species, 
+{\bf{a)}} Total coordinations as CM, {\bf{b)}} Partial coordinations as CM, {\bf{c)}} Fragments as CM and {\bf{d)}} Molecules as CM.}}
+
+\newcommand{\modlfig}{
+\myfigure{h}{modl}{
+\begin{tabular}{lccr}
+ & {\bf{a)}} \\
+& & \multicolumn{2}{r}{\image{9.2}{img/visu/menu/model/show}} \\
+\multirow{8}{5cm}{\image{5}{img/visu/menu/m_model}} & & \multicolumn{2}{r}{\image{9.2}{img/visu/menu/model/sp_colors}} \\
+ & & \multicolumn{2}{r}{\image{9.2}{img/visu/menu/model/labels}} \\
+ & {\bf{b)}} \\
+& & & \image{9.2}{img/visu/menu/model/ncutoffs} \\
+ & {\bf{c)}} \\
+& & \multicolumn{2}{r}{\image{9.2}{img/visu/menu/model/clones}} \\
+ & {\bf{d)}} \\
+& &  \multicolumn{2}{r}{\image{9.2}{img/visu/menu/model/box}} 
+\end{tabular}}
+{The \aob{Model} menu and the attached submenus.}{The \aob{Model} menu and the attached submenus.}}
+
+\newcommand{\clonefig}{
+\begin{figure}[!h]
+\hypertarget{atcl}{
+\hspace{-1.5cm}
+\begin{tabular}{lcp{0.5cm}lc}
+{\bf{a)}} & & & {\bf{b)}} \\
+& \image{8}{img/visu/g-SiO2at}
+& & & 
+\image{8}{img/visu/g-SiO2cl}
+\end{tabular}
+\caption[The concept of {\bf{clones}} in the \atomes\ program.]{The concept of {\bf{clones}} in the \atomes\ program. {\bf{a)}} 
+Standard representation using cylinders, {\bf{b)}} Clones are included in the representation.}\label{atcl}}
+\end{figure}}
+
+\newcommand{\mchemfig}{
+\myfigure{h}{mchem}{
+\hspace{-1.5cm}
+\begin{tabular}{lccr}
+ & {\bf{a)}} \\
+ & & \multicolumn{2}{r}{\image{10}{img/visu/menu/chem/tc-show}} \\
+ & & \multicolumn{2}{r}{\image{10}{img/visu/menu/chem/pc-show}} \\
+ & {\bf{b)}} \\
+\multirow{8}{5cm}{\image{5}{img/visu/menu/m_chem}} & & \multicolumn{2}{r}{\image{10}{img/visu/menu/chem/ptc-show}} \\
+ & & \multicolumn{2}{r}{\image{10}{img/visu/menu/chem/ppc-show}} \\
+ & & \multicolumn{2}{r}{\image{10}{img/visu/menu/chem/prings-show}} \\
+ & {\bf{c)}} \\
+ & & \multicolumn{2}{r}{\image{10}{img/visu/menu/chem/rings}} \\
+ & {\bf{d)}} \\
+ & & \multicolumn{2}{r}{\image{10}{img/visu/menu/chem/frag-show}} \\
+ & {\bf{e)}} \\
+ & &  \multicolumn{2}{r}{\image{10}{img/visu/menu/chem/mol-show}} 
+\end{tabular}}
+{The \aob{Chemistry} menu and the attached submenus.}
+{The \aob{Chemistry} menu and the attached submenus.}}
+
+\newcommand{\mtoolfig}{
+\myfigure{h}{mtools}{
+\hspace{-1.5cm}
+\begin{tabular}{lccr}
+ & {\bf{a)}} \\
+ & & \multicolumn{2}{r}{\image{9.5}{img/visu/menu/tools/edit}} \\
+ & {\bf{b)}} \\
+ & & \multicolumn{2}{r}{\image{9.5}{img/visu/menu/tools/mode}} \\
+\multirow{8}{5cm}{\image{5}{img/visu/menu/m_tools}} & {\bf{c)}} \\
+ & & \multicolumn{2}{r}{\image{9.5}{img/visu/menu/tools/selection}} \\
+ & {\bf{d)}} \\
+ & & \multicolumn{2}{r}{\image{9.5}{img/visu/menu/tools/md}} \\
+ & {\bf{e)}} \\
+ & & \multicolumn{2}{r}{\image{9.5}{img/visu/menu/tools/invert}} \\
+\end{tabular}}
+{The \aob{Tools} menu and the attached submenus in the  \atomes\ program.}
+{The \aob{Tools} menu and the attached submenus in the  \atomes\ program.}}
+
+\newcommand{\mviewfig}{
+\myfigure{h}{mview}{
+\hspace{-1cm}
+\begin{tabular}{lccr}
+ & {\bf{a)}} \\
+ & & \multicolumn{2}{r}{\image{9.5}{img/visu/menu/view/rep}} \\
+ & {\bf{b)}} \\
+ & & \multicolumn{2}{r}{\image{9.5}{img/visu/menu/view/proj}} \\
+\multirow{8}{5cm}{\image{5}{img/visu/menu/m_view}} & {\bf{c)}} \\
+ & & \multicolumn{2}{r}{\image{9.5}{img/visu/menu/view/back}} \\
+ & {\bf{d)}} \\
+ & & \multicolumn{2}{r}{\image{9.5}{img/visu/menu/view/axis}} \\
+\end{tabular}}
+{The \aob{View} menu and the attached submenus in the  \atomes\ program.}
+{The \aob{View} menu and the attached submenus in the  \atomes\ program.}}
+
+\newcommand{\oselfig}{
+\myfigure{h}{vsel}{
+%\hspace{-1cm}
+\begin{tabular}{lclclc} 
+{\bf{a)}} & &  & & {\bf{b)}} \\
+ & \image{4}{img/visu/sel/l-GeS2-a} & & \raisebox{2cm}{$\Longrightarrow$} & &
+   \image{4}{img/visu/sel/l-GeS2-b} \\
+& & {\bf{c)}} \\
+& \raisebox{2cm}{$\Nwarrow$} & &
+\image{4}{img/visu/sel/l-GeS2-c} & & \raisebox{2cm}{$\Swarrow$} \\
+\end{tabular}}
+{Illustration of the selection / label process using the mouse left button.}
+{Illustration of the selection / label process using the mouse left button.}}
+
+\newcommand{\recfig}{
+\myfigure{h}{rec}{
+\begin{tabular}{lcp{1cm}lc} 
+{\bf{a)}} & & & {\bf{b)}} \\
+ & \image{4}{img/visu/record} & &
+ & \image{4}{img/visu/recording}
+\end{tabular}}
+{The \aob{Recorder} dialog of the OpenGL window in the \atomes\ program.}
+{The \aob{Recorder} dialog of the OpenGL window in the \atomes\ program.}}
+
+\newcommand{\ocmfig}{
+\myfigure{h}{mocm}{
+\begin{tabular}{lcp{1cm}lc}
+ {\bf{a)}} & & & {\bf{b)}} \\
+ & \image{6}{img/visu/ocm/ocm-at} & &
+ & \image{6}{img/visu/ocm/ocm-bd} \\
+\end{tabular}}
+{The object contextual menu: {\bf{a)}} for an atom, {\bf{b)}} for a chemical bond.}
+{The object contextual menu: {\bf{a)}} for an atom, {\bf{b)}} for a chemical bond.}}
+
+\newcommand{\csosfig}{
+\myfigure{h}{mocmb}{
+\begin{tabular}{lcp{1cm}c}
+ \\
+ {\bf{a)}} \\
+ & \image{6}{img/visu/ocm/ocm-thisat} & 
+ & \image{6}{img/visu/ocm/ocm-thisbd} \\
+ {\bf{b)}} \\
+ & \multicolumn{3}{c}{\image{6}{img/visu/ocm/ocm-sel}} \\
+ & & or \\ 
+ & \multicolumn{3}{c}{\image{6}{img/visu/ocm/ocm-nsel}} \\
+ {\bf{c)}} \\
+ & \multicolumn{3}{c}{\image{6}{img/visu/ocm/ocm-lab}} \\
+ & & or \\
+ & \multicolumn{3}{c}{\image{6}{img/visu/ocm/ocm-nlab}} \\
+ {\bf{d)}} \\
+ & \image{6}{img/visu/ocm/ocm-coord} &
+ & \image{6}{img/visu/ocm/ocm-bcoord}		
+\end{tabular}}
+{Construction of the submenus attached to the object contextual menu.}
+{Construction of the submenus attached to the object contextual menu.}}
+
+% Chap 6
+
+\newcommand{\emfig}{
+\myfigure{h}{emf}{
+\begin{tabular}{lclc}
+{\bf{a)}} & & {\bf{b)}} \\
+ & \image{8}{img/edit/edit}
+ & & \image{8}{img/edit/mode}
+\end{tabular}}
+{Accessing the edition tools in the \atomes\ program.}
+{Accessing the edition tools in the \atomes\ program.}}
+
+\newcommand{\eselfig}{\myfigure{h}{v2sel}{
+\begin{tabular}{lclclc} 
+{\bf{a)}} & &  & & {\bf{b)}} \\
+ & \image{4}{img/edit/atoms/sel-b1} & & \raisebox{2cm}{$\Longrightarrow$} & &
+ \image{4}{img/edit/atoms/sel-b2} \\
+& & {\bf{c)}} \\
+& \raisebox{2cm}{$\Nwarrow$} & &
+ \image{4}{img/edit/atoms/sel-b3} & & \raisebox{2cm}{$\Swarrow$} \\
+\end{tabular}}
+{Modified selection process when the \aob{Model edition} window is opened.}
+{Modified selection process when the \aob{Model edition} window is opened.}}
+
+\newcommand{\repnmfig}{
+\myfigure{h}{repnm}{
+\begin{tabular}{lclc}
+\hspace{-1.0cm}{\bf{a)}} & & {\bf{b)}} \\
+ & \hspace{-1.0cm} \image{8}{img/edit/atoms/replace/normally} &
+ & \image{8}{img/edit/atoms/replace/random}
+\end{tabular}
+\begin{tabular}{lcl}
+ & {\bf{c)}} \\
+\multirow{8}{5cm}{\image{4.54}{img/edit/atoms/replace/replace_menu}} & 
+ & \image{10}{img/edit/atoms/replace/replace_atoms} \\
+ &  {\bf{d)}} \\
+& & \image{10}{img/edit/atoms/replace/replace_lib} \\
+ & {\bf{e)}} \\
+& & \image{10}{img/edit/atoms/replace/replace_proj} \\
+ & {\bf{f)}} \\
+& & \image{10}{img/edit/atoms/replace/replace_copied}
+\end{tabular}}
+{Search trees and \aob{Select for ...} menu in the \aob{Replace} tab.}
+{Top: search trees {\bf{a)}} replacing object(s) one by one, {\bf{b)}} replacing object(s) randomly. 
+Bottom: the \aob{Select for ...} replacement menu and the attached {\bf{c)}} \aob{Atom}, {\bf{d)}} \aob{Library}, {\bf{e)}} \aob{Import from project} and {\bf{f)}} \aob{Copied data} submenus.}}
+
+\newcommand{\editoolfig}{
+\myfigure{h}{editool}{
+\begin{tabular}{cc}
+{\bf{a)}} \\
+ & \image{10}{img/edit/mouse/edition}
+\end{tabular}
+\begin{tabular}{cccc}
+{\bf{b)}} \\
+ & \image{7}{img/edit/mouse/am} & \raisebox{0.75cm}{$\Longrightarrow$} &
+\image{7}{img/edit/mouse/em}
+\end{tabular}}
+{Activating the mouse \aob{Edition} mode using the \aob{Tools} menu.}
+{{\bf{a)}} Activating the mouse \aob{Edition} mode using the \aob{Tools} menu. {\bf{b)}} when switching mode the title bar of the OpenGL window changes.}}
+
+\newcommand{\rccmfig}{
+\myfigure{h}{rccm}{
+\begin{tabular}{lccr}
+\multirow{4}{6.5cm}{\vspace{0.5cm} \image{6.5}{img/edit/mouse/rc_cm}} & {\bf{a)}} \\
+ & &
+ \multicolumn{2}{r}{\image{9.5}{img/edit/mouse/rc_tools}} \\
+ &  {\bf{b)}} \\
+& & \multicolumn{2}{r}{\image{9.5}{img/edit/mouse/rc_insert}}
+\end{tabular}}
+{The right button contextual menu on the background of the OpenGL window.}
+{The right button contextual menu on the background of the OpenGL window.}}
+
+\newcommand{\oecmfig}{
+\myfigure{h}{oecm}{
+\begin{tabular}{lcp{1cm}lc}
+ {\bf{a)}} & & & {\bf{b)}} \\
+ & \image{6}{img/edit/mouse/ocm-atom} & &
+ & \image{6}{img/edit/mouse/ocm-bond} \\
+\end{tabular}}
+{The object edition contextual menu: {\bf{a)}} for an atom, {\bf{b)}} for a chemical bond.}
+{The object edition contextual menu: {\bf{a)}} for an atom, {\bf{b)}} for a chemical bond.}}
+
+% Appendix 4
+
+\newcommand{\spheresfig}{
+\myfigure{h}{spheres}{
+\begin{tabular}{cccc}
+\image{2}{img/bonds/SGe} \hspace{1cm} &
+\image{2}{img/bonds/GeS3} \hspace{1cm} & 
+\image{2}{img/bonds/GeS4} \hspace{1cm} & 
+\image{2}{img/bonds/GeS3Ge} \\
+\image{2}{img/bonds/SGe2} \hspace{1cm} &
+\image{2}{img/bonds/SGe2S} \hspace{1cm} &
+\image{2}{img/bonds/SSGe}
+\end{tabular}}
+{Illustration of several coordination spheres that can be found in glassy GeS$_2$.}
+{Illustration of several coordination spheres that can be found in glassy GeS$_2$.}}
+
+\newcommand{\cornedgefig}{
+\myfigure{h}{cornedges}{
+\image{4}{img/bonds/corner}
+\hspace{2cm}
+\image{4}{img/bonds/edge}}
+{Corner sharing (left) and edge sharing (right) tetrahedra.}
+{Corner sharing (left) and edge sharing (right) tetrahedra.}}
+
+\newcommand{\danglesfig}{
+\myfigure{h}{dangles}{
+\image{4}{img/bonds/angles}
+\hspace{2cm}
+\image{4}{img/bonds/dihedral}}
+{Bond angles (left) and diehdral angles (right).}
+{Bond angles (left) and diehdral angles (right).}}

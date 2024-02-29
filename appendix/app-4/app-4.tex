@@ -1,0 +1,188 @@
+\chapter{Crystal building in \atomes}
+\label{cbp}
+
+The crystal building process in \atomes\ will be briefly presented in the next pages. 
+2 example cases will be used to illustrate the methodology implemented in the program: 
+\begin{enumerate}
+\item The Fd$\bar{3}$m space group, N$^\circ$227, with the first setting: origin 1.
+\item The R$\bar{3}$c space group, N$^\circ$167, with the second setting: rhombohedral parameters.
+\end{enumerate} 
+The terminology used in the \atomes\ program, and therefore used in this manual, is directly taken
+from the International tables for Crystallography Vol. A. \cite{IucrA} \\
+In the following every single step depends on the considered space group, and corresponds to the way 
+the process is implemented in \atomes:
+\begin{enumerate}
+\item\label{cb:1} Determine the origin of the coordinate system.
+\item\label{cb:2} Calculate the inverse transformation matrix.
+\item\label{cb:3} Select the space group extra site positions, if any.
+\item\label{cb:4} Adjust the different symmetrical positions of the first Wyckoff position using~\ref{cb:2}. 
+\item\label{cb:5} Calculate the crystalline positions using~\ref{cb:4} and~\ref{cb:3}.
+\item\label{cb:6} Select the unique position(s) in~\ref{cb:5} to build the crystal.
+\item Calculate the object position in Cartesian coordinates using~\ref{cb:6}.
+\item Insert object(s) at the appropriate coordinates based on occupancy.
+\end{enumerate}
+
+\section*{Origin of the coordinate system}
+
+The origin of the coordinate system, if any particular, determine how the object fractional coordinates are modified to match the space group criteria
+before calculating the Cartesian coordinates. 
+\newpage
+\noindent The first step is to build the 4$\times$3 matrix that describe the operation of be performed, the required information is given by the space group setting,
+the easiest way to use it is on the form of the transformation matrix {\bf{P}}: \\
+Ex: ({\bf{a, b, c}}) and can be converted in:\\
+\newcommand{\mtx}[3]{\left[\begin{array}{rrrr} #1 \\ #2 \\ #3 \end{array}\right]}
+\begin{equation}
+\mtx{1 & 0 & 0 & \quad 0}{0 & 1 & 0 & \quad 0}{0 & 0 & 1 & \quad 0}
+\end{equation}
+\begin{tabular}{cp{1cm}c}
+{\bf{(1)}} Fd$\bar{3}$m space group, N$^\circ$227, origin 1: & & {\bf{(2)}} R$\bar{3}$c space group, N$^\circ$167, second setting: \\[0.25cm]
+\hspace{-1cm}\image{8}{img/a-cryst/Fd-3m} & &
+\hspace{-1cm}\image{8}{img/a-cryst/R-3c} \\
+({\bf{a}}-$\frac{1}{8}$, {\bf{b}}-$\frac{1}{8}$, {\bf{c}}-$\frac{1}{8}$) & &
+($\frac{2}{3}${\bf{a}}+$\frac{1}{3}${\bf{b}}+$\frac{1}{3}${\bf{c}}, $-\frac{1}{3}${\bf{a}}+$\frac{1}{3}${\bf{b}}+$\frac{1}{3}${\bf{c}}, $-\frac{1}{3}${\bf{a}}-$\frac{2}{3}${\bf{b}}+$\frac{1}{3}${\bf{c}}) \\[0.25cm]
+The corresponding {\bf{P}} matrix are:\\[0.25cm]
+	$\mtx{1 & 0 & 0 & \quad -\frac{1}{8}}{0 & 1 & 0 & \quad -\frac{1}{8}}{0 & 0 & 1 & \quad -\frac{1}{8}}$ & &
+	$\mtx{\frac{2}{3} & -\frac{1}{3} & -\frac{1}{3} & \quad 0}{\frac{1}{3} & \frac{1}{3} & -\frac{2}{3} & \quad 0}{\frac{1}{3} & \frac{1}{3} & \frac{1}{3} & \quad 0}$ \\
+\end{tabular}
+
+\section*{Inverse transformation matrix}
+
+To transform the coordinates to the appropriate system we use the corresponding inverse matrix  {\bf{P}}$^{-1}$: \\[0.25cm]
+\begin{tabular}{cp{1cm}c}
+{\bf{(1)}} Fd$\bar{3}$m space group, N$^\circ$227, origin 1: & & {\bf{(2)}} R$\bar{3}$c space group, N$^\circ$167, second setting: \\[0.25cm]
+$\mtx{1 & 0 & 0 & \quad -\frac{1}{8}}{0 & 1 & 0 & \quad -\frac{1}{8}}{0 & 0 & 1 & \quad -\frac{1}{8}}$ & &
+$\mtx{1 & 0 & 1 & \quad 0}{-1 & 1 & 1 & \quad 0}{0 & -1 & 1 & \quad 0}$ \\[0.25cm]
+\end{tabular}
+The  {\bf{P}}$^{-1}$ matrix allows to easily compute the coordinates $(x',y',z')$ of a point $(x,y,z)$ in the appropriate coordinate system using:
+\begin{equation}
+\label{sgconv}	(x',y',z') = {\bf{P}}^{-1} \times (x,y,z)
+\end{equation}
+
+\section*{Space group extra site position(s)}
+
+The space group extra site position(s) describe translations to be performed on the initial set of Wyckoff position to get the entire list of coordinates. \\
+The list of extra position(s), $E(e_x,e_y,e_z)$, is imported from the space group data file, 
+and is presented on top the Wyckoff positions table of the space group info window:\\[0.25cm]
+\begin{tabular}{cp{1cm}c}
+{\bf{(1)}} Fd$\bar{3}$m space group, N$^\circ$227, origin 1: & & {\bf{(2)}} R$\bar{3}$c space group, N$^\circ$167, second setting: \\[0.25cm]
+	$+ (0,0,0) + (0,\frac{1}{2},\frac{1}{2}) + (\frac{1}{2},0,\frac{1}{2}) +  (\frac{1}{2},\frac{1}{2},0)$ & & $+ (0,0,0) + (0,0,0) + (0,0,0)$ \\
+\end{tabular}
+
+\section*{Symmetrical positions using the first Wyckoff position}
+
+The first step is to convert the list of coordinates from the first Wyckoff position on the form of matrix {\bf{W}}: \\[0.25cm]
+\begin{tabular}{cp{1cm}c}
+{\bf{(1)}} Fd$\bar{3}$m space group, N$^\circ$227, origin 1: & & {\bf{(2)}} R$\bar{3}$c space group, N$^\circ$167, second setting: \\[0.25cm]
+	(x, y, z) & & (x, y, z) \\[0.25cm]
+$\mtx{1 & 0 & 0 & 0}{0 & 1 & 0 & 0}{0 & 0 & 1 & 0}$ & &
+$\mtx{1 & 0 & 0 & 0}{0 & 1 & 0 & 0}{0 & 0 & 1 & 0}$ \\[0.25cm]
+\end{tabular}
+The {\bf{W'}} matrix, suitable for the calculation, is calculated using the {\bf{P$^{-1}$}} matrix for the corresponding space group:
+\begin{equation}
+	{\bf{W'}} = {\bf{W}} \times {\bf{P^{-1}}}
+\end{equation}
+\begin{tabular}{cp{1cm}c}
+{\bf{(1)}} Fd$\bar{3}$m space group, N$^\circ$227, origin 1: & & {\bf{(2)}} R$\bar{3}$c space group, N$^\circ$167, second setting: \\[0.25cm]
+$\mtx{1 & 0 & 0 & \quad -\frac{1}{8}}{0 & 1 & 0 & \quad -\frac{1}{8}}{0 & 0 & 1 & \quad -\frac{1}{8}}$ & &
+$\mtx{1 & 1 & 0 & \quad 0}{-1 & 1 & 1 & \quad 0}{0 & -1 & 1 & \quad 0}$ \\[0.25cm]
+\end{tabular}
+The results, converted back to standard coordinates, are presented in the Wyckoff positions table of the space group info window:\\[0.25cm]
+\begin{tabular}{cp{1cm}c}
+{\bf{(1)}} Fd$\bar{3}$m space group, N$^\circ$227, origin 1: & & {\bf{(2)}} R$\bar{3}$c space group, N$^\circ$167, second setting: \\[0.25cm]
+$(x - \frac{1}{8}, y - \frac{1}{8}, z - \frac{1}{8})$ & & $(x + z, - x + y + z, - y  + z)$ \\
+	$\dots$ & & $\dots$ 
+\end{tabular}
+
+\section*{Object position(s)}
+
+The first step in getting the final fractional coordinates $F(f_x, f_y, f_z)$ of an object to insert with fractional coordinates given at input $O(o_x, o_y, o_z)$
+is to convert its coordinates to the proper coordinates system $O'(o_x', o_y', o_z')$: 
+\begin{equation}
+O'(o_x', o_y', o_z') = {\bf{P}} \times O(o_x, o_y, o_z)
+\end{equation}
+Then for a particular Wyckoff position {\bf{W'}} and extra site position $E(x,y,z)$, the final fractional coordinates $F(f_x, f_y, f_z)$ are calculated by:
+\begin{equation}
+F(f_x, f_y, f_z) = E(e_x,e_y,e_z) + {\bf{W'}} \times O'(o_x', o_y', o_z')
+\end{equation}
+
+\section*{Removing duplicate position(s)}
+
+Since one of the goal in \atomes\ is to build crystal structure of super-structure to work with, 
+all crystalline positions cannot be conserved and duplicate positions 
+(same positions using the periodic boundary conditions) must be removed. \\
+When final positions $F(f_x, f_y, f_z)$ are calculated duplicates are removed on the fly. 
+The first final position with a unique set of coordinates $F(f_x, f_y, f_z)$ is preserved while the others will be ignored. 
+Duplicates are identical set of atomic coordinates, that can be found because of the symmetrical properties of the space group. \\
+In \atomes\ a duplicate position $F_b(b_x, b_y, b_z)$ will be removed if $F_a(a_x, a_y, a_z)$ has already been found and providing that:\\
+\begin{center}
+\begin{tabular}{lc}
+ & $\begin{bmatrix} a_x & = & b_x & \bf{or} & abs(a_x - b_x) & = & n, n \text{ integer} \end{bmatrix} $ \\
+ {\bf{and}} & $\begin{bmatrix} a_y & = & b_y & \bf{or} & abs(a_y - b_y) & = & n, n \text{ integer} \end{bmatrix}$ \\
+ {\bf{and}} & $\begin{bmatrix}a_z & = & b_z & \bf{or} & abs(a_z - b_z) & = & n, n \text{ integer} \end{bmatrix}$
+\end{tabular}
+\end{center}
+
+\section*{Calculate the object final position(s) in Cartesian coordinates}
+
+After the construction/selection process Cartesian coordinates $C(c_x, c_y, c_z)$ of an object with fractional coordinates $F(f_x, f_y, f_z)$ are calculated using:
+\begin{equation}
+C(c_x, c_y, c_z) = {\bf{FtC}} \times F(f_x, f_y, f_z)
+\end{equation}
+with {\bf{FtC}} the fractional to Cartesian conversion matrix is defined by:
+\begin{equation}
+\begin{bmatrix}
+ \bf{a} & \bf{b}\cos{\gamma}  & \bf{c}\cos{\beta} \\
+ 0 & \bf{b}\sin{\gamma} & \bf{c}\omega \\
+ 0 & 0 & \frac{\Omega}{\bf{ab}\sin{\gamma}}
+\end{bmatrix}
+\end{equation}
+where $\omega$ and $\Omega$ are respectively: 
+\begin{equation}
+\omega = \frac{\cos{\alpha} - \cos{\beta}\cos{\gamma}}{\sin{\gamma}} 
+\end{equation}
+and:
+\begin{equation}
+\Omega = \bf{abc}\sqrt{1-\cos^2{\alpha} -\cos^2{\beta} -\cos^2{\gamma} + 2\cos{\alpha}\cos{\beta}\cos{\gamma}}
+\end{equation}
+\\
+{\bf{a, b, c}} and $\alpha$, $\beta$, $\gamma$ are the lattice parameters provided at input. 
+
+\newpage
+
+\section*{Occupancy}
+
+The only thing left to do after that it to select which set of coordinates are to be occupied among the list prepared in the previous steps. 
+Depending on the occupancy defined at input \atomes\ does the following:
+\begin{itemize}
+\item If the occupancy is equal to 1.0: all coordinates are to be occupied and no particular selection is performed. 
+\item If the occupancy is < 1.0, then the following options are possible to handle occupancy: 
+\begin{enumerate}
+\item\label{i} \aob{Random for the initial cell only}: sites are filled randomly in the initial cell only, then the initial cell is simply replicated.
+\item\label{ii} \aob{Random cell by cell}: sites are filled randomly for each cell, cell by cell separately.
+\item\label{iii} \aob{Completely random}: sites are filled randomly for the entire network, the final crystal is considered as whole.
+\item\label{iv} \aob{Successively}: sites are filled successively, all object(s) A are inserted (for the first $n(A)$ positions), then all object(s) B are inserted (for the next $n(B)$ positions) ...  
+\item\label{v} \aob{Alternatively}: sites are filled alternatively: object A is inserted on the first position, object B is inserted on the second position, object A on the third position, 
+object B on the fourth position ... and so on.
+\end{enumerate}
+For \ref{i}, \ref{ii}, \ref{iv} and \ref{v} the number of object(s) by cell is constant, but it can vary for \ref{iii}. \\
+For \ref{iv} and \ref{v} the order of the positions to be filled is the order they are found in during the previous steps. 
+\end{itemize}
+
+\section*{Final check: distance(s) between inserted objects}
+
+Finally the last calculation performed by \atomes\ when creating the crystal is distance check between the object(s) be inserted. 
+Note that this check performed, if and only if, no {\it{overlapping}} is allowed. \\
+If any distance $d_{ab}$ between 2 objects {\it{a}} and {\it{b}}, is found to be {\it{too small}} the following can happen:
+\begin{enumerate}
+\item If $d_{ab} < 0.5$~\AA\ then a warning message will pop-up and ask for the user confirmation to continue, or not, to build the crystal. 
+\item If the user decides to build the crystal anyway and if $d_{ab} = 0.0$ then for fail safe reasons object $b$ is removed from the list to build.
+\end{enumerate}
+
+\section*{The \aob{SGL} "Space group info XML file" format}
+
+The data files that contain the information regarding each of the 230 space groups are located in the \aob{bin/library/space\_groups} directory. \\
+In this folder to each space group corresponds a file with a name following the construction: 
+\begin{center} \aob{space group number}-\aob{space group name}.\aob{sgl}\end{center}
+For the Fd$\bar{3}$m space group, the corresponding file is \aob{227-Fd-3m.sgl}. \\
+These files must have the \aob{.sgl} extension, follow the \aob{XML} encoding rules, and the following structure:\\
+\sglxml

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+texf=$1
+
+sed 's/ \"/ \"\\aob{/g' $texf".tex" > $texf"-2.tex"
+sed 's/\" /}\" /g' $texf"-2.tex" > $texf"-3.tex"
+sed 's/\":/}\":/g' $texf"-3.tex" > $texf"-4.tex"

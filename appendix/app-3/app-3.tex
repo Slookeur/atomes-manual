@@ -1,0 +1,62 @@
+\chapter{The \aob{Library} in \atomes}
+\label{lib}
+
+The \atomes\ program includes a library with a number of molecules to be used when building or editing atomistic models: \\
+\myfigure{h}{libinat}{\image{12}{img/edit/atoms/library}}{The \aob{Library} dialog of the \atomes\ program.}{The \aob{Library} dialog of the \atomes\ program.}
+\laf Available molecules can be found in the library by sorted in the following families: \\[0.5cm]
+\begin{minipage}{5cm} 
+\begin{itemize}
+\item Misc
+\item Alcohols
+\item Aldehydes
+\item Alkanes
+\item Alkenes
+\item Alkynes
+\item Amides
+\item Amines
+\item Amino acids
+\end{itemize}
+\end{minipage}
+\begin{minipage}{5cm} 
+\begin{itemize}
+\item Aromatics
+\item Carboxylic acids
+\item Cyclic alkanes
+\item Cyclic alkenes
+\item Ethers
+\item Fatty acids
+\item Fullerenes
+\item Heterocyclics
+\item Macrocycles
+\end{itemize}
+\end{minipage}
+\begin{minipage}{5cm} 
+\begin{itemize}
+\item Ketones
+\item Nitriles
+\item Nucleobases
+\item Steroids
+\item Sugars (Linears)
+\item Sugars (Cyclics)
+\item Sulfoxides
+\item Thiols
+\end{itemize}
+\end{minipage}
+\clearpage
+\noindent Each time a new molecule is selected in the tree view on the left side of the window (see figure~\ref{libinat}),
+then the right side of the \aob{Library} dialog is refreshed with the data of the newly selected molecule. 
+The data includes a 3D representation included in an active OpenGL window that allows to rotate the molecule: \\
+\myfigure{h}{libex}{\image{15}{img/lib/libex}}{Using the \aob{Library} dialog.}{Using the \aob{Library} dialog.}
+\laf The data files that contain the information regarding each molecule in the library are located in the \aob{bin/library/molecules} directory. \\
+To each molecule that appears in the \aob{Library} tree view, a file with the \aob{.sml} extension can be found in the corresponding family subfolder. \\
+For the example in figure~\ref{libex}:
+\begin{itemize}
+\item The family is: \aob{Aromatics}
+\item The molecule is: \aob{Caffeine}
+\item The corresponding file is: \aob{Aromatics/caffeine.sml}. 
+\end{itemize}
+New files can be added to the library to be found by \atomes\ at startup, providing that the new files are added to one of the families of the library. 
+These files must have the \aob{.sml} extension, follow the \aob{XML} encoding rules, and the following structure:
+
+\section*{The \aob{SCL} "Simple chemical library XML file" format}
+\sclxml

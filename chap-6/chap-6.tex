@@ -1,0 +1,729 @@
+\chapter{Visual edition in \atomes}
+\markboth{Visual edition in \atomes}{\scshape \thesection}
+\label{edition}
+
+In this chapter the examples will be illustrated using the same workspace used to illustrate the visual analysis 
+capabilities of \atomes\ in the previous chapter and presented in figure~\ref{workm}. \\
+Edition tools are available via the \aob{Tools} menu, and using either the \aob{Edit} submenu [Fig.~\ref{emf}-a]
+or the mouse \aob{Edition} from in the \aob{Mouse mode} submenu [Fig.~\ref{emf}-b]: \\
+\emfig
+
+\section{The \aob{Edit} submenu}
+
+\subsection{The \aob{Crystal builder} window}
+
+The \aob{Crystal builder} button [Fig.~\ref{crdw}] allows to open the corresponding window. \\
+\myfigure{h}{crdw}{\image{11}{img/edit/builder-m}}{Accessing the \aob{Crystal builder} window in the \atomes\ program.}{Accessing the \aob{Crystal builder} window in the \atomes\ program.}
+\newpage
+\myfigure{h}{crwin}{
+\hspace{-0.5cm}
+\image{17.5}{img/edit/builder/builder}}
+{The \aob{Crystal builder} window in the \atomes\ program.}
+{The \aob{Crystal builder} window in the \atomes\ program.}
+\noindent The \aob{Crystal builder} window [Fig.~\ref{crwin}] allows the creation of crystalline structure(s) and super-structure(s). 
+Thus not only atom(s) but also molecules can be inserted to the crystalline positions defined by the space group. \\
+The \aob{Select ...} menu allows to insert objects: 
+atoms, molecules, and atom selections from any other project opened in the \atomes\ workspace. 
+It will be presented in details in section~\ref{replsel}, at the exception of the \aob{Empty site} button unique to the \aob{Crystal builder} and that will be introduced in the next pages related to the occupancy. \\
+Each object will be inserted at a position specified using the fractional coordinates, in the proportion of the occupancy, and following the rules of the selected space group. 
+\clearpage
+The following parameters can be adjusted: 
+\begin{enumerate}
+\item\label{cs} The crystal system:\\[0.25cm]
+\begin{minipage}{4cm}
+ \begin{itemize}
+\item Triclinic
+\item Monoclinic
+\end{itemize}
+\end{minipage}
+\begin{minipage}{4cm}
+\begin{itemize}
+\item Orthorhombic
+\item Tetragonal
+\end{itemize}
+\end{minipage}
+\begin{minipage}{4cm}
+\begin{itemize}
+\item Trigonal
+\item Hexagonal
+\end{itemize}
+\end{minipage}
+\begin{minipage}{4cm}
+\begin{itemize}
+\item Cubic
+\end{itemize}
+\end{minipage}
+\item\label{bv} The type of Bravais lattice, depending on \ref{cs}, among:\\[0.25cm]
+\begin{minipage}{4cm}
+\begin{itemize}
+\item Primitive
+\item Base-centered
+\end{itemize}
+\end{minipage}
+\begin{minipage}{4cm}
+\begin{itemize}
+\item Body-centered
+\item Face-centered
+\end{itemize}
+\end{minipage}
+\begin{minipage}{5cm}
+\begin{itemize}
+\item Hexagonal axes
+\item Rhombohedral axes
+\end{itemize}
+\end{minipage}
+\item\label{sp} The space group, from 230 groups of the International tables for Crystallography Vol. A, \cite{IucrA}
+and filtered using \ref{cs} and \ref{bv}
+\item\label{sps} The space group setting, if more than one is available.
+\item\label{lp} The format of the lattice parameters:
+\begin{itemize}
+\item {\bf{\textit{a}}}, {\bf{\textit{b}}}, {\bf{\textit{c}}} and $\alpha$, $\beta$, $\gamma$
+\item Vector components: {\it{a}}(x,y,z), {\it{b}}(x,y,z), {\it{c}}(x,y,z)
+\end{itemize}
+\item The number of cell(s) to replicate on {\bf{\textit{a}}}, {\bf{\textit{b}}} and {\bf{\textit{c}}} to create the final supercell. 
+\item The object to insert to build the crystal using information specified at steps \ref{cs}, \ref{bv}, \ref{sp}, \ref{sps} and \ref{lp},
+including the following options:
+\begin{itemize}
+\item The type of object (atom, molecule ...)
+\item The fractional coordinates of the object
+\item The occupancy of the crystallographic site (between 0.0 and 1.0)
+\item How to handle occupancy (if < 1.0), object(s) and/or empty position(s):
+\begin{itemize}
+\item \aob{Random for the initial cell only}: sites are filled randomly in the initial cell only, then the initial cell is simply replicated.
+\item \aob{Random cell by cell}: sites are filled randomly for each cell, cell by cell separately.
+\item \aob{Completely random}: sites are filled randomly for the entire network, the final crystal is considered as whole.
+\item \aob{Successively}: sites are filled successively, all object(s) A are inserted (for the first $n(A)$ positions), then all object(s) B are inserted (for the next $n(B)$ positions) ...  
+\item \aob{Alternatively}: sites are filled alternatively: object A is inserted on the first position, object B is inserted on the second position, object A on the third position, 
+object B on the fourth position ... and so on.
+\end{itemize}
+In any case the number $n(A)$ of object(s) A to be inserted in calculated using:
+\begin{equation} n(A) = NP \times occ(A) \nonumber \end{equation}
+$NP$ is the number of position(s) to fill, $occ(A)$ is the occupancy for object A.\\
+\underline{Overlapping}, object(s) on the same position, can also be allowed, the concept will be illustrated in the following examples.
+\end{itemize}
+\end{enumerate}
+
+\clearpage
+
+\subsubsection*{Using the crystal builder: space group information}
+
+Once a space group has been selected it is possible to access the \aob{Space group info} dialog using the \aob{group info} button:
+\myfigure{h}{crinfo}{\image{17}{img/edit/builder/info}}
+{The \aob{space group info} dialog for the {\bf{R$\bar{3}$c}} group in the \atomes\ program.}{The \aob{space group info} dialog for the {\bf{R$\bar{3}$c}} group in the \atomes\ program.}
+\laf The main information available is presented in the \aob{space group info} dialog [Fig.~\ref{crinfo}], including the different setting(s), 
+and the corresponding initial coordinates and Wyckoff positions. 
+
+\newpage
+
+\subsubsection*{Using the crystal builder: building crystal(s)}
+
+The following pages will present crystal building examples using the {\bf{Fd$\bar{3}$m}} (origin 1 setting) space group (diamond-like structure):\\
+\begin{enumerate}
+\item\label{cd1} {\bf{\textit{The C-diamond structure}}}:
+\myfigure{h}{diaminit}{\image{17}{img/edit/builder/diam-init}}
+{Building a C-diamond crystal in the \atomes\ program.}{Building a C-diamond crystal in the \atomes\ program.}
+\laf The following steps are required to build the C-diamond crystalline structure (see figure~\ref{diaminit}-left):
+\begin{itemize}
+\item Select the {\bf{Fd$\bar{3}$m}} space group (\aob{Cubic -> Face-centered -> 227: Fd-3m})
+\item Set the value for the lattice parameter: $\simeq$ 3.5~\AA
+\item Insert a C atom at (0.0, 0.0, 0.0) with occupancy to 1.0, you can edit both coordinates and occupancy by double-clicking on the corresponding line.
+\item Select the \aob{Insert check button} to use the atom to build the crystal, 
+	or alternatively click to top of the "Insert" column to insert all elements.
+\item Finally simply click on the \aob{Build / Build (new project)} button.
+\end{itemize}
+The crystal is then displayed (see figure~\ref{diaminit}-right), also clones (atoms linked using the PBC see section~\ref{Clones}) are immediately shown. 
+The existence of a chemical bond depending on the cutoff(s), determined automatically when creating the crystal, 
+you might need to adjust the values to define properly the bonding of the system. \\
+\newpage
+\item {\bf{\textit{The C-diamond structure, playing with occupancy}}}:\\
+In these examples the parameters to build the crystal remain exactly similar to \ref{cd1}, only the total number of cells will be increased to 2 on {\bf{\textit{a}}}:
+\begin{center}\image{8}{img/edit/builder/diam2cells}\end{center}
+\begin{itemize}
+\item Occupancy = 1.0: \\
+\begin{center}\image{6}{img/edit/builder/diam2a}\end{center}
+With 8 atoms per cell, the total number of atoms in the system is equal to 16.  
+\item Occupancy = 0.5: \\[0.25cm]
+\begin{minipage}{17cm}
+\hspace{-2cm}\image{17}{img/edit/builder/occup} \\[0.25cm]
+With an occupancy of 0.5 the number of atoms per cell will be reduced to 4,\\
+and the total number of atoms in the system to 8.
+\end{minipage}\\
+\begin{minipage}{16cm}
+\hspace{-1cm}
+\begin{tabular}{p{0.5cm}p{6cm}p{0.5cm}p{12cm}}
+\hspace{-1cm}\raisebox{2.15cm}{(1)} & \hspace{-1cm} \image{6}{img/edit/builder/occ-1} & \hspace{-0.5cm} \raisebox{2.15cm}{$\Longrightarrow$} &
+\image{6}{img/edit/builder/diam2a-1} 
+\end{tabular}
+\aob{Random for the initial cell only}: \\
+The same treatment is applied to each cell, inducing an overall symmetry. \\
+The system is not disordered with 4 atoms per cell at the exact same positions. \\
+\end{minipage}\\
+\begin{minipage}{16cm}
+\hspace{-1cm}
+\begin{tabular}{p{0.5cm}p{6cm}p{0.5cm}p{12cm}}
+\hspace{-1cm}\raisebox{2.15cm}{(2)} & \hspace{-1cm} \image{6}{img/edit/builder/occ-2} & \hspace{-0.5cm} \raisebox{2.15cm}{$\Longrightarrow$} &
+\image{6}{img/edit/builder/diam2a-2} 
+\end{tabular}
+\aob{Random cell by cell}: \\
+A random treatment is applied to each cell independently. \\
+The system is disordered, but the number of atoms per cell remains equal to 4. \\
+\end{minipage}\\
+\begin{minipage}{16cm}
+\hspace{-1cm}
+\begin{tabular}{p{0.5cm}p{6cm}p{0.5cm}p{12cm}}
+\hspace{-1cm}\raisebox{2.15cm}{(3)} & \hspace{-1cm} \image{6}{img/edit/builder/occ-3} & \hspace{-0.5cm} \raisebox{2.15cm}{$\Longrightarrow$} &
+\image{6}{img/edit/builder/diam2a-3} 
+\end{tabular}
+\aob{Completely random}: \\
+The system is entirely disordered. \\
+The average value 0.5 C atoms per site is respected for the entire structure, \\
+but the number of atom(s) per cell can change. \\
+This option if particularly useful when the occupancy for a particular site is very low, see the section remarks afterwards for more information.
+\end{minipage}\\
+\newpage
+To illustrate (4) \aob{Successively} and (5) \aob{Alternatively} it is interesting to use more than one chemical species: \\[0.25cm]
+\begin{tabular}{p{8cm}p{1cm}p{8cm}}
+\hspace{-3cm}Adding O atoms: & & \hspace{-3cm}Adding O and N atoms: \\
+\hspace{-3cm}For all chemical species: & & \hspace{-3cm}For all chemical species: \\
+\hspace{-2cm}- The occupancy is equal to 0.5 & & \hspace{-2cm}- The occupancy is equal 0.333 \\
+\hspace{-2cm}- The site is the same (0.0, 0.0, 0.0) & & \hspace{-2cm} - The site is the same (0.0, 0.0, 0.0) \\[0.25cm]
+	$\Downarrow$ & & $\Downarrow$ \\
+\hspace{-3cm}\image{8}{img/edit/builder/diam2cells2}
+& &
+\hspace{-3cm}\image{8}{img/edit/builder/diam2cells3} \\
+	$\Downarrow$ & & $\Downarrow$ \\
+\hspace{3cm}\image{6}{img/edit/builder/occ-4} \\
+\hspace{-2cm}\image{6}{img/edit/builder/diam2a-4} & &
+\hspace{-2.5cm}\image{6}{img/edit/builder/diam2a-43} \\
+\\
+\hspace{3cm}\image{6}{img/edit/builder/occ-5} \\
+\hspace{-2cm}\image{6}{img/edit/builder/diam2a-5} & &
+\hspace{-2.5cm}\image{6}{img/edit/builder/diam2a-53} \\
+\end{tabular}
+\\[0.25cm]In both cases (4) \aob{Successively} and (5) \aob{Alternatively}: \\[0.25cm]
+The system is ordered. \\
+The average values of the occupancy per site are respected for the entire structure.
+
+\newpage
+\item {\bf{\textit{The C-diamond structure, playing with molecules}}}: \\
+As already mentioned \atomes\ does not only allow to build atomic crystalline structures but also molecular crystalline super-structures. 
+\myfigure{h}{c60build}{\image{16}{img/edit/builder/build-c60}}
+{Building a C-diamond like C$_{60}$ crystalline super-structure.}
+{Building a C-diamond like C$_{60}$ crystalline super-structure.}
+\clearpage
+\noindent 
+The \aob{Insert...} menu allows indeed to insert fragments from the library or from any project opened in the workspace. \\
+Using C$_{60}$ fullerene molecules instead of carbon atoms (and increasing the lattice parameter appropriately) allows to obtain the structure illustrated in figure~\ref{c60build}. \\
+As for the atom(s) tweaking the occupancy can be useful with molecules:
+\begin{center}\image{8}{img/edit/builder/diam2cells2mols}\end{center}
+Using the (4) \aob{Successively} occupancy set-up, you build:
+\myfigure{h}{c60-tol}{\image{11}{img/edit/builder/c60-tol}}
+{Building a C-diamond like, alternating C$_{60}$ and toluene molecules, crystalline super-structure.}
+{Building a C-diamond like, alternating C$_{60}$ and toluene molecules, crystalline super-structure.}
+\item {\bf{\textit{The C-diamond structure, molecules and overlapping}}}:\\
+As mentioned using the \aob{Allow overlapping} option allows to insert at the same crystalline positions. 
+The interest is limited to molecules-molecules overlapping or molecules-atoms overlapping, there is no
+point in getting two atoms at the same position. 
+The idea behind this concept is to allows the encapsulation of an object by another one:
+\myfigure{h}{c240b}{\image{16}{img/edit/builder/build-c240}}
+{Building a C-diamond like, toluene encapsulated  C$_{240}$, crystalline super-structure.}
+{Building a C-diamond like, toluene encapsulated  C$_{240}$, crystalline super-structure. 
+The \aob{Molecules} color-map (see sec.~\ref{csm}) for atoms and bonds is used for clarity purposes.}
+\end{itemize}
+\end{enumerate}
+\clearpage
+\noindent{\bf{Notes:}}
+\begin{itemize}
+\item \uline{Crystal building}: for more on the crystal building process see appendix~\ref{cbp}. \\[0.25cm]
+Here are some important things happening when building a crystal in \atomes:
+\begin{itemize}
+\item At the beginning of the process the size of the object(s) to insert is compared to the lattice parameters, 
+if the lattice parameters are considered too small a warning message will pop-up: 
+\begin{itemize}
+\item For an atom, the size is set to 1.0~\AA.
+\item For a molecule, the size is the maximum interatomic distance within the molecule.
+\end{itemize}
+The process is not fail-safe, and without being careful it is possible to build a crystal with an improper bonding. \\
+The distance matrix calculation to determine bonding information is performed on the fly at the end of the building process,
+if the crystal bonding is too bad, this calculation could fail and no bond will be display. 
+If the crystalline structure is good, then simply correct the bond cutoff to perform the calculation again, 
+and get the correct bonding information.  
+\item At the end of the process all the atoms are wrapped back in the unit cell. 
+\item The bond cutoff are determined automatically, therefore the visual aspect of the final structure might be misleading, 
+with too much of too few bonds compared to what was expected.
+\item When inserting a molecule remember that there is not way to determine its orientation, with water molecules for instance 
+it might be required to rotate the molecule(s) afterwards, see section~\ref{medial} for more information.
+\end{itemize}
+\item \uline{Occupancy}:
+as illustrated previously the order the object(s) is(are) inserted on the crystalline positions might have an importance on the final structure. 
+This is true when the occupancy is < 1.0 and / or when object can share the same site when using the \aob{Allow overlapping} option. \\
+To ensure that the desired crystal will be built, either insert the object in the proper order or re-order them using the mouse drag an drop:
+\begin{center}\image{10}{img/edit/builder/dnd}\end{center}
+The occupancy $occ({\bf{\textit{s}}})$ for a site {\bf{\textit{s}}} $(x_s, y_s, z_s)$ is defined as: 
+\begin{equation}occ({\bf{\textit{s}}}) = \sum_{i=1}^{N} occ(i)
+\end{equation}
+for the $N$ object(s) on the same site $(x_s, y_s, z_s)$
+\item \uline{Empty position}: 
+the \aob{Empty position} button of the \aob{Select ...} menu is used to force the insertion of empty position(s). \\
+The empty site(s) are always treated before any object insertion(s), even if the position in the insertion tree is not on top. \\
+In the case of \aob{Overlapping}+\aob{Empty position} the rules for occupancy are modified as follow: \\
+\begin{equation}
+occ({\bf{\textit{s}}}) = \max_{i=1}^{N} occ(i) + \sum_{j=1}^{E} occ(j) \\[0.25cm]
+\end{equation}
+for the $N$ object(s) and $E$ empty positions on the same site $(x_s, y_s, z_s)$.
+\end{itemize}
+
+\subsection{The \aob{Cell edition} window}
+
+The \aob{Cell edition} window allows to adjust many parameters related to the periodicity of the material, 
+and is accessible using any of the buttons of the \aob{Cell} submenu [Fig.~\ref{cedw}]. \\
+\myfigure{h}{cedw}{\image{11}{img/edit/cell-m}}
+{Accessing the \aob{Cell edition} window in the \atomes\ program.}{Accessing the \aob{Cell edition} window in the \atomes\ program.}
+\laf Each of the buttons in the \aob{Cell} menu [Fig.~\ref{cedw}] allows to open the corresponding tab in the \aob{Cell edition} window. \\
+Each of these tabs and the action they provide will be introduced in the following: 
+\begin{itemize}
+\item The actions of the \aob{Cell edition} window are accessible if and only if there is a model box. 
+\item The actions \aob{Create super-cell}, \aob{Adjust density} and \aob{Cut slab} are not available in the case of MD trajectory.
+\end{itemize}
+\newpage
+\subsubsection*{Wrap all atoms in}
+The \aob{Wrap all atoms in} button allows to wrap all atomic coordinates in the original unit cell. 
+\begin{enumerate}
+\item As illustrated bellow MD codes sometimes output MD trajectory / atomic coordinates in real coordinates, 
+the visual assessment of such trajectory / atomic coordinates becomes complicated:
+\begin{center}\image{12}{img/edit/cell/l-GeS2-nw}\end{center}
+\clearpage
+\item To simplify the visual analysis \atomes\ can put back all atoms back in the unit cell using the periodicity and the box
+parameters as described in the \aob{Box and periodicity} dialog [Fig.~\ref{bpd}]. \\
+Simply select the \aob{Wrap atomic coordinates in unit cell} menu item from [Fig.~\ref{cedw}]:  
+\item[] The action being irreversible it is required to confirm it:
+\begin{center}\image{9}{img/edit/cell/wrap_yn}\end{center}
+\clearpage
+\item After confirmation the operation is performed and the OpenGL window updated:
+\begin{center}\image{12}{img/edit/cell/l-GeS2-yw}\end{center}
+\end{enumerate}
+\newpage
+\subsubsection*{Shift center}
+
+The \aob{Shift center} tab allows to shift the atomic coordinates within the unit cell: \\[0.5cm] 
+\begin{tabular}{cp{0.5cm}c}
+\hspace{-1cm}
+ & & \multirow{3}{6cm}{\image{9}{img/edit/cell/shift/Ni-Phth}} \\
+ \image{6.5}{img/edit/cell/shift/shift-0} & \raisebox{2.0cm}{$\Longrightarrow$} \\
+ \\[1.5cm]
+ & $\Swarrow$ \\
+ & & \multirow{3}{6cm}{\image{9}{img/edit/cell/shift/Ni-Phth-s}} \\
+ \image{6.5}{img/edit/cell/shift/shift-y} & \raisebox{2.0cm}{$\Longrightarrow$} \\
+\end{tabular}
+\\[2.5cm]
+It is possible to shift atomic coordinates along the {\em{x}}, {\em{y}} and/or {\em{z}} model axis. 
+The periodicity is preserved and if needed bonding properties are re-evaluated on the fly during this operation. \\
+\\
+\noindent{\bf{Note that it this required to wrap the atomic coordinates in the unit cell before being able to shift them.}}
+ 
+\clearpage
+
+\subsubsection*{Add extra(s)}
+
+\begin{tabular}{cp{1.0cm}c}
+ & & \multirow{3}{6cm}{\image{7}{img/edit/cell/extra-sup/g-SiO2-311}} \\
+ \image{6}{img/edit/cell/extra-sup/cadex-311} & \raisebox{1.0cm}{$\Longrightarrow$} \\
+ \\[3cm]
+ & $\Swarrow$ \\
+ & & \multirow{3}{6cm}{\image{7}{img/edit/cell/extra-sup/g-SiO2-331}} \\
+ \image{6}{img/edit/cell/extra-sup/cadex-331} & \raisebox{1.0cm}{$\Longrightarrow$} \\
+ \\[3cm]
+ & $\Swarrow$ \\
+ & & \multirow{3}{6cm}{\image{7}{img/edit/cell/extra-sup/g-SiO2-333}} \\
+ \image{6}{img/edit/cell/extra-sup/cadex-333} & \raisebox{1.0cm}{$\Longrightarrow$}
+\end{tabular}
+
+\clearpage
+
+\noindent The \aob{Add extra(s)} tab allows to add extra unit-cell(s) to the model, any object visible within the original unit cell will be duplicated 
+(atom, bond, polyhedra, measure, label ...) as well. The duplicates cells are slightly translucent compared to the initial unit cell.
+
+\subsubsection*{Create super-cell}
+
+The \aob{Create super-cell} button allows to change the periodicity of the system 
+and transform the unit cell to the extended structure created after using the \aob{Add extra(s)} tab. \\
+\begin{center}\image{10}{img/edit/cell/extra-sup/g-SiO2-333-sc}\end{center}
+
+\subsubsection*{Adjust density}
+The \aob{Adjust density} tab allows to modify the density of the material using homothetic rescaling that can be:
+\begin{itemize}
+\item Homogeneous: the $\frac{a}{b}$ and $\frac{a}{c}$ ratio of the initial unit cell are preserved 
+\item Heterogeneous: a, b, and c are adjust individually
+\end{itemize}
+Note that to perform this operation any bonding information will be lost, and only the visual information will not be immediately erased. 
+Therefore it is strongly recommended to recompute the bonding proprieties afterwards, this can not be done on the fly because
+changing the density is likely to require to change the bond cutoffs as well.
+\clearpage
+\begin{tabular}{cp{1.0cm}c}
+ & & \multirow{3}{6cm}{\image{7}{img/edit/cell/dens/g-SiO2-m}} \\
+ \image{6}{img/edit/cell/dens/cell-25} & \raisebox{2.0cm}{$\Longrightarrow$} \\
+ \\[2cm]
+ $\Uparrow$ & \\
+ & & \multirow{3}{6cm}{\image{7}{img/edit/cell/dens/g-SiO2-0}} \\
+ \image{6}{img/edit/cell/dens/cell-35} & \raisebox{2.0cm}{$\Longrightarrow$} \\[0.5cm]
+ $\Downarrow$ \\[2.0cm]
+ & & \multirow{3}{6cm}{\image{7}{img/edit/cell/dens/g-SiO2-p}} \\
+ \image{6}{img/edit/cell/dens/cell-45} & \raisebox{2.0cm}{$\Longrightarrow$}
+\end{tabular}
+
+\clearpage
+
+\subsubsection*{Cut slab}
+
+The \aob{Cut slab} tab allows in the model using geometric patterns: parallelpiped, cylindrical and spherical. 
+The \aob{Cut slab} tab displays slab information, including slab volume and the number of atom of each chemical species inside it. 
+The values are refreshed each time the shape, position size, and/or rotation of the slab is modified. 
+Examples are presented in figure.~\ref{excut}. \\
+\myfigure{h}{excut}{\image{18}{img/edit/cell/cut/global}}
+{Model edition using the \aob{Cut slab} tab.}
+{Model edition using the \aob{Cut slab} tab, from left to right: 1) all atoms outside the sphere are deleted, 2) atoms inside the cylinder are selected, 3) all atoms in the parallelpiped slab are deleted and the results is exported in a new project.}
+%\begin{tabular}{lcp{0.25cm}lcp{0.25cm}lc}
+%\hspace{-3cm} {\bf{a)}} & & & {\bf{b)}} & & & {\bf{c)}} \\
+%\hspace{-3cm} & \image{6}{img/edit/cell/cut/slab-par} & & 
+% & \image{6}{img/edit/cell/cut/slab-cyl} & & 
+% &\image{6}{img/edit/cell/cut/slab-sph} \\[0.25cm]
+%\hspace{-3cm} & $\Downarrow$ & & & $\Downarrow$ & &  & $\Downarrow$ \\[0.25cm]
+%\hspace{-3cm} & \image{5}{img/edit/cell/cut/sio2-par-tab2} & & 
+% & \image{5}{img/edit/cell/cut/sio2-cyl-tab2} & & 
+% &\image{5}{img/edit/cell/cut/sio2-sph-tab2} \\
+%\end{tabular}
+%\item Once the slab is ready, it is possible either to select / cut / export as new project the atomes inside or outside the slab: \\
+%\begin{tabular}{lcp{0.25cm}lcp{0.25cm}lc}
+%\hspace{-3cm} {\bf{a)}} & & & {\bf{b)}} & & & {\bf{c)}} \\
+%\hspace{-3cm} & \image{5}{img/edit/cell/cut/sio2-par-cut} & &
+% & \image{5}{img/edit/cell/cut/sio2-cyl-cut} & & 
+% &\image{5}{img/edit/cell/cut/sio2-sph-cut} \\
+%\end{tabular}
+
+\subsection{The \aob{Model edition} window}
+\label{medial}
+
+The \aob{Model edition} window offers several tools dedicated to the edition of the atomic coordinates 
+and is accessible using any of the buttons of the \aob{Atom} submenu [Fig.~\ref{atedw}]. \\
+\myfigure{h}{atedw}{\image{11}{img/edit/atom-m}}{Accessing the \aob{Model edition} window in the \atomes\ program.}{Accessing the \aob{Model edition} window in the \atomes\ program.}
+\laf It is not possible to access the \aob{Model edition}, and therefore to move / replace / remove and insert atom(s) 
+in the case of MD trajectory. 
+
+\subsubsection*{Selection process}
+\label{newsel}
+
+When the \aob{Atom edition} window is opened the main OpenGL window remains active, and it is still possible to work in it. 
+However having the \aob{Model edition} window opened will modify the results of the atom selection process, 
+whether is it performed using any dialog window or using with the mouse describe in section~\ref{msel} and \ref{mobjm}. 
+The newly extra-selected atom(s) will be covered in pink (instead of light blue), see [Fig.~\ref{v2sel}], 
+and even already selected atoms (in light blue) can be re-selected. 
+\eselfig
+\laf As long as the \aob{Model edition} window remains open, the \aob{Measures} dialog [Fig.~\ref{mdial}] will only presented measurement(s) related to the new pink atoms. \\
+The utilization and purpose of this extra selection feature will be illustrated when presenting the action tabs of the \aob{Model edition} window. 
+
+\subsubsection*{General behavior}
+
+Before browsing each and every tab of the \aob{Model edition} window it is required to introduce the \aob{atom search} tool [Fig.~\ref{atst}] 
+common to almost every tab (in the top part) in the window. 
+Each tab being dedicated to a particular action the search tool will help to find and selected the atom(s) you want the action to be performed upon: \\
+\myfigure{h}{atst}{\image{15}{img/edit/atoms/search}}{The atom(s) search tool.}{The atom(s) search tool.}
+\begin{enumerate}
+\item\label{sel} Search for atom(s) among [Fig.~\ref{atst}-1]: 
+\begin{enumerate}
+\item non-selected atom(s) only: search only in \aob{All non-selected atoms} [Fig.~\ref{atst}-1] 
+\item\label{selao} selected atom(s) only: search only in \aob{All selected atoms} [Fig.~\ref{atst}-1] 
+\item\label{allao} or all atoms: search in all \aob{All atom(s)} [Fig.~\ref{atst}-1] 
+\end{enumerate}
+\ref{selao} is the default value for menu [Fig.~\ref{atst}-1] if some atoms are selected, and \ref{allao} is the default value otherwise. 
+\item\label{for} Apply the action to [Fig.~\ref{atst}-2]:
+\begin{enumerate}
+\item\label{isoat} The atoms as single object(s): pick \aob{Atom(s)} [Fig.~\ref{atst}-2]
+\item\label{groat} Group of atom(s): pick \aob{Group of atoms} [Fig.~\ref{atst}-2]
+\end{enumerate}
+In case \ref{isoat} the action will be performed on the atom(s) that will be selected and each of these atoms will be treated as an isolated object. 
+In case \ref{groat} the action will be performed on the group(s) of atoms, the atom(s) that will be selected afterwards belong to: entire coordination sphere(s), 
+fragment(s) or molecule(s).
+\item\label{fil} Filter the result of the search depending on the type of object you are interested in figure~\ref{atst}-3:
+\begin{enumerate}
+\item Chemical species (Available only if \ref{isoat} is selected for [Fig.~\ref{atst}-2])
+\item Total coordination 
+\item Partial coordination
+\item Fragment
+\item Molecule
+\end{enumerate}
+Pick the appropriate value in figure~\ref{atst}-3 and the selection tree bellow will be updated accordingly.
+\item Refine the search to present only the atom(s) of that particular chemical species (if \ref{isoat} was selected in figure~\ref{atst}-2) 
+or the group of atoms that contains such chemical species (if \ref{groat} was selected in figure~\ref{atst}-2)
+\end{enumerate}
+{\bf{Notes}}:
+\begin{itemize}
+\item \uline{Clickable} : some of the column headers in the search tree are clickable, in the top part if you click on the \aob{Label} or \aob{Move} the corresponding action will be applied / unapplied to the entire data set available in the search tree. 
+\item \uline{Update} : whenever the values for the menus~\ref{for} [Fig.~\ref{atst}-2] and \ref{fil} [Fig.~\ref{atst}-3] are modified 
+the tree is not only refreshed but also cleaned, and so is the corresponding data thus previous selection sets would be lost in the process.
+\end{itemize}
+Examples of the utilization of the \aob{atom search} tool [Fig.~\ref{atst}] will be presented along with each actions available in the \aob{Model edition} window. 
+
+\subsubsection*{The \aob{Move} tab}
+\label{movetab}
+The \aob{Move} tab allows to move atom(s) (translation only) or group of atoms (translation and rotation around the groups barycenter).  
+In the following example one of the fragment in the model is selected, the fragment appears to be split because of the periodic boundary conditions: \\
+\myfigure{h}{nipinit}{\image{15}{img/edit/atoms/move/Ni-Phth-init}}{Initial position with an isolated fragment selected in the model.}{Initial position with an isolated fragment selected in the model.}
+\laf To move the selected fragment:
+\begin{enumerate}
+\item Open the \aob{Move} atom(s) tab: 
+\begin{center} \image{13}{img/edit/atoms/move/move-tab} \end{center}
+\newpage
+\item Go back to the main OpenGL window, keeping the \aob{Model edition} window opened, and select few atoms, that will appear in pink color. 
+Then open the \aob{Measures} dialog [Fig.~\ref{mdial}] to select a bunch of measurements to be displayed: 
+\begin{center}\image{16}{img/edit/atoms/move/show-meas}\end{center}
+\item Go back to the \aob{Model edition} window and adjust the search \aob{For} option and select \aob{Group of atom(s)}: 
+\begin{center}\includegraphics*[height=4cm, keepaspectratio=true, draft=\ddst]{img/edit/atoms/move/sel-group}\end{center}
+\item Adjust the search \aob{Filter by} option and select \aob{Fragment}: 
+\begin{center}\includegraphics*[height=4cm, keepaspectratio=true, draft=\ddst]{img/edit/atoms/move/sel-frag}\end{center}
+\newpage
+\item Then select the fragment in the selection tree: 
+\begin{center}\image{13}{img/edit/atoms/move/move-2}\end{center}
+\item Open the lower part(s) to move the fragment:
+\begin{center}\image{13}{img/edit/atoms/move/motion}\end{center}
+\end{enumerate}
+\myfigure{h}{nipmoved}{\image{15}{img/edit/atoms/move/Ni-Phth-movedm}}
+{Final position of the fragment, after translation and rotation in the model.}
+{Final position of the fragment, after translation and rotation in the model.}
+\noindent {\bf{Notes:}}
+\begin{itemize}
+\item \uline{Motion axis}: it is possible to select (and visualize) the motion axis and choose between the \aob{Eye (viewer) axis} and the \aob{Model axis} (real x, y and z of the atoms).
+\item \uline{Motion actions}: the motion interactors (ranges and input entries) allow to adjust motion very precisely, slightly more approximate motion is also available using the mouse (see Sec.~\ref{mouseedit})
+\item \uline{Measurements}: if already present in the OpenGL window, measurement(s) are updated on the fly, allowing to adjust perfectly position and orientation 
+of the object in the model, see [Fig.~\ref{nipmoved}].
+\item \uline{Motions}: translation is always available, however rotation is only available for \aob{Group of atom(s)} and is performed around the barycenter(s)
+of the object(s) to be rotated.
+\item \uline{Reconstruction}: the check button labelled \aob{Extract/rebuild the object(s) to be moved, ie. cut/clean bonds with nearest neighbor(s)} offers 
+the following option:
+\begin{itemize}
+\item For \aob{Atom(s)}: if activated the object(s) to be moved will be extracted from the model and translated independently, otherwise chemical bond(s) will simply be stretched. 
+\item For \aob{Group of atom(s)}: if activated the atomic positions of the object(s) will be corrected to get only single piece object(s). 
+\end{itemize}
+\newpage
+As illustrated in figure~\ref{nipinit} the fragment visually appears in 2 pieces, and as illustrated by the example as a single piece object after motion [Fig.~\ref{nipmoved}]. \\
+If the object(s) to be moved are coordination spheres and if the spheres that are being moved share atom(s), then the positions of these atoms 
+might be affected twice by this procedure, leading to an awkward, yet correct, 3D representation.
+\item \uline{Bonding}: During motion, the coordination information is modified, all related menus and corresponding dialogs are updated accordingly, 
+however detailed bonding information is lost. It is therefore strongly recommended to recompute bonding properties afterwards. 
+\end{itemize}
+
+\clearpage
+
+\subsubsection*{The \aob{Replace} tab}
+\label{replsel}
+
+The \aob{Replace} tab allows to replace object(s), atom(s) or group of atoms, by either: atom(s), 
+molecules imported from the internal library or atom(s) imported from any project opened within the same instance of the \atomes\ program:  
+\myfigure{h}{repinit}{\image{13}{img/edit/atoms/replace/repl}}
+{The \aob{Replace} tab with the option of replace objects \aob{Normally} or \aob{Randomly}.}
+{The \aob{Replace} tab, with the option of replace objects \aob{Normally}, ie. object by object, or \aob{Randomly}, in the model.}
+\laf As illustrated in figure~\ref{repinit} it is possible to replace object(s) one by one (\aob{Normally}) or by random pick (\aob{Randomly}). 
+The difference between the normal and the random search trees are illustrated in top part of figure~\ref{repnm}. \\
+For normal substitution(s) [Fig.~\ref{repnm}-a] it is possible to select the replacement object(s) either at once for all objects, using the \aob{Select for all ...} menu, 
+or alternatively one by one when browsing the tree and using the \aob{Select ...} menu(s). \\
+For random substitution(s) [Fig.~\ref{repnm}-b] only a single replacement is selected for each type of object, and it is require to enter the number of substitution(s) to be performed. \\
+The substitution options accessible using the \aob{Select ...} menu are illustrated in the bottom part in figure~\ref{repnm} with the different \aob{atoms} c), \aob{Library} d) and \aob{Import from project} e) submenus. 
+\clearpage
+\repnmfig
+
+\noindent {\bf{Substitution options}}:
+\begin{itemize}
+\item The \aob{Atom} submenu [Fig.~\ref{repnm}-c], to insert a new atom in place of the object(s) to be removed. 
+Some shortcuts are proposed, if required the \aob{Other ...} button allows to open a periodic table to pick any appropriate atom: 
+\begin{center}\image{14}{img/edit/atoms/perio}\end{center}
+\item The \aob{Library} submenu [Fig.~\ref{repnm}-d], to insert an new molecule in place of the object(s) to be removed. 
+Some shortcuts are proposed as well, and the \aob{More ...} button allows to open the \aob{Library} dialog:
+\begin{center}\image{12}{img/edit/atoms/library}\end{center}
+The \aob{Library} dialog provides a bunch of sample molecules roughly sorted by chemical properties (see appendix \ref{lib} for more details).
+\item The \aob{Import from project} submenu [Fig.~\ref{repnm}-e], to insert atom(s) from any \atomes\ project opened in the workspace. 
+\item The \aob{Copied data} button [Fig.~\ref{repnm}-f], to copied data selection from any workspace in \atomes. 
+\end{itemize}
+\noindent An example is provided in figure~\ref{repex} with the random substitution of 500 \aob{Si} atoms from the \aob{\sio} project by \aob{water} molecules. \\ 
+\myfigure{h}{repex}{\image{16.5}{img/edit/atoms/replace/g-SiO2-repex}}
+{Random substitution of 500 \aob{Si} atoms by \aob{water} molecules.}
+{Random substitution of 500 \aob{Si} atoms by \aob{water} molecules.}
+\clearpage
+\noindent{\bf{Notes:}}
+\begin{itemize}
+\item \uline{Irreversible}: the replacement is irreversible (at least not directly, but it is always possible to perform another backward substitution)
+therefore remember to save your work before replacing any object(s) in your model. 
+\item \uline{Selection}: At the end of the substitution process, and therefore after the insertion of the new objects, 
+all these new objects will appear surrounded by light blue color in the OpenGL window (see figure~\ref{repex}), and will therefore be selected, 
+making further work on these new objects easier.  
+\item \uline{Barycenters}: the new object is inserted and centered at the barycenter of the atomic positions of the old object to be removed.
+\end{itemize}
+
+\subsubsection*{The \aob{Remove} tab}
+
+The \aob{Remove} tab allows to remove object(s), atom(s) or group of atoms, like for the \aob{Replace} tab the action can also be performed randomly. 
+An example is provided in figure~\ref{remex} with the normal (one by one) removal of all \aob{Ni-[N$_4$]} coordination spheres atoms from the \aob{Ni-Phth} project: 
+for a Nickel atom, this means that this \aob{Ni} atom as well as it surrounding \aob{N} neighbours are all removed. 
+\myfigure{h}{remex}{\image{17}{img/edit/atoms/removex}}
+{Normal removal of all \aob{Ni-[N$_4$]} coordination spheres from the model.}{Normal removal of all \aob{Ni-[N$_4$]} coordination spheres from the model.}
+
+\subsubsection*{The \aob{Insert} tab}
+
+The \aob{Insert} tab allows to insert new object(s) in the model: 
+\myfigure{h}{insinit}{\image{14}{img/edit/atoms/insert/insert}}
+{The \aob{Insert} tab, with the options to choose the object to be inserted and the position of insertion.}
+{The \aob{Insert} tab, with the options to choose the object to be inserted and the position of insertion.}
+\laf The \aob{Select ...} menu reproduces the one from the \aob{Replace} tab, see the bottom part in figure~\ref{repnm},
+and allows to insert atom(s) [Fig.~\ref{repnm}-c], molecular fragment(s) [Fig.~\ref{repnm}-d] and atom(s) from any other project opened in the workspace [Fig.~\ref{repnm}-e]. 
+Selecting any object to insert will populate and update the tree bellow, with a new line. 
+Each line describes the object to be inserted, and offers options to confirm the insertion and specify the position where to insert the object in the model. \\
+An example is provided in figure~\ref{insex} where a fullerene \aob{C$_{240}$} is inserted in the \aob{Ni-Phth} project modified after the removal example illustrated in figure~\ref{remex}.
+\newpage
+\myfigure{h}{insex}{\image{17}{img/edit/atoms/insert/insertex}}
+{Insertion of fullerene \aob{C$_{240}$} in the \aob{Ni-Phth} project modified after the removal example.}
+{Insertion of fullerene \aob{C$_{240}$} in the \aob{Ni-Phth} project modified after the removal example illustrated in figure~\ref{remex}.}
+\noindent{\bf{Notes:}}
+\begin{itemize}
+\item \uline{Irreversible}: the insertion is irreversible (at least not directly, but it is always possible to remove all inserted atoms)
+therefore remember to save your work before inserting any object(s) in your model. 
+\item \uline{Selection}: After the insertion of the new objects, 
+all these new objects will appear surrounded by light blue color (see figure~\ref{insex})in the OpenGL window, and will therefore be selected, 
+making further work on these new objects easier.
+\item \uline{Position}: the coordinates (0.0, 0.0, 0.0) always refers to the center of the model, ie. the barycenter of all existing atomic coordinates.
+\end{itemize}
+
+\clearpage
+
+\subsubsection*{The \aob{Random move} tab}
+
+The \aob{Random move} tab allows to disorder the model: \\
+\myfigure{h}{raninit}{\image{15}{img/edit/atoms/random/ranmove}}
+{The \aob{Random move} tab.}
+{The \aob{Random move} tab. With \aob{atom(s)} selected as object(s) it is only possible to translate randomly, with \aob{Group of atoms} it is also possible to rotate randomly and the corresponding column appears in the search tree.}
+\laf An example is provided in figure~\ref{ranex} with the random rotation of \aob{water} molecules in the modified \aob{\sio} project after the substitution example illustrated in figure~\ref{repex}. Indeed after the substitution \aob{water} molecules were all perfectly aligned, to correct this unlikely organization \atomes\ can rotate randomly and independently every water molecule in the model:
+\begin{enumerate}
+\item\label{ran1} After the substitution all the \aob{H} and \aob{O} atoms of the newly inserted \aob{water} molecules are selected, so search for selected atom(s) only [Fig.~\ref{atst}-1]. 
+\item\label{ran2} Then choose to apply the action to \aob{Group of atoms} [Fig.~\ref{atst}-2].
+\item\label{ran3} Filter the selection using the \aob{Fragment} option [Fig.~\ref{atst}-3].
+\item After the steps~\ref{ran1}, \ref{ran2} and \ref{ran3} the selection tree will correspond to the one in figure~\ref{ranex}. To enable the random rotation simply click on the top header of the \aob{Rotate} column to select all object(s), actually all \aob{water} molecules. It is required to enter a maximum MSD for each motion, click the top header of the \aob{MAX. MSD} column to enter a suitable value. Optionally it is possible to iter the rotation process, at each step the rotation will be completely random. 
+\end{enumerate}
+\myfigure{h}{ranex}{\image{16.5}{img/edit/atoms/random/ranmovex}}
+{Random rotation of \aob{water} molecules in the modified \aob{\sio} project.}
+{Random rotation of \aob{water} molecules in the \aob{\sio} project modified after the substitution example illustrated in figure~\ref{repex}.}
+\newpage
+\noindent{\bf{Notes:}}
+\begin{itemize} 
+\item \uline{Group of atoms}: trying to move group of atoms that share atom(s) (ex: 2 coordination spheres with atom(s) in both coordination spheres) can lead to inaccurate results, 
+the shared atom(s) being moved with each object they belong to.
+\item \uline{Rotation}: the rotation is performed around the positional barycenter of the object's atomic coordinates. 
+In the case of a repeated rotation the rotation center is preserved until the final step to avoid drifting. 
+If both translation and rotation are repeated then the object is translated first, updating as well the position of the rotation center, and then rotated.
+\item \uline{Reconstruction}: the check button labelled \aob{Extract/rebuild the object(s) to be moved, ie. cut/clean bonds with nearest neighbor(s)} offers 
+the following option:
+\begin{itemize}
+\item For \aob{Atom(s)}: if activated the object(s) to be moved will be extracted from the model and translated independently, otherwise chemical bond(s) will simply be stretched. 
+\item For \aob{Group of atom(s)}: if activated the atomic positions of the object(s) will be corrected to get only single piece object(s). 
+\end{itemize}
+\end{itemize}
+
+\clearpage
+
+\subsection{The \aob{Extract/rebuild} buttons}
+As introduced in the previous pages these buttons allows to extract object(s) to be moved or copied/pasted from the model, into single piece object(s). 
+The effect on motion is illustrated in sections~\ref{movetab} and \ref{asel}, the effect on copy is the following:
+\myfigure{h}{rbc}{\image{16.5}{img/edit/copy}}
+{Illustration of the rebuild process during copy.}
+{Illustration of the rebuild process, a fragment is copied from the top figure 
+and pasted back in new projects. That fragment appears split because of the PBC: on the left the fragment is rebuild as a singe object, on the right the 2 pieces remain separated.}
+
+\clearpage
+
+\section{Mouse interaction with the OpenGL window: edition}
+\label{mouseedit}
+
+It is possible to activate the mouse \aob{Edition} using the \aob{Tools} menu: 
+\editoolfig
+\laf It is also possible to use the \Alt+\keystroke{e} keyboard shortcut, and to switch back to \aob{Analysis} mode using the \Alt+\keystroke{a} shortcut. \\
+%\begin{figure}[!h]
+%\begin{tabular}{ccc}
+%\image{7}{img/edit/mouse/am} & \raisebox{0.75cm}{$\Longrightarrow$} &
+%\image{7}{img/edit/mouse/em}
+%\end{tabular}
+%\caption{\label{editool} Activating the mouse \aob{Edition} mode using the \aob{Tools} menu.}
+%\end{figure}
+\noindent In \aob{Edition} mode the mouse button functions are the following:
+\begin{itemize}
+\item {\bf{Left button}}
+\begin{itemize}
+\item {\em{Single click on object}}: object selection
+\item {\em{Pressed on background + motion}}: {\bf{selected}} ({\em{only}}) atomic coordinates rotation $^*$
+\end{itemize}
+\item {\bf{Scroll button}}
+\begin{itemize}
+\item {\em{Scrolled}}: zoom in/out
+\item {\em{Pressed + motion}}: {\bf{selected}} ({\em{only}}) atomic coordinates translation
+\end{itemize}
+\item {\bf{Right button}}
+\begin{itemize}
+\item {\em{Pressed on background}}: edition contextual menu
+\item {\em{Pressed on object}}: object edition contextual menu
+\end{itemize}
+\end{itemize}
+$*$ The rotation is performed around the coordinates barycenter of the selected atoms.
+
+\subsection{Atom selection}
+\label{asel}
+As for the \aob{Analysis} mode object(s) can be selected using the mouse left click. 
+In \aob{Edition} mode selected atoms/objects are subjects to motion interactions using the mouse and it becomes complicated 
+to check motion information with visual measurements. However using the \aob{Tools} menu it is possible to activate the \aob{Measures} selection mode (available when using 
+the \aob{Model edition} dialog (see section~\ref{newsel}): \\
+\myfigure{h}{editmeas}{\image{10}{img/edit/mouse/selmeas}}
+{Activating the \aob{Measures} selection mode using the \aob{Tools} menu.}{Activating the \aob{Measures} selection mode using the \aob{Tools} menu.}
+\laf The following provides an example of utilization of the \aob{Measures} selection mode:
+\begin{enumerate}
+\item Select a fragment in the model: 
+\begin{center}\image{11}{img/edit/mouse/movex/Ni-Phth-m0}\end{center}
+\newpage
+\item Switch to \aob{Edition} mode (if not done already) and change the \aob{Mouse selection mode} to \aob{Measures (Edition mode only)}.
+Then select some atoms in the model, and open the \aob{Measures} dialog (see section~\ref{mdw}) to display some measurements:
+\begin{center}\image{11}{img/edit/mouse/movex/Ni-Phth-m1}\end{center}
+\item Start to move the selected fragment using the mouse left click+motion to rotate or mouse scroll click+motion to translate, 
+by default, and if divided because of the PBC, \atomes\ will reconstruct the fragment (see figure~\ref{rccm} to modify that behavior): 
+\begin{center}\image{11}{img/edit/mouse/movex/Ni-Phth-m2}\end{center}
+\item You will see that when moving the fragment with the mouse the information displayed (inter-atomic distances and angles) 
+is instantaneously refreshed:
+\begin{center}\image{11}{img/edit/mouse/movex/Ni-Phth-m4}\end{center}
+\end{enumerate}
+
+\subsection{The edition contextual menu}
+
+The mouse right click button on the background of the OpenGL window opens the edition contextual menu: \\
+\rccmfig
+\begin{itemize}
+\item The \aob{Tools} submenu [Fig.~\ref{rccm}-a] reproduces the corresponding top bar menu. 
+\item The \aob{Insert} submenu [Fig.~\ref{rccm}-b] offers shortcuts to insert objects in the model,
+and is similar to the \aob{Select ...} menus described in section~\ref{medial} for the \aob{Replace} and \aob{Remove} tabs of the \aob{Model edition} dialog.
+\item\label{erbt} The \aob{Extract/rebuild on motion} button:
+\begin{itemize}
+\item For \aob{Atom(s)}: if activated the object(s) to be moved will be extracted from the model and translated independently, 
+otherwise chemical bond(s) will simply be stretched. 
+\item For \aob{Group of atom(s)}: if activated the atomic positions of the object(s) will be corrected to get only single piece object(s). 
+\end{itemize}
+\item The \aob{Reset motion} button will reset all atomic coordinates to the value immediately saved when:
+\begin{itemize}
+\item Entering the \aob{Edition} mode: {\bf{if no atoms were inserted or removed in the model.}}
+\item Replacing/removing/inserting atom(s): {\bf{if any atom was inserted or removed in the model.}}
+\end{itemize}
+\end{itemize}
+
+\subsection{The object edition contextual menu}
+\label{mobje}
+Pressed over any atom/bond the right button opens the object edition contextual menu: 
+\oecmfig
+\laf The object edition contextual menu in figure~\ref{oecm} follows exactly the construction described in section~\ref{mobjm} 
+and \ref{mocmcons} for the object contextual menu in \aob{Analysis} mode. \\
+The object edition contextual menu offers shortcuts to \aob{Remove}, \aob{Replace} and \aob{Copy} object(s) in the model.
+
+\clearpage
+
+\section{Keyboard shortcuts}
+
+\kbdedit

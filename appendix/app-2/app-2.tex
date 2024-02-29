@@ -1,0 +1,65 @@
+\chapter{Keyboard shortcuts and command line options}
+
+\section{Keyboard shortcuts}
+
+\allkbd
+
+\clearpage
+
+\section{Command line options}
+
+\newcommand{\atoc}{\textcolor{blue}{atomes}}
+\newcommand{\xyz}{\textcolor{cyan}{{\bf{\texttt{-xyz}}}}}
+\newcommand{\cif}{\textcolor{cyan}{{\bf{\texttt{-cif}}}}}
+\newcommand{\pdb}{\textcolor{cyan}{{\bf{\texttt{-pdb}}}}}
+\newcommand{\this}{\textcolor{brown}{{\bf{\texttt{this.f}}}}}
+\newcommand{\that}{\textcolor{brown}{{\bf{\texttt{that.f}}}}}
+\newcommand{\fawf}{\textcolor{red}{{\bf{\texttt{file.awf}}}}}
+
+\atomes\ can be used from the command line, including using the following options: 
+\begin{itemize}
+\item General options:
+\begin{itemize}
+\item[] \aob{-h} or \aob{--help}: short help.
+\item[] \aob{-v} or \aob{--version}: version information.
+\end{itemize}
+\item File options:
+\begin{itemize}
+\item[] \aob{-awf filename}: open \atomes\ workspace file. 
+\item[] \aob{-apf filename}: open \atomes\ project file.  
+\item[] \aob{-xyz filename}: open coordinates in XYZ format \cite{XYZ}. 
+\item[] \aob{-pdb filename}: open coordinates in PDB format. 
+\item[] \aob{-ent filename}: open coordinates in PDB format. 
+\item[] \aob{-c3d filename}: open coordinates in Chem3D format \cite{Chem3D}. 
+\item[] \aob{-cif filename}: open coordinates in CIF format. 
+\item[] \aob{-trj filename}: open CPMD trajectory \cite{CPMD}. 
+\item[] \aob{-xdatcar filename}: open VASP trajectory \cite{VASP}. 
+\item[] \aob{-hist filename}: open DL\_POLY history trajectory \cite{DLPOLY}. 
+\item[] \aob{-ipf filename}: open ISAACS project file \cite{ISAACS}. 
+\end{itemize} 
+\end{itemize}
+\begin{enumerate}
+\item If no file option(s) is (are) provided then \atomes\ will try to open the file(s) based on its (their) extension(s) 
+(ex: a file which name end by \aob{.xyz} will be assumed to follow the XYZ structure). 
+\item The structure of \aob{filename} is expected to follow the structure introduced with the option (ex: \aob{-xyz} for a file that contains 
+coordinates in the XYZ format), but \aob{filename} is not required to have the corresponding extention (ex: \aob{.xyz}). 
+\item Since \atomes\ has a single workspace only a single workspace file can be opened via the command line.
+\end{enumerate}
+\begin{itemize}
+\item Examples:
+\item[] Open all PDB files in the active directory: 
+\begin{scri}{15}
+user@localhost ~]\$ \atoc\ *.pdb
+\end{scri}
+\item[] Open a workspace file, and other coordinates files: 
+\begin{scri}{15}
+user@localhost ~]\$ \atoc\ \pdb\ this.f \fawf\ \cif\ that.f *.xyz
+\end{scri}
+\end{itemize}
+\atomes\ will parse the command line, detect that a workspace file "\fawf" is to be opened and will open it first. \\
+Then the other coordinate files will be opened and added to the workspace: 
+\begin{itemize}
+\item As enforced by the "\pdb" option, \aob{this.f} is supposed to follow the PDB format.
+\item As enforced by the "\cif" option, \aob{that.f} is supposed to follow the CIF format.
+\item All files with the \aob{.xyz} extension in the directory will be opened assuming that they follow the XYZ format. 
+\end{itemize}

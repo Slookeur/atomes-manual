@@ -1,0 +1,585 @@
+\chapter{Visual analysis in \atomes}
+\markboth{Visual analysis in \atomes}{\scshape \thesection}
+\label{visual}
+
+In this chapter examples will be illustrated using an \atomes\ workspace presented in figure~\ref{workm}, this workspace contains 3 different projects:
+\begin{itemize}
+\item a molecular surface of Nickel-Phthalocyanine molecules with 512 atoms.
+\item a \sio\ glass with 3000 atoms. 
+\item a \ges\ glass molecular dynamics trajectory with 500 MD steps and 258 atoms.
+\end{itemize}
+\myfigure{h}{workm}{\hspace{-2cm}\image{15.5}{img/visu/workm2}}{Example workspace: visualization.}
+{Example workspace to illustrate the visualization capabilities of the \atomes\ program containing 3 projects, named \mbox{\aob{Ni-Phth}}, \aob{g-\sio} and \aob{l-\ges}.}
+
+\section{Window top bar menu}
+
+In order to present the functionalities available in the OpenGL window, we will browse the top bar menu [Fig.~\ref{workm}] and present each submenu one after the other. \\
+%\myfigure{h}{\image{10}{img/visu/glwin_top}}{The top bar menu of the OpenGL window in the \atomes\ program.}
+% {The top bar menu of the OpenGL window in the \atomes\ program.}
+
+\subsection{The \aob{OpenGL} menu}
+
+\moglfig
+
+The \aob{OpenGL} menu is detailed in figure~\ref{mogl}. The behavior of the \aob{Render} menu [Fig.~\ref{mogl}-c], and the \aob{Quality} menu [Fig.~\ref{mogl}-d], 
+as well as of the \aob{Render image} button being pretty intuitive the following only detail the behavior of the \aob{Style menu}, 
+the \aob{Color scheme(s)} menu [Fig.~\ref{mogl}-b], and the \aob{Material and lights} button.
+
+\clearpage
+\subsubsection{The \aob{Style} menu}
+\label{stylem}
+
+Using the \aob{Style} menu it is possible to define to {\bf{default style}} of the model representation, the options are among the most commonly used in chemistry. 
+Changing the {\bf{default style}} from this menu will update several parts of the OpenGL window and associated menus. 
+For instance selecting the \aob{Ball and stick} option will update the first tab of \aob{Atom(s) configuration} dialog [Fig.~\ref{advats}] to display atomic radius 
+and the \aob{Bond(s)} menu [Fig.~\ref{modl}] to present the \aob{Radius(ii)} and offer a shortcut to modify their values. \\
+It is possible to define local style(s) to improve the visual representation, however this is only possible using the mouse, see section~\ref{mstyle}, 
+and changing the {\bf{default style}} of the model using the \aob{Style} menu will reset/erase any local style(s) value(s) to the default. 
+
+\subsubsection{The \aob{Color scheme(s)} menu}
+\label{csm}
+
+In the \atomes\ program when the file is opened most of the bonding properties are calculated "on-the-fly", allowing to gain insights on the atomic coordinations, 
+as well as the number of fragments and the different molecules in the model. \\
+Therefore before using the \aob{Color scheme(s)} menu it is important to be familiar with the following definitions: 
+\begin{itemize}
+\item {\bf{Total coordination}} = total number of first neighbor atoms around the atom.
+\item {\bf{Partial coordination}} = number of atoms of each chemical species around the atom.
+\item {\bf{Fragments}} = isolated molecular objects in the model. 
+\item {\bf{Molecules}} = the different topological objects in the model.
+\item {\bf{Coordination polyhedra}} = structure drawn by linking the atoms of the first coordination sphere for a particular atom. 
+Requires the considered atom to have 3 neighbors, then the atom it-self is used as a point to build the polyhedra, or more.
+\end{itemize}
+The \aob{Color scheme(s)} menu allows to change the Color Map (CM) for both atoms and coordination polyhedra, 
+based on the bonding analysis performed using the bond cutoff(s) specified by the user. 
+An illustration is provided in figure~\ref{cmaps} for the \aob{Ni-Phth} project of the example workspace, 
+note that is this model the molecule on the top is missing a hydrogen atom compared to the one that composed the surface. \\
+The colors of each objects can be modified/adapted via the appropriate menus/dialogs (see sections~\ref{modelm} and \ref{chemm}). \\ 
+\cmapfig
+
+\clearpage
+
+\subsubsection*{Using a custom color map}
+
+Alternatively to the CMs proposed by the \atomes\ program it is possible to apply a user defined CM to the OpenGL model, 
+this option is accessible via the \aob{Custom} button of the \aob{Atoms \& bonds} menu [Fig.~\ref{mogl}-b]. 
+In that case it is required to read a file (having the extension "*.dat") that contains the numerical data to be used as color scale. 
+This file must be a simple (Unix like) text file with as many lines as: 
+\begin{center}{\bf{Total number of MD steps $\times$ Total number of atoms}}\end{center} 
+Indeed the new colors can be applied to the entire MD trajectory. \\
+An example is provided hereafter for the silica glass model: \\
+\begin{enumerate}
+\item In the initial setup the chemical species are used as color map:
+\begin{center}\image{12}{img/visu/cmap/sio2-init}\end{center}
+\item When the \aob{Custom} button is pressed for the atoms CMs, the \aob{Custom color map setup} dialog appears: 
+\begin{center}\image{6}{img/visu/cmap/custom}\end{center}
+\item {\bf{(a)}} The \aob{Import / Save data} button allows to import your data file to create the color map. 
+If the data file is processed successfully then \atomes\ will propose to use it and a confirmation dialog will pop-up: 
+\begin{center}\image{8}{img/visu/cmap/custom-read}\end{center}
+For this example the data points are simply the atom indices from 1 to 3000. 
+\item {\bf{(b)}} Afterwards using the \aob{Edit data} button it becomes possible to edit the data in a basic spreadsheet like mode, 
+so that values for a particular atom can be checked and/or modify if needed:
+\begin{center}\image{5}{img/visu/cmap/custom-edit}\end{center}
+\item {\bf{(c)}} And using the \aob{Customize color map} button is possible to customize the color map, 
+initially a gradient of red an blue between the maxima and the minima of the values in the data set is used, 
+but you can easily add or remove point(s), and adjust the corresponding color to enhance the visual representation of your model: 
+\begin{center}
+\hspace{-2cm}
+\begin{tabular}{cp{3cm}c}
+\image{7}{img/visu/cmap/custom-cinit} & \multicolumn{1}{c}{\raisebox{5cm}{$\Longrightarrow$}} &
+\image{7}{img/visu/cmap/custom-cmore}
+\end{tabular}
+\end{center} 
+\item Finally simply apply the changes to use the new colors:
+\begin{center}\image{14}{img/visu/cmap/sio2-custom}\end{center}
+\item The \aob{Custom} data and the corresponding color map are saved within the \atomes\ project and workspace files (see section~\ref{apf} and \ref{awf}), 
+so that it will not be require to load a prepare the color map between work sessions.
+\end{enumerate}
+  
+%\image{5}{img/visu/cmap/custom-init} \\
+%\image{8}{img/visu/cmap/custom-read} \\
+%\image{5}{img/visu/cmap/custom-ok} \\
+%\image{6}{img/visu/cmap/custom-edit} \\
+%\image{7}{img/visu/cmap/custom-cinit} \\
+%\image{7}{img/visu/cmap/custom-cmore}
+
+\subsubsection{Material and lights}
+
+The \aob{Material and lights} button of the \aob{OpenGL} menu opens the \aob{OpenGL material aspect and light settings} dialog [Fig.~\ref{advogl}]:\\
+\myfigure{h}{advogl}{\image{17}{img/visu/adv-ogl}}{The \aob{OpenGL material aspect and light settings} dialog in the \atomes\ program.}
+{The \aob{OpenGL material aspect and light settings} dialog in the \atomes\ program.}
+\laf The window contains a notebook with 3 tabs:
+\begin{itemize}
+\item The first tab allows to configure/adjust:
+\begin{itemize}
+\item The quality of the rendering, ie. the number of polygons to render a volume. 
+\item The lightning model, from the lowest quality (fastest to render, \aob{None}) to the highest quality (longer to render, \aob{Cook-Torrance-GCX}).
+\item The material aspect, few templates being available, but all characteristics required to describe the material aspect for the light mode being available. 
+\end{itemize}
+\item The second tab allows to configure the lights sources of the model: 
+\begin{itemize}
+\item 3 type of light source being available: directional, point and spot lights.
+\item With the possibility to add up to 10 light sources. 
+\end{itemize}
+\item Finally the third tab is used to adjust the fog effects 
+\end{itemize}
+For information on OpenGL lightning models, material effects, lights, and more see: 
+\begin{itemize}
+\item \href{https://learnopengl.com/Lighting/Basic-Lighting}{https://learnopengl.com/Lighting/Basic-Lighting}
+\item \href{https://learnopengl.com/Advanced-Lighting/Advanced-Lighting}{https://learnopengl.com/Advanced-Lighting/Advanced-Lighting}
+\end{itemize}
+
+\clearpage
+
+\subsection{The \aob{Model} menu}
+\label{modelm}
+\vspace{-0.25cm}
+\modlfig
+
+\clearpage
+
+\subsubsection{The \aob{Atom(s)} menu}
+
+The \aob{Atom(s)} menu [Fig.~\ref{modl}-a] offers to configure some visual features related to the chemical species in the model. 
+This menu contains shortcuts for some the properties that can be adjusted using the more advanced \aob{Atom(s) configuration} dialog, 
+and that can be opened using any of the \aob{Advanced} buttons in the menu. 
+The \aob{Atom(s) configuration} dialog is presented in figure~\ref{advats}:
+\myfigure{h}{advats}{\image{17}{img/visu/atom-adv}}
+{The \aob{Atom(s) configuration} dialog in the \atomes\ program.}{The \aob{Atom(s) configuration} dialog in the \atomes\ program.}
+\laf The window contains a notebook with 3 tabs:
+\begin{itemize}
+\item {\bf{(a)}} The \aob{Display  properties} tab: to adjust chemical species colors, atomic labels, and depending on the model style: 
+\begin{itemize}
+\item Ball and sticks: atomic radius
+\item Wireframe or Points: point size
+\end{itemize}   
+\item {\bf{(b)}} The \aob{Label properties} tab: to adjust the aspect of the atomic labels.
+\item {\bf{(c)}} or {\bf{(d)}} The \aob{Atom(s) selection}: to search for atom(s) in the model. 
+If the model contains less than 10 000 atoms the entire list of atoms is displayed {\bf{(c)}}, 
+otherwise it becomes too complicated to display and a search engine is proposed {\bf{(d)}}.
+\end{itemize}
+
+\clearpage
+
+\subsubsection{The \aob{Bond(s)} menu}  
+
+Via the \aob{Bond(s)} menu [Fig.~\ref{modl}-b] it is possible to adjust the bond cutoff(s), and depending on the model style:
+\begin{itemize}
+\item Ball and sticks: bonds radius(ii)
+\item Cylinders: bond radius
+\item Wireframe: line width
+\end{itemize}
+
+\subsubsection{The \aob{Clone(s)} menu}
+\label{Clones}
+
+The \atomes\ program uses {\bf{clones}} to illustrate the presence of atomic bond(s) on the edges of the simulation box and 
+existing because of the periodic boundary conditions (see section~\ref{pbc} for more information on the PBC). \\ 
+For the \aob{Clone(s)} menu to be activated two conditions must be fulfilled: to use PBC, ie. the model must have a periodicity, and, for such bonds via PBC to exist. 
+If both conditions are met, then the first button of the menu to \aob{Show/Hide Clones} will be active and it becomes possible to show or hide the {\bf{clones}}. \\ 
+Please note that {\bf{clone}} atoms/bonds are translucent to make them easily distinguishable from their atom/bond counterparts, 
+figure~\ref{atcl} illustrates the {\bf{clones}} idea using the silica glass model:
+\clonefig
+\laf If the {\bf{clones}} are visible then the two \aob{Atom(s)} and \aob{Bond(s)} submenus will be activated as well.
+These menus are reproductions of the upper level \aob{Atom(s)} and \aob{Bond(s)} menus, and windows, but dedicated to the {\bf{clones}}, 
+this allows to make the {\bf{clones}} even more distinguishable in the 3D representation. 
+
+\clearpage
+
+\subsection{The \aob{Chemistry} menu}
+\label{chemm}
+
+\vspace{-0.5cm}
+\mchemfig
+
+The \aob{Chemistry} menu [Fig.~\ref{mchem}] and all the attached submenus from {\bf{a)}} to {\bf{e)}} are essentially composed of shortcut buttons to the options/actions that can be performed using the \aob{Environments configuration} window, this section will therefore focus on the presentation of this window. 
+
+\subsubsection*{The \aob{Environments configuration} window}
+\label{ecw}
+
+The \aob{Environments configuration} window contains a notebook with several tabs. 
+The number of tabs depends on the calculations that were performed to analyze the model, 
+ring statistics and chain statistics calculations will insert new tabs in the notebook. 
+The different tabs of \aob{Environments configuration} window are:
+\begin{enumerate}
+\item\label{t:1} The \aob{Parameters} tab  (see \ref{show t:1})
+\item\label{t:2} The \aob{Total coordination(s) [TC]} tab (see \ref{show t:2/3})
+\item\label{t:3} The \aob{Partial coordination(s) [PC]} tab (see \ref{show t:2/3})
+\item\label{t:4} The \aob{Polyhedra from TC} tab (see \ref{show t:4/5})
+\item\label{t:5} The \aob{Polyhedra from PC} tab (see \ref{show t:4/5})
+\item\label{t:6} The \aob{Fragment(s)} tab (see \ref{show t:6/7})
+\item\label{t:7} The \aob{Molecule(s)} tab (see \ref{show t:6/7})
+\item\label{t:8} The \aob{{\em{? ring(s)}} [{\em{?R}}]} tab (see \ref{show t:8a} and \ref{show t:8b})\\
+\qquad The \aob{Polyhedra from [{\em{?R}}]} tab \\
+\qquad The \aob{Isolated ring(s) from [{\em{?R}}]} tab
+\item\label{t:9} The \aob{Chain(s)} tab (see \ref{show t:9})\\
+\qquad The \aob{Isolated chain(s)} tab
+\end{enumerate}
+Tabs~\ref{t:1}, \ref{t:2}, \ref{t:3}, \ref{t:4} and \ref{t:5} are always present in the notebook, 
+tabs~\ref{t:6} and \ref{t:7} are present providing that the fragment(s) and the molecule(s) analysis were performed.  
+Tabs~\ref{t:8} are inserted in the notebook when any of the ring statistics analysis are completed, whereas the tabs~\ref{t:9} are inserted when the chain statistics analysis is completed. 
+Overall the \aob{Environments configuration} window can contain up to 24 tabs.\\
+Each tab in [\ref{t:1}-\ref{t:9}] is presented in detail thereafter: 
+\clearpage
+\newcommand{\cosize}{8.0}
+\begin{enumerate}
+\item\label{show t:1} {\bf{The \aob{Parameters} tab}}
+\begin{center}\image{\cosize}{img/visu/wcoord/wcoord-p}\end{center}
+This tab reproduce this available color map options from the \aob{Color scheme(s)} menu (see section~\ref{csm}). 
+Many of the following tabs allow to adjust the color of the element(s) for each color map, only for the change to be visible the corresponding color map must be used. \\
+The \aob{Parameters} tab also contains a \aob{Cloned polyhedra} button, that allows to display polyhedra on the edges of the simulation box, and this even if {\bf{clones}} are not shown.
+\clearpage
+\item\label{show t:2/3} {\bf{The \aob{Total coordination(s) [TC]} and \aob{Polyhedra form TC} tabs}} \\[0.5cm]
+\begin{tabular}{lcp{0.25cm}lc}
+\hspace{-2.5cm} {\bf{a)}} & & & {\bf{b)}} \\
+\hspace{-2.5cm} & \image{\cosize}{img/visu/wcoord/wcoord-tc} & & &
+ \image{8}{img/visu/wcoord/wcoord-ptc} 
+\end{tabular}
+\\[0.25cm]
+{\bf{a)}} The \aob{Total coordination(s) [TC]} tab presents a list of options related to the total coordination sphere(s)
+found during the bonding analysis:
+\begin{itemize}
+\item A \aob{Color} button: to adjust the color of the each element. Initially a color being assigned to each number of neighbors independently of the chemical species involved. 
+\item A \aob{Show} button: to hide/show the atom(s) matching the associated property.
+\item A \aob{Label} button: to hide/show the atomic label of the atom(s) matching the associated property.
+\item A \aob{Pick} button: to select/unselect the atom(s) matching the associated property (for more information on atom selection see section~\ref{mviz}) .
+\end{itemize}
+In the \aob{Ni-Phth} project example, the colors in {\bf{a}} allow to obtain the representation from [Fig.~\ref{cmaps}-a]. \\ 
+{\bf{b)}} The \aob{Polyhedra form TC} tab presents a list of options related to the total coordination sphere(s) with 3 or more neighbors:
+\begin{itemize}
+\item An \aob{Alpha} range: to adjust the opacity of the coordination polyhedra for the atom(s) matching the associated property.
+\item A \aob{Show} button: to hide/show the coordination polyhedra for the atom(s) matching the associated property.
+\end{itemize}
+\clearpage
+\item\label{show t:4/5} {\bf{The \aob{Partial coordination(s) [PC]} and \aob{Polyhedra form PC} tabs}} \\[0.25cm]
+\begin{tabular}{lcp{0.25cm}lc}
+\hspace{-2.5cm}{\bf{c)}} & & & {\bf{d)}} \\
+\hspace{-2.5cm} & \image{\cosize}{img/visu/wcoord/wcoord-pc} & & &
+ \image{8}{img/visu/wcoord/wcoord-ppc} 
+\end{tabular}
+\\[0.25cm]
+The \aob{Partial coordination(s) [PC]} {\bf{c)}} and the \aob{Polyhedra form PC} {\bf{d)}} tabs are similar to {\bf{a)}} and {\bf{b)}} respectively, 
+coordination spheres being also separated based on the analysis of the chemistry of the bond(s). 
+In the \aob{Ni-Phth} project example, the colors in {\bf{c)}} allow to obtain the representation from [Fig.~\ref{cmaps}-b].
+\item\label{show t:6/7} {\bf{The \aob{Fragment(s)} and \aob{Molecule(s)} tabs}} \\[0.25cm]
+\begin{tabular}{lcp{0.25cm}lc}
+\hspace{-2.5cm}{\bf{e)}} & & & {\bf{f)}} \\
+\hspace{-2.5cm} & \image{\cosize}{img/visu/wcoord/wcoord-frag} & & &
+\image{\cosize}{img/visu/wcoord/wcoord-mol} 
+\end{tabular}
+\\[0.25cm]
+The \aob{Fragment(s)} {\bf{e)}} and \aob{Molecule(s)} {\bf{f)}} tabs follow similar ideas than {\bf{a)}} (or {\bf{c)}}) but for the {\bf{fragment(s)}} and {\bf{molecule(s)}} respectively. 
+In these examples from the \aob{Ni-Phth} project, the colors in {\bf{e)}} and {\bf{f)}} allow to obtain respectively the representations from [Fig.~\ref{cmaps}-c] and [Fig.~\ref{cmaps}-d].
+\clearpage
+\item\label{show t:8a} {\bf{The \aob{{\em{? ring(s)}} [{\em{?R}}]}, \aob{Polyhedra from [{\em{?R}}]} tabs}}\\[0.5cm]
+\begin{tabular}{lcp{0.25cm}lc}
+\hspace{-2.5cm}{\bf{g)}} & & & {\bf{h)}} \\
+\hspace{-2.5cm} & \image{\cosize}{img/visu/wcoord/wcoord-kr} & & &
+\image{\cosize}{img/visu/wcoord/wcoord-pkr} 
+\end{tabular}
+\\[0.25cm]
+Whenever a ring statistics calculation is performed successfully and ring(s) is/are found in the model, 
+the \aob{{\em{? ring(s)}} [{\em{?R}}]} {\bf{g)}} and \aob{Polyhedra from [{\em{?R}}]} {\bf{h)}} tabs are inserted in the \aob{Environments configuration} window, 
+{\bf{g)}} and {\bf{h)}} are examples from the g-\sio\ model for which King's rings analysis was performed. 
+If other analyses were performed more tabs would be inserted following a similar idea, and {\bf{?}} is the name of the methodology to search for rings, 
+among: All (No rules), King's, Guttman's, Primitive and Strong (see section~\ref{rstat} for more information on ring statistics). \\
+The \aob{{\em{? ring(s)}} [{\em{?R}}]} tab presents a list of options related results of the ring statistics calculation, for each size of ring:
+\begin{itemize}
+\item A \aob{Color} button: to adjust the color of the each element. Note that this color only concerns the polyhedra. 
+Initially a different color is assigned to each size of ring(s).
+\item A \aob{Show} button: to hide/show the atom(s) involved in ring(s) of that size.
+\item A \aob{Label} button: to hide/show the atom(s) involved in ring(s) of that size.
+\item A \aob{Pick} button: to select/unselect the atom(s) involved in ring(s) of that size.
+\end{itemize}
+The \aob{Polyhedra from [{\em{?R}}]} tab present other options related results of the ring statistics calculation, for each size of ring:
+\begin{itemize}
+\item An \aob{Alpha} range: to adjust the opacity of the polyhedra drawn using the atom(s) of each ring of that size as summits.
+\item A \aob{Show} button: to hide/show the polyhedra drawn using the atom(s) of each ring of that size as summit.
+\end{itemize}
+\clearpage
+\item\label{show t:8b}{\bf{The \aob{Isolated ring(s) from [{\em{?R}}]} tab}} \\
+\begin{tabular}{lcp{0.25cm}lc}
+\hspace{-2.5cm}{\bf{i)}} & & & {\bf{j)}} \\
+\hspace{-2.5cm} & \image{\cosize}{img/visu/wcoord/wcoord-akr-a} & & &
+\image{\cosize}{img/visu/wcoord/wcoord-akr-b} 
+\end{tabular}
+\\[0.25cm]
+In the \aob{Isolated ring(s) from [{\em{?R}}]} tab every single ring found can be look-up individually. 
+Most often {\bf{i)}} version of the tab is used, however if more than 10 000 rings are found 
+it becomes too complicated to display the entire list and a search engine is proposed instead {\bf{j)}}. \\
+Among the options provided by the  \aob{Isolated ring(s) from [{\em{?R}}]} tab:
+\begin{itemize}
+\item A \aob{Show} button: to hide/show the atom(s) involved in this ring.
+\item A \aob{Ploy} button: to hide/show the polyhedra drawn using the atom(s) of this ring as summits.
+\item A \aob{Label} button: to hide/show the atom(s) involved in this ring.
+\item A \aob{Pick} button: to select/unselect the atom(s) involved in this ring.
+\end{itemize}
+\item\label{show t:9} {\bf{The \aob{Chain(s)} \aob{Isolated chain(s)} tabs} }\\[0.25cm]
+These tabs (not shown) are dedicated to the results of the chain statistics analysis, and simply reproduces options of tabs {\bf{g)}} and {\bf{i)}}/{\bf{j)}},
+at the exception that there are no polyhedra to display. 
+\end{enumerate}
+\clearpage
+
+\subsection{The \aob{Tools} menu}
+
+\mtoolfig
+The \aob{Edit} menu {\bf{a)}}, that regroups the edition tools will be covered in chapter~\ref{edit}, and the \aob{Molecular Dynamics} menu {\bf{d)}},
+regrouping the MD input assistants will be covered in chapter~\ref{md}. Also the actions of the \aob{Invert} menu {\bf{e)}} being pretty intuitive, 
+this section will only present the \aob{Measures} button/dialog, the \aob{Mouse mode} {\bf{b)}}, \aob{Selection mode} {\bf{c)}} menus. 
+
+\subsubsection*{The \aob{Measures} dialog}
+\label{mdw}
+
+Pressing the \aob{Measures} button will open the \aob{Measures} dialog [Fig.~\ref{mdial}], that contains a notebook with 3 tabs, for inter-atomic distances, angles and dihedrals, 
+and a button labelled \aob{Font and style} to configure how the measure(s) will appear on the model. \\ 
+\myfigure{h}{mdial}{
+%\begin{tabular}{lclclc}
+%\hspace{-2cm} {\bf{a)}} & & {\bf{b)}} & & {\bf{c)}} \\
+%\hspace{-2cm}  & \image{5.5}{img/visu/wmeas/bonds} &
+%  & \image{5.5}{img/visu/wmeas/angles} &
+%  & \image{5.5}{img/visu/wmeas/dih}
+%\end{tabular}
+\hspace{-1cm} \image{17.5}{img/visu/wmeas/meas}}
+{The \aob{Measures} dialog in the \atomes\ program.}{The \aob{Measures} dialog in the \atomes\ program, with the \aob{Distances}, \aob{Angles} and \aob{Dihedrals} tabs.}
+\laf Each tab contains the respective measured properties for all the atoms in selection (see section~\ref{mviz} for more information on the selection process), 
+this means the atoms that have been selected before opening the dialog, or, while it is opened and the tabs will refresh. 
+The tabs read as follow: 
+\begin{itemize}
+\item First (2/3/4) columns the atoms id's
+\item Column (3/4/5): the value measured in the model
+\item Column (4/5/9): If PBC are used/required to measure the value (to avoid visual deception) 
+\end{itemize}
+\clearpage
+{\bf{Behavior of the \aob{Measures} dialog:}}
+\begin{enumerate}
+\item If too many atoms are in selection then the tabs will remain empty and the measures will not show up. 
+To get the information about the measures back simply decrease the number of atoms selected under 20 atoms for the distances and the angles, and under 10 for the dihedrals. \\
+\item If any line is selected by a mouse click in the tabs, then the font color of this line will change and the corresponding measure will appear in the model with the same color. 
+In figure~\ref{mdial}, 2 lines are selected in the \aob{Distances} tab, and 1 line is selected in the \aob{Angles} tab, the result is presented in figure~\ref{ex-meas}. \\
+\myfigure{h}{ex-meas}{\image{15}{img/visu/wmeas/Ni-Phth-meas2}}{Some examples of measurements displayed in the OpenGL window.}{Some examples of measurements displayed in the OpenGL window.}
+\item No visual information is available for the dihedral angles and only the numerical values are provided.
+\end{enumerate}
+
+\newpage
+
+\subsubsection*{The \aob{Volumes} dialog}
+\label{volw}
+
+Pressing the \aob{Volumes} button will open the \aob{Volumes} dialog [Fig.~\ref{mvols}], that contains a notebook with 3 tabs, for overall atomic volumes (\aob{Model}), 
+isolated fragment volumes (\aob{Fragment(s)}), molecular volume (\aob{Molecule(s)}). 
+\myfigure{h}{mvols}{\image{16.5}{img/visu/wvols/vol-tabs}}
+{The \aob{Volumes} dialog in the \atomes\ program.}{The \aob{Volumes} dialog in the \atomes\ program, with the \aob{Model}, \aob{Fragment(s)} and \aob{Molecule(s)} tabs.}
+\\Tabs are divided in two parts: top for molecular volume(s) calculated for the respective target, 
+bottom for calculations to dermine the smallest rectangle parallepiped volume for the respective target. 
+Also volumes can be evalutated for different types of atomic radii (covalent, ionic, van Der Waals and in crystal), 
+and on the first tab (\aob{Volumes}), the angular precision (rotation of the volume) can be fine tuned for all calculations. \\
+Once a \aob{Compute} button is pressed the selected calculation will be perfomed, then numerical results become available and can be visualized 
+pressing the corresponding \aob{Show/Hide} button: 
+\myfigure{h}{mvolres}{\image{16.5}{img/visu/wvols/vol-viz}}
+{Volumes visualization in the \atomes\ program.}{Volumes visualization in the \atomes\ program: smallest rectangle parallepiped volumes found for each of the isolated fragment in molecule 1.}
+\clearpage
+
+\newpage
+
+\subsubsection*{The \aob{Mouse mode} menu}
+
+This menu allows to switch the mouse mode between \aob{Analysis} (default) and \aob{Edition}. 
+This menu is active, only and only if, there is a single configuration in the project (and not a molecular dynamics trajectory). 
+Therefore when studying a MD trajectory only the \aob{Analysis} mode is available. 
+
+\subsubsection*{The \aob{Selection mode} menu}
+
+This menu allows to adjust the mouse selection capabilities, and switch between:
+\begin{enumerate}
+\item {\bf{Atom/bond}} (default): selection atom by atom or bond by bond.
+\item {\bf{Coordination sphere}}: the atom and all its first neighbors.
+\item\label{sfrag} {\bf{Fragment}}: the atom and all other atom(s) that belong to the same {\bf{fragment}}.
+\item\label{smol} {\bf{Molecule}}: the atom and all other atom(s) that belong to the same {\bf{molecule}}. 
+\item {\bf{Single fragment}}: same as \ref{sfrag} and unselect all other atoms in the model.
+\item {\bf{Single molecule}}: same as \ref{smol} and unselect all other atoms in the model.
+\item {\bf{Measures (Edition mode only)}}: will be covered in chapter~\ref{edition}. 
+\end{enumerate}
+
+\clearpage
+
+\subsection{The \aob{View} menu}
+
+\mviewfig
+Being very intuitive the actions of the \aob{View} menu will not be discussed in this manual. 
+
+\clearpage
+
+\subsection{The \aob{Animate} menu}
+
+\myfigure{h}{manim}{\image{5}{img/visu/menu/m_anim}}{The \aob{Animates} menu of the OpenGL window in the \atomes\ program.}{The \aob{Animates} menu of the OpenGL window in the \atomes\ program.}
+
+The animate menu allows to open 3 different dialog boxes:
+
+\subsubsection*{The \aob{Spin} dialog} 
+\label{sdw}
+
+The \aob{Spin} dialog [Fig.~\ref{spin}] allows to spin the model: 
+\myfigure{h}{spin}{\image{5}{img/visu/spin}}{The \aob{Spin} dialog of the OpenGL window in the \atomes\ program.}{The \aob{Spin} dialog of the OpenGL window in the \atomes\ program.}
+\laf When one of the arrow (left, right, up, down) button is pressed the model will start rotating in that direction. 
+It is possible to combine directions by pressing several buttons, also the rotation speed is determined by the number
+of times the button was pressed: the more it was pressed the faster the model will rotate. 
+To decrease the rotation speed, press the arrow button(s) in the opposite direction(s) to the rotation. 
+
+\clearpage
+
+\subsubsection*{The \aob{Sequencer} dialog}
+
+The \aob{Sequencer} dialog [Fig.~\ref{seq}] allows to animate and review a molecular dynamics trajectory, 
+and is therefore only accessible if the project contains more than a single atomic configuration: 
+\myfigure{h}{seq}{\image{8}{img/visu/sequencer}}{The \aob{Sequencer} dialog of the OpenGL window in the \atomes\ program.}{The \aob{Sequencer} dialog of the OpenGL window in the \atomes\ program.}
+
+\subsubsection*{The \aob{Recorder} dialog}
+\label{rdw}
+
+The \aob{Recorder} dialog [Fig.~\ref{rec}] allows to record {\bf{any action}} on the OpenGL window:\\
+\recfig
+\laf As soon as the green \aob{Record} button [Fig.~\ref{rec}-a] is pressed, and turns to red [Fig.~\ref{rec}-b], {\bf{any action}} performed on the OpenGL window will be recorded, 
+(the \aob{Spin} and the \aob{Sequencer} dialogs for example can be opened and used while recording) and the recording will continue until the \aob{Stop} button is pressed,
+then the \aob{Movie encoding} dialog will pop-up [Fig.~\ref{enc}]
+\clearpage
+\myfigure{h}{enc}{\image{12}{img/visu/encode}}{The \aob{Movie encoding} dialog of the OpenGL window in the \atomes\ program.}{The \aob{Movie encoding} dialog of the OpenGL window in the \atomes\ program.}
+\noindent The \aob{Movie encoding} dialog allows to adjust any parameters required to encode a nice movie. \\
+Many of the video codecs available in atoms [Fig.~\ref{enc}] are sensitive to the parameters that can be entered in this dialog. 
+For instance the MPEG-4 and H264 video codecs seem to be very sensitive to the utilization of standard video resolutions (800x600, 1980x1024 ...).
+However by default \atomes\ input the dimensions of the OpenGL window as Movie resolution and the codec might not like non-standard parameters 
+as the values in figure~\ref{enc}, and the encoding could fail. \\
+Depending on the codec this might be true for any of the parameters that can be adjusted in this dialog. 
+Moreover error messages (from the encoding library) are not necessarily displayed, and the error might not be seen directly. \\
+However even if the encoding fail \atomes\ will not crash, and as long as the \aob{Cancel} button of the dialog [Fig.~\ref{enc}] is not pressed
+all data required to encode the movie is perfectly safe in memory, and there is no problem in retrying to encode with a change of parameters. \\
+Therefore before closing the \aob{Movie encoding} dialog, action that will delete the data in memory it is recommended to check the result of the encoding, ie. play the movie,
+if the result is good enough then it is safe to close the dialog by pressing \aob{Cancel}.
+
+\clearpage
+
+\section{Mouse interaction with the OpenGL window: visualization}
+\label{mviz}
+
+The mouse button functions are the following:
+\begin{itemize}
+\item {\bf{Left button}}
+\begin{itemize}
+\item {\em{Single click on object}}: object selection
+\item {\em{Pressed on background + motion}}: model rotation 
+\end{itemize}
+\item {\bf{Scroll button}}
+\begin{itemize}
+\item {\em{Scrolled}}: zoom in/out
+\item {\em{Pressed + motion}}: model translation 
+\end{itemize}
+\item {\bf{Right button}}
+\begin{itemize}
+\item {\em{Pressed on background}}: reproduces the OpenGL window top bar menu
+\item {\em{Pressed on object}}: object contextual menu
+\end{itemize}
+\end{itemize}
+
+\subsection{Object selection}
+\label{msel}
+The mouse left button allows to select object(s) and display atomic label(s):\\
+\oselfig
+\laf The first click on any atom/bond will select this atom/bond, the selection is highlighted / covered in light blue color [Fig.~\ref{vsel}-b], 
+a second click and the atom(s) label(s) will be added to the representation [Fig.~\ref{vsel}-c], finally a third click will unselect 
+the atom(s) and remove the label(s) [Fig.~\ref{vsel}-a].
+
+\subsection{Object contextual menu}
+\label{mobjm}
+Pressed over an atom or a bond the right button opens the object contextual menu: 
+\ocmfig
+\vspace{-0.125cm}
+\begin{itemize}
+\item Over {\em{An atom}}: the menu in figure~\ref{mocm}-a) is displayed, the top part provides several information (when available) related to the atom:
+\begin{itemize}
+\item The atom id: chemical species and id number in the project
+\item The atom coordinates
+\item Total coordination of the atom
+\item Partial coordination of the atom
+\item Fragment and molecule id the atom belongs to
+\end{itemize}
+\item Over {\em{A chemical bond}}: the menu in figure~\ref{mocm}-b) is displayed, the top part provides several information (when available) related to the bond:
+\begin{itemize}
+\item The atoms involved in the bond
+\item The bond length
+\item Fragment and molecule id the bond belongs to
+\end{itemize}
+\end{itemize}
+The bottom parts of the object contextual menus in figure~\ref{mocm} are almost identical, 
+and contain a list of submenus dedicated to several actions that could be performed in relation to the object, 
+atom or chemical bond, of the contextual menu. 
+The construction of each submenu follow a similar pattern presented bellow. 
+\subsubsection*{Construction of the submenus}
+\label{mocmcons}
+\csosfig
+If the action proposed by the submenu can be applied to this atom/bond then the first element of the menu
+is a line with the name of this atom/bond [Fig.~\ref{mocmb}-a]. 
+The second line [Fig.~\ref{mocmb}-b] refers, depending on the action of the submenu and/or the status of the atom, to \aob{selected} or \aob{non-selected} atoms.  
+The third line [Fig.~\ref{mocmb}-c] follows the same idea for the \aob{labelled} or \aob{non-labelled} atoms. 
+Finally the bottom part [Fig.~\ref{mocmb}-c] refers to the coordinations and the chemistry of the considered object. \\
+Most of the actions provided by these submenus being very intuitive, only the \aob{Style} and \aob{Edit as new project} menus will be introduced in detail thereafter. 
+
+\subsubsection{The \aob{Style} submenu}
+\label{mstyle}
+
+The \aob{Style} submenu(s) of the object contextual menu allows to change the visual style locally, ie. for an atom/bond, or any particular set of atom and bonds in the model. \\
+\myfigure{h}{ocms}{\image{15}{img/visu/ocm/ocm-style}}{The object contextual menu and the \aob{Style} submenu(s).}{The object contextual menu and the \aob{Style} submenu(s).}
+\laf Overall using local style(s) allows to improve the visual representation and to highlights particular element(s) [Fig.~\ref{exstyles}]. \\
+\myfigure{h}{exstyles}{\image{15}{img/visu/ocm/ex-styles2}}{Multiple visual styles the \atomes\ program.}{Multiple visual styles the \atomes\ program.}
+\newpage
+\noindent The parameters of the local style(s), are inherited from the global style (see section~\ref{stylem}). 
+Therefore in order to modify any parameters of a particular style, ie. the sphere radius of an atom for the \aob{Ball and stick} style, 
+this style must be applied globally, and the appropriate parameters modified using the \aob{model} menu (see section~\ref{modelm}) or the \aob{Atom(s) configuration} dialog (Fig.~\ref{advats}). 
+Afterwards and when applied locally the \aob{Ball and stick} style will use the new parameters. 
+Note that the default atomic radius for the \aob{Spacefilled} style, even is this style is not used, is the \aob{Covalent} radius, 
+following the local style menu's behavior and if the global \aob{Spacefilled} style was not changed, 
+then the local \aob{Spacefilled} style(s) will use the same parameters. 
+
+\subsubsection{The \aob{Copy} submenu}
+
+The \aob{Copy} submenu(s) of the object contextual menu allows to copy atomic coordinates, the copied data could then be re-used either using the \aob{Model edition} dialog (see section~\ref{medial}) or the mouse \aob{Edition mode} (see section~\ref{mouseedit}).
+\myfigure{h}{ocmc}{\image{15}{img/visu/ocm/ocm-copy}}{The object contextual menu and the \aob{Copy} submenu(s).}{The object contextual menu and the \aob{Copy} submenu(s).}
+\laf Data can copied from any project, even from an MD trajectory however in that case only the atomic coordinates from the visible MD step will be copied, other will be ignored. 
+Data can only be pasted in project(s) that support the \aob{Edition mode} (see chapter~\ref{edition}).
+
+\subsubsection{The \aob{Edit as new project} submenu}
+\label{meditnewp}
+
+The \aob{Edit as new project} submenu(s) of the object contextual menu allows to create a new project using any particular set of atom and bonds in the model. 
+\newpage
+\myfigure{t}{ocme}{\image{15}{img/visu/ocm/ocm-edit}}{The object contextual menu and the \aob{Edit as new project} submenu(s).}{The object contextual menu and the \aob{Edit as new project} submenu(s).}
+\noindent Using any button of this menu the corresponding set of atom(s)/bond(s) will be copied and exported as a new \atomes\ project.
+This new project will immediately be inserted in the workspace tree to be available for further work and a corresponding 3D window will pop-up. 
+Parameters of the initial project will be applied to the new one (style, colors ...), except for the periodicity, if any, that will be lost in the process. \\
+\\An example is proposed thereafter: \\
+\begin{enumerate}
+\item For this example the King's rings statistics analysis (see section~\ref{rstat}) was performed on \sio\ test system, 
+afterwards the \aob{Advanced environment} dialog was opened and all atom(s) involved in ring(s) of size 6 atoms were selected (selection is highlighted in light blue):
+\begin{center}
+\image{16}{img/visu/ocm/edit-1}
+\end{center}
+\newpage
+\item After the selection, the object contextual menu is used to \aob{Edit as new project} the list of \aob{All selected atom(s)/bond(s)}:
+\begin{center}
+\image{16}{img/visu/ocm/edit-2}
+\end{center}
+\item The new project \aob{Project N$^\circ$ 4} that contains the appropriate atom(s)/bond(s) is created and inserted in the workspace tree, and the new OpenGL window pops up:
+\begin{center}
+\image{16}{img/visu/ocm/edit-3}
+\end{center}
+\newpage
+\item Finally after restoring the periodicity, it is possible to calculate any other properties for the new model, ie. the selection from the \sio\ model, 
+and compare the results with one for the original system:
+\begin{center}
+\image{16}{img/visu/ocm/edit-4}
+\end{center}
+\end{enumerate}
+
+\clearpage
+
+\section{Keyboard shortcuts}
+
+\kbdviz

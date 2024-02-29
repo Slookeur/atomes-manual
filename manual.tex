@@ -1,0 +1,104 @@
+\documentclass{these-seb}
+
+\input{preambule}
+
+\includeonly{chap-1/chap-1,chap-2/chap-2,chap-3/chap-3,chap-4/chap-4,chap-5/chap-5,chap-6/chap-6,chap-7/chap-7,appendix}
+%\includeonly{chap-1/chap-1}
+%\includeonly{chap-2/chap-2}
+%\includeonly{chap-3/chap-3}
+%\includeonly{chap-4/chap-4}
+%\includeonly{chap-5/chap-5}
+%\includeonly{chap-6/chap-6}
+%\includeonly{chap-7/chap-7}
+%\includeonly{appendix}
+
+\begin{document}
+
+% Préparation pour mini-table des matières, des figures et des tables si besoin
+%\dominitoc
+%\dominilof
+%\dominilot
+
+%
+% ISAACS Users manual	
+%
+\titleEN{\hspace{-1cm}\includegraphics*[width=17cm, keepaspectratio=true, draft=\ddst]{img/overview3}\\ \bigskip User manual \atomes\ v1.0}
+
+\author{Sébastien {\sc{Le Roux}}\quad\href{mailo:sebastien.leroux@ipcms.unistra.fr}{sebastien.leroux@ipcms.unistra.fr}}
+\address{sebastien.leroux@ipcms.unistra.fr}
+\universite{Institut de Physique et Chimie des Matériaux de Strasbourg\\
+Département des Matériaux Organiques\
+BP 43, 23 rue du Loess,\\
+F-670234 Strasbourg Cedex 2, France}
+
+\beforepreface
+
+\setcounter{page}{1}            % Je recommence la numerotation a un pour pas
+                                % decaler l'alternance droite/gauche et que
+                                % les pages impaires soient bien a droite.
+%\setcounter{tocdepth}{4}
+
+% Mise en forme TOC/TOF/LOT
+{\small \tableofcontents}
+\addcontentsline{toc}{chapter}{Contents}
+{\it \footnotesize \listoffigures}
+\addcontentsline{toc}{chapter}{List of figures}
+\chaptermark{List of figures}
+{\it \footnotesize \listoftables}
+\addcontentsline{toc}{chapter}{List of tables}
+\chaptermark{List of tables}
+
+\afterpreface
+
+\vfill                          % Je remplis avec du rien (\vfill}
+\pagebreak                      % Je change de page.
+
+%{\small \printindex}
+
+% Intro
+\include{chap-1/chap-1}
+
+% Programming framework
+\include{chap-2/chap-2}
+
+% Features
+\include{chap-3/chap-3}
+
+% PC analysis
+\include{chap-4/chap-4}
+
+% Vis analysis
+\include{chap-5/chap-5}
+
+% Vis edition
+\include{chap-6/chap-6}
+
+% MD
+\include{chap-7/chap-7}
+
+\clearpage
+\pagenumbering{Roman}
+\part*{Appendix}
+\addcontentsline{toc}{part}{Appendix}
+\clearpage{\cleardoublepage}
+
+\include{appendix}
+
+\normalem
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Biblio %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bibliographystyle{these}
+\bibliography{full-biblio}
+
+% Colophon
+\colophon{This document has been prepared using the Linux operating system and free softwares:
+\begin{tabular}{lc}
+The text editor & "\href{http://www.vim.org/}{gVim}" \\
+The GNU image manipulation program & "\href{http://www.gimp.org/}{The Gimp}" \\
+The WYSIWYG plotting tool & "\href{http://plasma-gate.weizmann.ac.il/Grace/}{Grace}" \\
+And the document preparation system & "\href{http://www.latex-project.org/}{\LaTeXe}".
+\end{tabular}}
+
+
+\end{document}
+

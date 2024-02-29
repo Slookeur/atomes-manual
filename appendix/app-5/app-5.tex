@@ -1,0 +1,858 @@
+\chapter{The physics in \atomes}
+\label{physics}
+
+\section{The periodic boundary conditions}
+\label{pbc}
+
+Taking into account the finite size of model/simulation box is crucial to compute correctly many of the structural characteristics (e.g. ring statistics) of the system being studied. \\
+The importance of the finite size of model box can be illustrated using a 1~$dm^3$ edged cube of water (1~L) at room temperature. 
+This cube contains approximately $3.3 \times 10^{25}$ water molecules, each of them can be considered as a sphere having a diameter of 2.8~\AA. 
+Following this scheme surface interactions can affect up to 10 layers of spheres (water molecules) far from the surface of the model cubic box. 
+In this case the number of water molecules exposed to the surface is about $2 \times 10^{19}$, 
+which is a small fraction of the total number of molecules in the model. \\
+Currently structure models often contain somewhere from 1 thousand to several thousands of molecules/atoms. 
+As a result a very substantial fraction of them will be influenced by the finite size of the simulation/model box. 
+The problems is solved by applying the so-called {\bf{P}}eriodic {\bf{B}}oundary {\bf{C}}onditions "PBC" which means surrounding the simulation box with its translational images in the 3 directions of space, as illustrated below. \\[0.25cm]
+Users of \atomes\ should take special care that their model boxes are inherently periodic so that when the periodic boundary conditions are applied the structural characteristics computed are not compromised. 
+\newpage
+\myfigure{h}{fpbc}{\image{10}{img/pbc-seb}}{Schematic representation of the idea of periodic boundary conditions.}{Schematic representation of the idea of periodic boundary conditions.}
+\noindent Figure~\ref{fpbc} illustrates the principle of the periodic boundary conditions that can be used\footnote{Please note that the use of PBC is not mandatory, isolated molecules can be studied using \atomes} in \atomes: a particle which goes out from the simulation box by one side is reintroduced in the box by the opposite side (in the 3 dimensions of space). \\[0.25cm]
+When PBC are used the maximum inter-atomic distance r$_{max}$ which is taken into account in the calculations, depends on the lattice parameters:
+\begin{equation}
+	r_{max} \simeq \frac{L\times\sqrt{3}}{2}\qquad \text{with}\ L = \text{box size}
+\end{equation}
+The surface/finite model size effects would therefore be small, if any. 
+In general, the larger the simulation box and the number of molecules/atoms in it, the smaller the surface/size effects will be.
+\newpage
+\section{Radial distribution functions fundamentals}
+\label{rdf}
+The Radial Distribution Function, R.D.F. , g(r), also called pair distribution function or pair correlation function, is an important structural characteristic, therefore computed by \atomes.
+\myfigure{h}{gr-fig}{\image{8}{img/phys/gr}}{Space discretization for the evaluation of the radial distribution function.}{Space discretization for the evaluation of the radial distribution function.}
+\laf Considering a homogeneous distribution of the atoms/molecules in space, the $g(r)$ represents the probability to find an atom in a shell $dr$ at the distance $r$ of another atom chosen as a reference point [Fig.~\ref{gr-fig}].
+By dividing the physical space/model volume into shells dr [Fig.~\ref{gr-fig}] it is possible to compute the number of atoms $dn(r)$ at a distance between $r$ and $r + dr$ from a given atom: 
+\begin{equation}
+\label{g2r_1}
+dn(r)\ =\ \frac{N}{V}\ g(r)\ 4\pi\ r^{2}\ dr
+\end{equation}
+where $N$ represents the total number of atoms, $V$ the model volume and where $g(r)$ is the radial distribution function. 
+In this notation the volume of the shell of thickness $dr$ is approximated: 
+\begin{equation}
+\left(V_{\text{shell}}\ =\ \displaystyle{\frac{4}{3}} \pi (r+dr)^3\ -\ \displaystyle{\frac{4}{3}} \pi r^3 \ \simeq\ 4\pi\ r^{2}\ dr \right)
+\end{equation}
+When more than one chemical species are present the so-called partial radial distribution functions $g_{\alpha\beta}(r)$ may be computed : 
+\begin{equation}
+\label{g2r_4}
+g_{\alpha \beta}(r)\ =\ \frac{dn_{\alpha \beta}(r)}{4\pi r^{2}\ dr\ \rho_{\alpha}} \qquad \text{with} \qquad \rho_{\alpha}\ =\ \frac{V}{N_\alpha}\ =\ \frac{V}{N\times c_\alpha} 
+\end{equation}
+where $c_\alpha$ represents the concentration of atomic species $\alpha$.
+\newpage
+\noindent These functions give the density probability for an atom of the $\alpha$ species to have a neighbor of the $\beta$ species at a given distance $r$. The example features \ges\ glass. \\
+\myfigure{h}{grp300K}{\image{16}{img/phys/grp300K}}{Partial radial distribution functions of glassy GeS$_2$ at 300~K.} {Partial radial distribution functions of glassy GeS$_2$ at 300~K.}
+\laf Figure~\ref{grp300K} shows the partial radial distribution functions for \ges\ glass at 300 K. The total RDF of a system is a weighted sum of the respective partial RDFs, with the weights depend on the relative concentration and x-ray/neutron scattering amplitudes of the chemical species involved. \\
+It is also possible to use the reduced ${\bf{G}}_{\alpha\beta}(r)$ partial distribution functions defined as: 
+\begin{equation}
+{\bf{G}}_{\alpha\beta}(r)\ =\ 4\pi r \rho_0 \left(g_{\alpha \beta}(r)\ - 1\right)
+\end{equation}
+\\
+\atomes\ gives access to:
+\begin{itemize}
+\item The partial $g_{\alpha \beta}(r)$ and ${\bf{G}}_{\alpha\beta}(r)$ distribution functions, and more see [Eq.\ref{s2q_9}].
+\item The corresponding $dn_{\alpha \beta}(r)$ integrated number of neighbors. \\
+\end{itemize}
+Also two methods are available to compute the radial distribution functions:
+\begin{itemize}
+\item[$\bullet$] The standard real space calculation typical to analyze 3-dimensional models
+\item[$\bullet$] The experiment-like calculation using the Fourier transform of the structure factor obtained using the Debye equation (see section~\ref{scatt} for details).
+\end{itemize}
+\newpage
+\section{Neutrons and X-rays scattering}
+\label{scatt}
+
+Model static structure factors $S(q)$ may be compared to experimental scattering data and that is why are useful structural characteristics computed by \atomes
+Thereafter we describe the theoretical background of $S(q)$s computed by \atomes
+
+\subsection{Total scattering - Debye approach}
+
+Neutron or X-ray scattering static structure factor $S(q)$ is defined as:
+\begin{equation}
+\label{s2q_1}
+S(q)=\frac{1}{N} \sum_{j,k} b_j\,b_k \left< e^{\displaystyle{iq[{\bf{r}}_j-{\bf{r}}_k]}} \right>
+\end{equation}
+where $b_j$ and ${\bf{r}}_j$ represent respectively the neutron or X-ray scattering length, and the position of the atom $j$. 
+$N$ is the total number of atoms in the system studied. \\
+To take into account the inherent/volume averaging of scattering experiments it is necessary to sum all possible orientations of the wave vector $q$ compared to the vector ${\bf{r}}_j-{\bf{r}}_k$.
+This average on the orientations of the $q$ vector leads to the famous Debye's equation:
+\begin{equation}
+\label{s2q_2}
+S(q)\ =\ \frac{1}{N} \sum_{j,k} b_j\,b_k \frac{\sin (q|{\bf{r}}_j-{\bf{r}}_k|)}{q|{\bf{r}}_j-{\bf{r}}_k|}
+\end{equation} 
+Nevertheless the instantaneous individual atomic contributions introduced by this equation~\ref{s2q_2} are not easy to interpret. 
+It is more interesting to express these contributions using the formalism of radial distribution functions [Sec.~\ref{rdf}]. \\
+In order to achieve this goal it is first necessary to split the self-atomic contribution ($j=k$), from the contribution between distinct atoms:
+\begin{equation}
+\label{s2q_3}
+	S(q)\ =\ \sum_{j}\ c_j b_j^2\ +\ \underbrace{\frac{1}{N} \sum_{j\ne k} b_j\,b_k \frac{\sin (q|{\bf{r}}_j-{\bf{r}}_k|)}{q|{\bf{r}}_j-{\bf{r}}_k|}}_{\displaystyle{I(q)}} \qquad \text{with}\quad c_j=\frac{N_j}{N}
+\end{equation}
+where $4\pi\ \sum_{j}\ c_j b_j^2$ represents the total scattering cross section of the material. \\
+The function $I(q)$ which describes the interaction between distinct atoms is related to the radial distribution functions through a Fourier transformation:
+\begin{equation}
+\label{s2q_4}
+I(q)\ =\  4 \pi \rho\ \int_{0}^{\infty}\ dr\ r^{2}\ \frac{\sin qr}{qr}\ G(r)
+\end{equation}
+where the function $G(r)$ is defined using the partial radial distribution functions [Eq.~\ref{g2r_4}]:
+\begin{equation}
+\label{s2q_5}
+G(r)\ =\ \sum_{\alpha,\beta}\ c_{\alpha} b_{\alpha}\ c_{\beta} b_{\beta}\ (g_{\alpha\beta}(r) -1)
+\end{equation}
+where $c_{\alpha}=\displaystyle{\frac{N_\alpha}{N}}$ and $b_{\alpha}$ represents the neutron or X-ray scattering length of species $\alpha$. \\
+$G(r)$ approaches - $\displaystyle{-\ \sum_{\alpha,\beta}}\ c_{\alpha} b_{\alpha}\ c_{\beta} b_{\beta}$ for $r = 0$, and 0 for $r\to\infty$. \\
+Usually the self-contributions are subtracted from equation~\ref{s2q_3} and the structure factor is normalized using the relation:
+\begin{equation}
+\label{s2q_6}
+S(q)\ -\ 1\ =\ \frac{I(q)}{\displaystyle{\langle b^{2} \rangle}}  \quad \text{with} \quad \langle b^{2} \rangle = \left(\sum_{\alpha} c_{\alpha} b_{\alpha} \right)^{2}
+\end{equation}
+It is therefore possible to write the structure factor [Eq.~\ref{s2q_2}] in a more standard way:
+\begin{equation}
+\label{s2q_7}
+S(q)\ =\ 1\ +\ 4 \pi \rho \int_{0}^{\infty}\ dr\ r^{2}\ \frac{\sin qr}{qr} ({\bf{g}}(r) -1)
+\end{equation}
+where ${\bf{g}}(r)$ (the radial distribution function) is defined as:
+\begin{equation}
+\label{s2q_8}
+{\bf{g}}(r)\ =\ \frac{\displaystyle{\sum_{\alpha,\beta}}\ c_{\alpha} b_{\alpha}\ c_{\beta} b_{\beta}\ g_{\alpha\beta}(r) }{\displaystyle{\langle b^{2} \rangle}}
+\end{equation}
+In the case of a single atomic species system the normalization allows to obtain values of $S(q)$ and ${\bf{g}}(r)$ which are independent of the scattering factor/length and therefore independent of the measurement technique. In most cases, however, the total $S(q)$ and ${\bf{g}}(r)$ are combinations of the partial functions weighted using the scattering factor and therefore depend on the measurement technique (Neutron, X-rays ...) used or simulated. \\
+\myfigure{h}{sqsk}{\image{13}{img/phys/sqsk}}{Total neutron structure factor for glassy GeS$_2$ at 300~K.}
+{Total neutron structure factor for glassy GeS$_2$ at 300~K - {\bf{A}} Evaluation using the atomic correlations [Eq.~\ref{s2q_2}], {\bf{B}} Evaluation using the pair correlation functions [Eq.~\ref{s2q_7}].}
+\laf Figure~\ref{sqsk} presents a comparison between the calculations of the total neutron structure factor done using the Debye relation [Eq.~\ref{s2q_2}] and the pair correlation functions [Eq.~\ref{s2q_7}]. The material studied is a sample of glassy \ges\ at 300 K obtained using ab-initio molecular dynamics.
+In several cases the structure factor $S(q)$ and the radial distribution function ${\bf{g}}(r)$ [Eq.~\ref{s2q_8}] can be compared to experimental data.
+To simplify the comparison \atomes\ computes several radial distribution functions used in practice such as $G(r)$ defined [Eq.~\ref{s2q_5}], the differential correlation function $D(r)$, ${\bf{G}}(r)$, and the total correlation function $T(r)$ defined by:
+\begin{eqnarray}
+\label{s2q_9}
+D(r)\ =\ 4\pi r \rho\ G(r) \\ \nonumber
+{\bf{G}}(r)\ =\ \frac{D(r)}{\langle b^{2} \rangle} \\ 
+T(r)\ =\ D(r)\ +\ 4\pi r \rho\ \langle b^{2} \rangle \nonumber
+\end{eqnarray}
+${\bf{g}}(r)$ equals zero for $r=0$ and approaches 1 for $r\to\infty$. \\
+$D(r)$ equals zero for $r=0$ and approaches 0 for $r\to\infty$. \\
+${\bf{G}}(r)$ equals zero for $r=0$ and approaches 0 for $r\to\infty$. \\
+$T(r)$ equals zero for $r=0$ and approaches $\infty$ for $r\to\infty$. \\[0.25cm]
+This set of functions for a model of \ges\ glass (at 300 K) obtained using ab-initio molecular dynamics is presented in figure~\ref{GTDgr}. \\
+\myfigure{h}{GTDgr}{\image{11.5}{img/phys/GTDgr}}
+{Example of various distribution functions neutron-weighted in glassy GeS$_2$ at 300~K.}{Example of various distribution functions neutron-weighted in glassy GeS$_2$ at 300~K.}
+\newpage
+\noindent \atomes\ can compute, for the case of {\bf{x-rays}} and/or {\bf{neutrons}}, the following functions: 
+\begin{itemize}
+\item[$\bullet$] $S(q)$ and $Q(q)\ =\ q[S(q)-1.0]$ \cite{EurJM.14-233.2002, jac.17-61.1984} computed using the Debye equation
+\item[$\bullet$] $S(q)$ and $Q(q)\ =\ q[S(q)-1.0]$ \cite{EurJM.14-233.2002, jac.17-61.1984} computed using the Fourier transform of ${\bf{g}}(r)$
+\item[$\bullet$] ${\bf{g}}(r)$, ${\bf{G}}(r)$, $D(r)$ and $T(r)$ computed using the standard real space calculation
+\item[$\bullet$] ${\bf{g}}(r)$, ${\bf{G}}(r)$, $D(r)$ and $T(r)$ computed using the Fourier transform of Debye $S(q)$
+\end{itemize}
+
+\subsection{Partial structure factors}
+
+There are a few, somewhat different definitions of partials $S(q)$ used in practice, and computed by \atomes
+
+\subsubsection{Faber-Ziman definition/formalism}
+One way used to define the partial structure factors has been proposed by Faber and Ziman \cite{PhilMag.11.153}. 
+In this approach the structure factor is represented by the correlations between the different chemical species. To describe the correlation between the $\alpha$ and the $\beta$ chemical species the partial structure factor $S^{FZ}_{\alpha \beta}(q)$ is defined by:
+\begin{equation}
+\label{sqp0}
+S^{FZ}_{\alpha \beta}(q)\ =\ 1\ +\ 4 \pi \rho \int_{0}^{\infty}\ dr\ r^{2}\ \frac{\sin qr}{qr}\ \left(g_{\alpha \beta}(r)-1\right)
+\end{equation}
+where the $g_{\alpha \beta}(r)$ are the partial radial distribution functions [Eq.~\ref{g2r_4}]. \\
+The total structure factor is then obtained by the relation:
+\begin{equation}
+\label{sqp1}
+S(q)\ =\ \sum_{\alpha,\beta}\ c_{\alpha} b_{\alpha}\ c_{\beta} b_{\beta}\ \left[S^{FZ}_{\alpha \beta}(q)\ -\ 1\right]
+\end{equation}
+
+\subsubsection{Ashcroft-Langreth definition/formalism}
+In a similar approach, based on the correlation between the chemical species, and developed by Ashcroft and Langreth \cite{PhysRev.156.685,PhysRev.159.500,PhysRev.166.934.2}, the partial structure factors $S^{AL}_{\alpha \beta}(q)$ are defined by:
+\begin{equation}
+\label{sqp2}
+S^{AL}_{\alpha \beta}(q)\ =\ \delta_{\alpha \beta}\ +\ 4 \pi \rho \left({c_\alpha c_\beta}\right)^{1/2}\ \int_{0}^{\infty}\ dr\ r^{2}\ \frac{\sin qr}{qr}\ \left(g_{\alpha \beta}(r)-1\right)
+\end{equation}
+where $\delta_{\alpha \beta}$ is the Kronecker delta, $c_\alpha = \displaystyle{\frac{N_\alpha}{N}}$, and the $g_{\alpha \beta}(r)$ are the partial radial distribution functions [Eq.~\ref{g2r_4}]. \\
+Then the total structure factor can be calculated using:
+\begin{equation}
+\label{sqp3}
+S(q)\ =\ \frac{\displaystyle{\sum_{\alpha, \beta}}\ b_\alpha b_\beta\ \left({c_\alpha c_\beta}\right)^{1/2}\ \left[S^{AL}_{\alpha \beta}(q)\ +\ 1\right]}{\displaystyle\sum_{\alpha}\ c_\alpha b_\alpha^2}
+\end{equation}
+
+\subsubsection{Bhatia-Thornton definition/formalism}
+In this approach, used in the case of binary systems AB$_x$ \cite{PhysRevB.2.3004} only, the total structure factor $S(q)$ can be express as the weighted sum of 3 partial structure factors:
+\begin{equation}
+\label{sqp4}
+S(q)= \frac{\langle b \rangle^2 S_{NN}(q) + 2\langle b \rangle(b_\text{A} -b_\text{B})S_{NC}(q) + (b_\text{A}-b_\text{B})^2S_{CC}(q) - (c_\text{A} b_\text{A}^2 + c_\text{B} b_\text{B}^2)}{\langle b \rangle^2}\ +\ 1
+\end{equation}
+where $\langle b \rangle = c_\text{A} b_\text{A} + c_\text{B} b_\text{B}$, with $c_\text{A}$ and $b_\text{A}$ representing respectively the concentration and the scattering length of species $\text{A}$. \\
+$S_{NN}(q)$, $S_{NC}(q)$ and $S_{CC}(q)$ represent combinations of the partial structure factors calculated using the Faber-Ziman formalism and weighted using the concentrations of the 2 chemical species:
+\begin{equation}
+\label{sqp5}
+S_{NN}(q) = \sum_{\text{A}=1}^{2} \sum_{\text{B}=1}^{2} c_{\text{A}} c_{\text{B}} S^{FZ}_{\text{A} \text{B}}(q)
+\end{equation}
+\begin{equation}
+\label{sqp6}
+ S_{NC}(q) = c_{\text{A}} c_{\text{B}} \times \left[\ c_\text{A}\times\left(S^{FZ}_{\text{A}\text{A}}(q) - S^{FZ}_{\text{A} \text{B}}(q)\right)\ -\ c_{\text{B}}\times\left(S^{FZ}_{\text{B}\text{B}}(q) - S^{FZ}_{\text{A} \text{B}}(q)\right)\ \right]
+\end{equation}
+\begin{equation}
+\label{sqp7}
+S_{CC}(q) = c_{\text{A}} c_{\text{B}} \times \left[ 1 + c_{\text{A}} c_{\text{B}} \times \left[ \sum_{\text{A}=1}^{2} \sum_{\text{B}\ne\text{A}}^{2} \left( S^{FZ}_{\text{A}\text{A}}(q) - S^{FZ}_{\text{A}\text{B}}(q) \right)\right] \right]
+\end{equation}
+\vspace{0.01cm}
+\begin{description}
+\item[$\bullet$] $S_{NN}(q)$ is the Number-Number partial structure factor. \\
+Its Fourier transform allows to obtain a global description of the structure of the solid, ie. of the distribution of the experimental scattering centers, or atomic nuclei, positions. 
+The nature of the chemical species spread in the scattering centers is not considered. 
+Furthermore if $b_\text{A} =b_\text{B}$ then $S_{NN}(q) = S(q)$. 
+\item[$\bullet$] $S_{CC}(q)$ is the Concentration-Concentration partial structure factor. \\
+Its Fourier transform allows to obtain an idea of the distribution of the chemical species over the scattering centers described using the $S_{NN}(q)$. 
+Therefore the $S_{CC}(q)$ describes the chemical order in the material. 
+In the case of an ideal binary mixture of 2 chemical species $A$ and $B$\footnote{Particles that can be described using spheres of the same diameter and occupying the same molar volume, subject to the same thermal constrains, in a mixture where the substitution energy of a particle by another is equal to zero.}, $S_{CC}(q)$ is constant and equal to $c_Ac_B$. 
+In the case of an ordered chemical mixture (chemical species with distinct diameters, and with heteropolar and homopolar chemical bonds) it is possible to link the variations of the $S_{CC}(q)$ to the product of the concentrations of the 2 chemical species of the mixture:
+\begin{itemize}
+\item $S_{CC}(q) = c_Ac_B$: random distribution. 
+\item $S_{CC}(q) > c_Ac_B$: homopolar atomic correlations (A-A, B-B) preferred.
+\item $S_{CC}(q) < c_Ac_B$: heteropolar atomic correlations (A-B) preferred.
+\item $\langle b \rangle = 0$: $S_{CC}(q) = S(q)$.
+\end{itemize}
+\item[$\bullet$] $S_{NC}(q)$ is the Number-Concentration partial structure factor. \\
+Its Fourier transform allows to obtain a correlation between the scattering centers and their occupation by a given chemical species. 
+The more the chemical species related partial structure factors are different ($S_{AA}(q) \ne S_{BB}(q)$) and the more the oscillations are important in the $S_{NC}(q)$. 
+In the case of an ideal mixture $S_{NC}(q) = 0$, and all the information about the structure of the system is given by the $S_{NN}(q)$. 
+\end{description}
+\noindent If we consider the binary mixture as an ionic mixture then it is possible to calculate the Charge-Charge $S_{ZZ}(q)$ and the Number-Charge $S_{NZ}(q)$ partial structure factors using the Concentration-Concentration $S_{CC}(q)$ and the Number-Concentration $S_{NC}(q)$:
+\begin{equation}
+\label{sqp8}
+S_{ZZ}(q) = \frac{S_{CC}(q)}{c_A c_B}  \qquad and \qquad S_{NZ}(q) = \frac{S_{NC}(q)}{c_B/Z_A}
+\end{equation}
+$c_A$ and $Z_A$ represent the concentration and the charge of the chemical species A, the global neutrality of the system must be respected therefore $c_AZ_A + c_BZ_B=0$. \\
+\par
+\noindent 
+Figure~\ref{allsqp} illustrates, and allows to compare, the partial structure factors of glassy \ges\ at 300 K calculated in the different formalism Faber-Ziman \cite{PhilMag.11.153}, Ashcroft-Langreth \cite{PhysRev.156.685,PhysRev.159.500,PhysRev.166.934.2}, and Bhatia-Thornton \cite{PhysRevB.2.3004}. \\ 
+\myfigure{h}{allsqp}{\image{15}{img/phys/allsqp}}{Partial structure factors of glassy GeS$_2$ at 300~K.}
+{Partial structure factors of glassy GeS$_2$ at 300 K. {\bf{A}} Faber-Ziman \cite{PhilMag.11.153}, {\bf{B}} Ashcroft-Langreth \cite{PhysRev.156.685,PhysRev.159.500,PhysRev.166.934.2} and {\bf{C}} Bhatia-Thornton \cite{PhysRevB.2.3004}.}
+\laf \atomes\ can compute all types of partial structure factors: Faber-Ziman $S^{FZ}_{\alpha \beta}(q)$, Ashcroft-Langreth $S^{AL}_{\alpha \beta}(q)$ and Bhatia-Thornton $S_{NN}(q)$, $S_{NC}(q)$, $S_{CC}(q)$ and $S_{ZZ}(q)$.
+\clearpage
+\section{Local atomic coordination properties}
+
+Several properties related to the atomic bonds and angles between them can be computed using \atomes.
+The existence or the absence of a bond between two atoms $i$ of species $\alpha$ and $j$ of species $\beta$ is determined by the analysis of the partial $g_{\alpha\beta}(r)$ and total $g(r)$ radial distribution functions. 
+Precisely \atomes\ will consider that a bond exists if the interatomic distance $D_{ij}$ is smaller than both the cutoff given to describe the maximum distance for first neighbor atoms between the species $\alpha$ and $\beta$, 
+$Rcut_{\alpha\beta}$ (often the first minimum of $g_{\alpha\beta}(r)$), 
+and the first minimum of the total radial distribution function, $Rcut_{tot}$. \\
+\atomes\ allows the user to specify both $Rcut_{\alpha\beta}$ and $Rcut_{tot}$ to choose an appropriate description of the atomic bonds in the system under study.
+When atomic bonds in a model are defined properly other structural characteristics can be evaluated, as follows:
+
+\subsection{Average first coordination numbers}
+
+\atomes\ computes total as well as partials coordination numbers. 
+\myfigure{h}{coordn}{\image{6}{img/bonds/coord}}{Coordination numbers.}{Coordination numbers.}
+
+\subsection{Individual atomic neighbor analysis}
+
+\atomes\ computes the fraction of each type of coordination spheres in the model.
+The presence of of structural defects can lead to a wide number of local environments, figure~\ref{spheres} illustrates the different coordination spheres found in a \ges\ glass. 
+\spheresfig
+\clearpage
+
+\subsection{Proportion of tetrahedral links and units in the structure model}
+
+Often the structure of a material is represented using building blocks.
+One of the the most frequently occurring building blocks are tetrahedra. 
+Figure~\ref{tetra} shows a model of \ges\ materials using GeS$_4$ tetrahedra as building blocks. \\ 
+\myfigure{h}{tetra}{\image{15}{img/bonds/tetra}}{Illustration of the presence of GeS$_4$ tetrahedra in the GeS$_2$ material's family.}
+{Illustration of the presence of GeS$_4$ tetrahedra in the GeS$_2$ material's family.
+a) GeS$_4$ tetrahedra, representations b) of the $\alpha$-GeS$_2$ crystal and c) of the GeS$_2$ glass using tetrahedra.}
+\laf \atomes\ computes the fraction of the different tetrahedra in materials, the distinction between these tetrahedra being made on the nature of the connection between each of them. 
+Tetrahedra can be linked either by corners or edges [Fig.~\ref{cornedges}], \atomes\ computes the fraction of atoms forming tetrahedra as well as to the fraction of linked tetrahedra. \\
+\cornedgefig
+
+\newpage
+\subsection{Distribution of bond lengths for the first coordination spheres}
+
+\atomes\ gives access to the bond length distribution between first neighbor atoms [Fig.~\ref{dists}]: \\
+\myfigure{h}{dists}{\image{4}{img/bonds/dist}}{Nearest neighbor distances distribution.}{Nearest neighbor distances distribution.}
+
+\subsection{Angles distributions}
+
+\atomes\ also computes the distributions of bond angles and dihedral angles [Fig.~\ref{dangles}]: \\
+\danglesfig
+\clearpage
+\section{Ring statistics}
+\label{rstat}
+
+The analysis of the topology of network-type structure models (liquid, crystalline or amorphous systems) is often based on the part of the structural information which can be represented in the graph theory using nodes for the atoms and links for the bonds. 
+The absence or the existence of a link between two nodes is determined by the analysis of the total and partial radial distribution functions of the system. \\
+In such a network a series of nodes and links connected sequentially without overlap is called a path. 
+Following this definition a ring is therefore simply a closed path. 
+If we study thoroughly a specific node of this network we see that this node can be involved in numerous rings. 
+Each of these rings is characterized by its size and can be classified based upon the relations between the nodes and the links which constitute it.
+
+\subsection{Size of the rings}
+
+There are two possibilities for the numbering of rings. 
+On the one hand, one can use the total number of nodes of the ring, therefore a N-membered ring is a ring containing N nodes. 
+One the other hand, one can use the number of {\em{network forming}} nodes (ex: Si atoms in \sio\ and Ge atoms in \ges\ which are the atoms of highest coordination in these materials) an N-membered ring is therefore a ring containing 2$\times$N nodes. 
+For crystals and \sio-like glasses the second definition is usually applied. 
+Nevertheless the first method has to be used in the case of chalcogenide liquids and glasses in order to count rings with homopolar bonds (ex: Ge-Ge and S-S bonds in \ges) - See section~\ref{rdef} for further details. \\
+From a theoretical point of view it is possible to obtain an estimate for the ring of maximum size that could exist in a network.
+This theoretical maximum size will depend on the properties of the system studied as well as on the definition of a ring. 
+
+\subsection{Definitions}
+\label{defrings}
+
+\subsubsection{King's shortest paths criterion}
+\label{sking}
+
+The first way to define a ring has been given by Shirley V. King \cite{Nature.213.1112} (and later by Franzblau \cite{PhysRevB.44.4925}). 
+In order to study the \con\ of glassy \sio\ she defines a ring as the shortest path between two of the nearest neighbors of a given node [Fig.~\ref{SP}]. 
+\myfigure{h}{SP}{\image{5}{img/phys/Algo1}}{King's criterion in the ring statistics.}
+{King's criterion in the ring statistics: a ring represents the shortest path between two of the nearest neighbors ({\bf{N1}} and {\bf{N2}}) of a given node ({\bf{At}}).}
+\laf In the case of the King's criterion one can calculate the maximum number of different ring sizes, $NS_{max}(KSP)$, which can be found using the atom {\bf{At}} to initiate the search:
+\begin{equation}
+\label{lmaxsp}
+	NS_{max}(KSP)\ =\ \frac{Nc({\textbf{At}}) \times (Nc({\textbf{At}})-1)}{2}
+\end{equation}
+where $ N_c({\textbf{At}})$ is the number of neighbors of atom {\bf{At}}. 
+$NS_{max}(KSP)$ represents the number of ring sizes found if all couples of neighbors of atom {\bf{At}} are connected together with paths of different sizes. \\
+It is also possible to calculate the theoretical maximum size, $TMS(KSP)$, of a King's shortest path ring in the network using:
+\begin{equation}
+\label{tmsking}
+TMS(KSP)\ = 2\ \times\ (D_{max}\ -\ 2)\ \times (Nc_{max}\ -\ 2)\ +\ 2\ \times\ D_{max}
+\end{equation}
+where $D_{max}$ is the longest distance, in number of chemical bonds, separating two atoms in the network, and $Nc_{max}$ represents the average number of neighbors of the chemical species of higher coordination. 
+If used when looking for rings, periodic boundary conditions have to be taken into account to calculate $D_{max}$. 
+The relation [Eq.~\ref{tmsking}] is illustrated in figure~\ref{tms}-2).
+
+\subsubsection{Guttman's shortest paths criterion}
+\label{sppc}
+A later definition of ring was proposed by Guttman \cite{Guttman-116-145}, who defines a ring as the shortest path which comes back to a given node (or atom) from one of its nearest neighbors [Fig.~\ref{Kc}].
+\myfigure{h}{Kc}{\image{4}{img/phys/Algo2}}{Guttman's criterion in the ring statistics.}
+{Guttman's criterion in the ring statistics: a ring represents the shortest path which comes back to a given node ({\bf{At}}) from one of its nearest neighbors ({\bf{N}}).}
+\laf Differences between the King and the Guttman's shortest paths criteria are illustrated in figure~\ref{DKPCC}. 
+\myfigure{h}{DKPCC}{\image{13}{img/phys/diff-king-pcc}}{Differences between the King and the Guttman ring statistics in an AB$_2$ system.}
+{Differences between the King and the Guttman shortest paths criteria for the ring statistics in an AB$_2$ system. 
+In these two examples the search is initiated from chemical species A (blue square). 
+The nearest neighbor(s) of chemical species B (green circles) are used to continue the analysis. 
+1) In the first example only rings with 4 nodes are found using the Guttman's criterion, whereas rings with 18 nodes are also found using the King's criterion (2$^9$ rings with 18 nodes). 
+2) In the second example the King's shortest path criterion allows to find the ring with 8 nodes ignored by the Guttman's criterion which is only able to find the rings with 6 nodes.}
+\laf Like for the King's criterion, with the Guttman's criterion one can calculate the maximum number of different ring sizes, $NS_{max}(GSP)$, which can be found using the atom {\bf{At}} to initiate the search:
+\begin{equation} 
+NS_{max}(GSP) = N_c({\textbf{At}}) - 1
+\end{equation}
+where $ N_c({\textbf{At}})$ is the number of neighbors of atom {\bf{At}}. 
+$NS_{max}(GSP)$ represents the number of ring sizes found if the neighbors of atom {\bf{At}} are connected together with paths of different sizes. \\
+It is also possible to calculate the {\bf{T}}heoretical {\bf{M}}aximum {\bf{S}}ize, $TMS(GSP)$, of a Guttman's ring in the network using:
+\begin{equation}
+\label{tmsg}
+TMS(GSP)\ = 2\ \times\ D_{max}
+\end{equation}
+where $D_{max}$ represents the longest distance, in number of chemical bonds, separating two atoms in the network. 
+If used when looking for rings, periodic boundary conditions have to be taken into account to calculate $D_{max}$. 
+The relation [Eq.~\ref{tmsg}] is illustrated in figure~\ref{tms}-1.
+\myfigure{h}{tms}{\image{9}{img/phys/prm-lim}}{Theoretical maximum size of the rings for an AB$_2$ system.}
+{Theoretical maximum size of the rings for an AB$_2$ system ($Nc_{max}~=~Nc_{A}~=~4$) and using: 1) the Guttman's criterion, 2) the King's criterion. 
+The theoretical maximum size represent the longest distance between two nearest neighbors 1 and 2 (green circles) of the atom {\bf At} used to initiate the search (blue square).}
+\laf Since the introduction of the King's and the Guttman's criteria other definitions of rings have been proposed.  
+These definitions are based on the properties of the rings to be decomposed into the sum of smaller rings. 
+
+\subsubsection{The primitive rings criterion}
+
+A ring is primitive \cite{Goetzke-127.215, YuanCormack-24-343} (or Irreducible \cite{Wooten-bk0109}) if it can not be decomposed into two smaller rings [Fig.~\ref{Pr}].
+\myfigure{h}{Pr}{\image{6}{img/phys/Algo3}}{Primitive rings in the ring statistics.}
+{Primitive rings in the ring statistics: the 'AC' ring defined by the sum of the A and the C paths 
+is primitive only if there is no B path shorter than A and shorter than C which allows to decompose the 'AC' ring into two smaller rings 'AB' and 'AC'.}
+\laf The primitive rings analysis between the paths in figure~\ref{Pr} may lead to 3 results depending on the relations between the paths A, B, and C:
+\begin{itemize}
+\item If paths A, B, and C have the same length: A = B = C then the rings 'AB', 'AC' and 'BC' are primitives. 
+\item If the relation between the paths is like $?=?<?$ (ex: A = B < C) then 1 smaller ring ('AB') and 2 bigger rings ('AC' and 'BC') exist. 
+None of these rings can be decomposed into the sum of two smaller rings therefore the 3 rings are again primitives. 
+\item If the relation between the path is like $?<?=?$ (ex: A < B = C) or $?<?<?$ (ex: A < B < C) then a shortest path exists (A). 
+It will be possible to decompose the ring ('BC') built without this shortest path into the sum of 2 smaller rings ('AB' and 'AC'), therefore this ring will not be primitive. 
+\end{itemize}
+
+\subsubsection{The strong rings criterion}
+
+The strong rings \cite{Goetzke-127.215, YuanCormack-24-343} are defined by extending the definition of primitive rings. 
+A ring is strong if it can not be decomposed into a sum of smaller rings whatever this sum is, ie. whatever the number of paths in the decomposition is. \\
+\myfigure{h}{Str}{\image{12}{img/phys/strong}}{Strong rings in the ring statistics.}
+{Strong rings in the ring statistics: {\bf{a)}} the 9-carbon-atoms ring created after breaking a C-C bond in a Buckminster fulleren molecule is a counterexample of strong ring; {\bf{b)}} the combination of shortest rings, 11 5-carbon-atoms rings and 19 6-carbon-atoms rings, appears easily after the deformation of the C$_{60}$ molecule.}
+\laf By definition the strong rings are also primitives, therefore to search for strong rings can be summed as to find the strong rings among the primitive rings. 
+This technique is limited to relatively simple cases, like crystals or structures such as the one illustrated in figure~\ref{Str}. 
+On the one hand the CPU time needed to complete such an analysis for amorphous systems is very important. 
+On the other hand it is not possible to search for strong rings using the same search depth than for other types of rings. 
+The strong ring analysis is indeed diverging which makes it very complex to implement for amorphous materials. \\
+In the case of primitive rings like in the case of strong rings, there is no theoretical maximum size of rings in the network.
+
+\newpage
+\subsection{Description of a network using \rstat\ - existing tools}
+\label{etools}
+
+Ring statistics are mainly used to obtain a snapshot of the \con\ of a network. 
+Thereby the better the snapshot will be, the better the description and the understanding of the properties of the material will be. 
+In the literature many papers present studies of materials using ring statistics. 
+In these studies either the number of {\bf{R}}ings per {\bf{N}}ode '$R_N$' \cite{PhysRevB.47.3053, ginhoven024208} or the number of {\bf{R}}ings per {\bf{C}}ell '$R_C$' \cite{PhysRevB.54.12162, PhysRevB.62.15695, tafen054206} are given as a result of the analysis. 
+The first ($R_N$) is calculated for one node by counting all the rings corresponding to the property we are looking for (King's, Guttman's, primitive or strong ring criterion). 
+The second ($R_C$) is calculated by counting all the different rings corresponding at least once (at least for one node) to the property we are looking for (King's, shortest path, primitive or strong ring criterion). 
+The values of $R_N$ and $R_C$ are often reduced to the number of nodes of the networks. 
+Furthermore the results are presented according to each size of rings. \\
+An example is proposed with a very simple network illustrated in figure~\ref{exering}. \\ 
+\myfigure{h}{exering}{\image{4.5}{img/phys/exemple}}{A very simple network.}{A very simple network.}
+\laf This network is composed of 10 nodes, arbitrary of the same chemical species, and 7 bonds. 
+Furthermore it is clear that in this network there are 1 ring with 3 nodes and 1 ring with 4 nodes. \\
+It is easy to calculate $R_N$ and $R_C$ for the network in figure~\ref{exering} ($n$ = number of nodes): \\
+\rnrcsitab
+\\ In the literature the values of $R_N$ and $R_C$ are usually given separately \cite{PhysRevB.47.3053, ginhoven024208, PhysRevB.54.12162, PhysRevB.62.15695, tafen054206}. \\
+Nevertheless these two properties are not sufficient in order to describe a network using rings. 
+A simple example is proposed in figure~\ref{s34}. \\
+\myfigure{h}{s34}{\image{9}{img/phys/simple34}}{Two simple networks having very close compositions: 10 nodes and 7 links.}{Two simple networks having very close compositions: 10 nodes and 7 links.}
+\\The two networks [Fig.~\ref{s34}-a] and [Fig.~\ref{s34}-b] do have very similar compositions with 10 nodes and 7 links but they are clearly different. 
+Nevertheless the previous definitions of rings per cell and rings per node even taken together will lead to the same description for these two different networks [Tab.~\ref{nabnan}]. 
+\nabnantab
+\\ In both cases a) and b) there are 1 ring with 3 nodes and 1 ring with 4 nodes. 
+It has to be noticed that these two rings have properties which correspond to each of the definitions introduced previously (King, Guttman, primitive and strong). \\
+Thus none of these definitions is able to help to distinguish between these two networks. 
+Therefore even though these simple networks are different, the previous definitions lead to the same description. \\
+\par
+\noindent Thereby it is justified to wonder about the interpretation of the data presented in the literature for amorphous systems with a much higher complexity. 
+
+\subsection{Rings and \con: the R.I.N.G.S. method implemented in \atomes}
+
+In the \atomes\ program the results of the \rstat\ analysis are outputted following the new R.I.N.G.S. method \cite{RINGS, RINGS2}, this method is presented in the next pages. \\
+\par The first goal of \rstat\ is to give a faithful description of the \con\ of a network and to allow to compare this information with others obtained for already existing structures. 
+It is therefore important to find a guideline which allows to establish a distinction and then a comparison between networks studied using \rstat. 
+We propose thereafter a new method to achieve this goal. 
+First of all we noticed fundamental points that must be considered to get a reliable and transferable method:\\
+\begin{enumerate}
+\item \label{Pr1} {\em The results must be reduced to the {\bf{total}} number of nodes in the network.} \\
+\noindent The nature of the nodes used to initiate the analysis when looking for rings will have a significant influence, therefore it is essential to reduce the results to a value for one node. 
+Otherwise it would be impossible to compare the results to the ones obtained for systems made of nodes (particles) of different number and/or nature. \\
+\item \label{Pr2} {\em Different networks must be distinguishable whatever the method used to define a ring.} \\
+Indeed it is essential for the result of the analysis to be trustworthy independently of the method used to define a ring (King, Guttman, primitives, strong). 
+Furthermore this will allow to compare the results of these different \rstat. 
+\end{enumerate}
+
+\subsubsection{Number of rings per cell '$R_C$'}
+
+We have already introduced this value, which is the first and the easiest way to compare networks using ring statistics. \\ 
+\myfigure{h}{s34-2}{\image{8.75}{img/phys/simple34-2}}{The first comparison element: the total number of rings in the network.}{The first comparison element: the total number of rings in the network.}
+\nabtqdtab
+\\ In the most simple cases, such as the one represented in figure~\ref{s34-2}, the networks can be distinguished using only the number of rings [Tab.~\ref{34-2NAB}]. 
+Nevertheless in most of the cases other information are needed to describe accurately the connectivity of the networks.
+
+\subsubsection{Description of the \con: difference between rings and nodes}
+
+The second information needed to investigate the properties of a network using rings is the evaluation of the \con\ between rings. 
+Indeed the distribution of the ring sizes gives a first information on the \con, nevertheless it can not be exactly evaluated unless one studies how the rings are connected. 
+The impact of the relations between rings, already presented in figure~\ref{s34}, has been illustrated in detail in figure~\ref{664}. 
+Figure~\ref{664} represents the different possibilities to combine 2 rings with 6 nodes and 1 ring with 4 nodes in a network composed of 16 nodes. \\ 
+\myfigure{h}{664}{\image{14.75}{img/phys/full-664}}
+{The 9 different networks with 16 nodes, composed of 2 rings with 6 nodes and 1 ring with 4 nodes.}
+{The 9 different networks with 16 nodes, composed of 2 rings with 6 nodes and 1 ring with 4 nodes.}
+\laf Among the 9 networks presented in figure~\ref{664} none can be distinguished using the $R_C$ value [Tab.~\ref{664NAB}].
+\newpage
+\mytable{h}{664NAB}{
+\vspace{0.25cm}
+\begin{tabular}{c|p{2cm}}
+$n$ & \rpc \\
+\hline
+4 & 1/16 \\
+6 & 2/16 
+\end{tabular}}
+{Number of rings for the different networks presented in figure~\ref{664}.}
+{Number of rings for the different networks presented in figure~\ref{664}.}
+\noindent Furthermore it is not possible to distinguish these networks using the $R_N$ value. 
+\mytable{h}{casNAN}{
+\begin{tabular}{cc|cccc}
+\multicolumn{2}{l}{\bf Case a)} & & \multicolumn{3}{c}{\rpn} \\
+ & $n$ & & \hspace{0.125cm} King / Guttman. & \hspace{0.25cm} & Primitive / Strong. \\
+ \hline
+ & 4 & &  4/16 & & {\bf 4/16} \\
+ & 6 & & 10/16 & & {\bf 12/16} \\
+\\
+\multicolumn{2}{l}{\bf Cases b) $\to$ i)} & & \multicolumn{3}{c}{\rpn} \\
+ & $n$ & & \multicolumn{3}{c}{All criteria.} \\
+ \hline
+ & 4 & & \multicolumn{3}{c}{{\bf 4/16}} \\
+ & 6 & & \multicolumn{3}{c}{{\bf 12/16}}
+\end{tabular}}
+{Number of rings per node for the networks presented in figure~\ref{664}.}
+{Number of rings per node for the networks presented in figure~\ref{664}.}
+\\It seems possible to isolate the case a) [Tab.~\ref{casNAN}] from the other cases b) $\to$ i) [Tab.~\ref{casNAN}]. 
+Nevertheless the results obtained using the primitive rings criterion are similar for all cases a) $\to$ i) [Tab.~\ref{casNAN}], this is in contradiction with the second statement [\ref{Pr2}] proposed in our method. \\
+\par
+Before introducing parameters able to distinguish the configurations presented in figure~\ref{664} it is important to wonder about the number of cases to distinguish. 
+From the point of view of the \con\ of the rings, configurations a), b), c) and d) are clearly different. 
+Nevertheless following the same approach configurations e) and f) on the one hand and configurations g), h) and i) on the other hand are identical. 
+A schematic representation [Fig.~\ref{ronds}] is sufficient to illustrate the similarity of the relations between these networks. 
+The difference between each of these networks does not appear in the \con\ of the rings but in the \con\ of the particles. \\
+\myfigure{h}{ronds}{\image{9}{img/phys/ronds}}
+{Schematic representation of cases g) $\to$ i) (1) and e) $\to$ f) (2) illustrated in figure~\ref{664}.}
+{Schematic representation of cases g) $\to$ i) (1) and e) $\to$ f) (2) illustrated in figure~\ref{664}.}
+\laf Thus among the networks illustrated in figure~\ref{664} six dispositions of the rings have to be distinguished (a, b, c, d, e, g). 
+The proportions of particles involved, or not involved, in the construction of rings will become an important question. \\
+\par
+The new tool defined in our method is able to describe accurately the information still missing on the \con. 
+It is a square symmetric matrix of size $(R-r+1)\times (R-r+1)$, where $R$ and $r$ represent respectively the bigger and the smaller size of a ring found when analyzing the network: we have called this matrix the \con\ matrix [Tab.~\ref{matmn}]. \\ 
+\gmatrix
+\\The diagonal elements $P_N(i)$ of this matrix represent the {\bf{P}}roportion of {\bf{N}}odes at the origin of at least one ring of size $i$. 
+And the non-diagonal elements $P_N(i,j)$ represent the {\bf{P}}roportion of {\bf{N}}odes at the origin of ring(s) of size $i$ and $j$. \\ 
+The matrix elements have a value ranging between 0 and 1.
+The lowest and non equal to 0 is of the form $\frac{1}{Nn}$, the highest and non equal to 1 is of the form $\frac{Nn-1}{Nn}$, where $Nn$ represents the number of nodes in the network. \\
+\mytable{h}{NAN664}{
+\begin{tabular}{cccccc}
+ & \multicolumn{2}{c}{King / Guttman.} & \hspace{0.25cm} & \multicolumn{2}{c}{Primitive / Strong.} \\
+\cline{2-3}\cline{5-6} 
+\\
+\multicolumn{1}{c|}{{\bf Cas a)}} & 
+\multicolumn{2}{c}{ $\begin{bmatrix}
+   4/16 & 2/16 \\
+   2/16 & 5/16
+\end{bmatrix}$ } &  &
+\multicolumn{2}{c}{ $\begin{bmatrix}
+   4/16 & 4/16 \\
+   4/16 & 7/16 
+\end{bmatrix}$ } \\
+\\
+\end{tabular}
+\\
+\begin{tabular}{ccc}
+ & \multicolumn{2}{c}{All criteria.} \\
+\cline{2-3} 
+\\
+\multicolumn{1}{c|}{{\bf Case b)}} & 
+\multicolumn{2}{c}{ $\begin{bmatrix}
+   4/16 & 0/16 \\
+   0/16 & 12/16
+\end{bmatrix}$ } \\
+\\
+\multicolumn{1}{c|}{{\bf Case c)}} & 
+\multicolumn{2}{c}{ $\begin{bmatrix}
+   4/16 & 1/16 \\
+   1/16 & 12/16
+\end{bmatrix}$ } \\
+\\
+\multicolumn{1}{c|}{{\bf Case d)}} & 
+\multicolumn{2}{c}{ $\begin{bmatrix}
+   4/16 & 0/16 \\
+   0/16 & 11/16
+\end{bmatrix}$ } \\
+\\
+\multicolumn{1}{c|}{{\bf Case e) $\to$ f)}} & 
+\multicolumn{2}{c}{ $\begin{bmatrix}
+   4/16 & 2/16 \\
+   2/16 & 12/16
+\end{bmatrix}$ } \\
+\\
+\multicolumn{1}{c|}{{\bf Case g) $\to$ i)}} & 
+\multicolumn{2}{c}{ $\begin{bmatrix}
+   4/16 & 1/16 \\
+   1/16 & 11/16
+\end{bmatrix}$ } \\
+\end{tabular}
+\\
+\begin{tabular}{cc}
+\\ $n$= ring with $n$ nodes &
+$\begin{bmatrix}
+   n4 & n6/n4 \\
+   n4/n6 & n6 
+\end{bmatrix}$ 
+\end{tabular}}
+{General connectivity matrix for the networks represented in figure~\ref{664}.}
+{General connectivity matrix for the networks represented in figure~\ref{664} and studied using the different definitions of rings.}
+\\The \con\ matrix of the configurations illustrated in figure~\ref{664} are presented in table~\ref{NAN664}. 
+We see that this matrix allows to distinguish each network whatever the way used to define a ring is. 
+This matrix remains simple for small systems (crystalline or amorphous) or when using a small maximum ring size for the analysis. 
+Nevertheless its reading can be considerably altered when analysing amorphous systems with a high maximum ring size for the analysis. \\
+\par
+To simplify the reading and the interpretation of the data contained in this matrix for more complex systems, we chose a similar approach to extract information on the \con\ between the rings.
+As a first step we decided to evaluate only the diagonal elements \pnr\ of the general \con\ matrix. 
+Indeed these values allow us to obtain a better view of the \con\ than the standard $R_N$ value. 
+\mytable{h}{PNAtab}{
+\begin{tabular}{cr|cc}
+ & \multicolumn{1}{c}{} & \multicolumn{2}{c}{\pnr} \\
+ & $n$\hspace{0.25cm} & King / Guttman. & Primitive / Strong. \\
+\hline
+\multicolumn{2}{l}{{\bf{Case a)}}} \\ 
+\hline
+ & 4\hspace{0.25cm} & 4/16 & 4/16 \\
+ & 6\hspace{0.25cm} & 5/16 & 7/16 
+\end{tabular}
+\\[0.25cm]
+\begin{tabular}{cr|c}
+ & \multicolumn{1}{c}{} & \pnr \\
+ & $n$\hspace{0.25cm} & \hspace{0.125cm} All criteria. \\
+\hline
+\multicolumn{2}{l}{{\bf{Case b) $\to$ c)}}} \\
+\hline
+ & 4\hspace{0.25cm} &  4/16 \\
+ & 6\hspace{0.25cm} & 12/16
+\\
+\multicolumn{2}{l}{{\bf{Case d)}}} \\
+\hline
+ & 4\hspace{0.25cm} &  4/16 \\
+ & 6\hspace{0.25cm} & 11/16 
+\\
+\multicolumn{2}{l}{{\bf{Case e) $\to$ f)}}} \\
+\hline
+ & 4\hspace{0.25cm} &  4/16 \\
+ & 6\hspace{0.25cm} & 12/16 
+\\
+\multicolumn{2}{l}{{\bf{Case g) $\to$ i)}}} \\
+\hline
+ & 4\hspace{0.25cm} &  4/16 \\
+ & 6\hspace{0.25cm} & 11/16 
+\end{tabular}}
+{Proportion of nodes at the origin of at least one ring of size $n$ for the networks in figure~\ref{664}.}
+{$P_N(n)$ - Proportion of nodes at the origin of at least one ring of size $n$ for the networks in figure~\ref{664}.}
+\\It is clear [Tab.~\ref{PNAtab}] that using \pnr\ improves the separation between the networks illustrated in figure~\ref{664}. 
+Nevertheless \pnr\ does not allow to distinguish each of them. 
+We notice that the distinction between networks is improved [Tab.~\ref{PNAtab}] in particular when compared to the one obtain with $R_N(n)$ [Tab.~\ref{casNAN}]. 
+\newpage
+\par
+Therefore in a second step we chose to calculate two properties whose definitions are very similar to the one of \pnr. 
+The first, named \pnrmax, represents the proportion of nodes for which the \nn\ are the longest closed paths found using these nodes to initiate the search. 
+The second named, \pnrmin, represents the proportion of nodes for which the \nn\ are the shortest closed paths found using these nodes to initiate the search. \\
+The terms {\em{longest}} and {\em{shortest path}} must be considered carefully to avoid any confusion with the terms used in section~\ref{defrings} to define the rings. 
+For one node it is possible to find several rings whose properties correspond to the definitions proposed previously (King's, Guttman's, primitive or strong ring criterion). 
+These rings are solutions found when looking for rings using this particular node to initiate the analysis. 
+In order to calculate \pnrmax\ and \pnrmin\ the longest and the shortest path have to be determined among these different solutions. \\
+\pnrmax\ and \pnrmin\ have values ranging between 0 and \pnr. 
+The lowest and non equal to 0 is of the form $\frac{1}{Nn}$, the highest and non equal to 1 is of the form $\frac{Nn-1}{Nn}$, where $Nn$ represents the total number of nodes in the network. 
+For the minimum ring size, \smin, existing in the network or found during the search, $P_{N_{min}}(s_{min})=P_N(s_{min})$. 
+In the same way for the maximum ring size, \smax, existing in the network or found during the search, $P_{N_{max}}(s_{max})=P_N(s_{max})$. \\
+\par 
+To clarify these information it is possible to normalize \pnrmax\ and \pnrmin\ by \pnr. 
+By reducing these values we obtain, for each size of rings, values independent of the total number of nodes $Nn$ of the system. 
+Then for a considered ring size the values only refer to the number of nodes where the search returns rings of this size:
+\begin{equation}
+P_{max}(n) = \frac{P_{N_{max}}(n)}{P_N(n)} \quad \text{and} \quad P_{min}(n) = \frac{P_{N_{min}}(n)}{P_N(n)} \nonumber 
+\end{equation}
+The normalized terms \pmax\ and \pmin\ have values ranging between 0 and 1. 
+The lowest and non equal to 0 is of the form $\frac{1}{Nn}$, the highest and non equal to 1 is of the form $\frac{Nn-1}{Nn}$. 
+For the minimum ring size, \smin, existing in the network or found during the search, $P_{min}(s_{min})=1$. 
+In the same way for the maximum ring size, \smax, existing in the network or found during the search, $P_{max}(s_{max})=1$. \\
+\pmax\ and \pmin\ give complementary information to the ones obtained with \rpc\ and \pnr\ in order to distinguish and compare networks using \rstat. 
+We can illustrate this result by presenting the complete information obtained with this method [Tab.~\ref{664res}] for the networks represented in figure~\ref{664}. 
+\mytable{h}{664res}{
+\begin{tabular}{cr|cccc}
+ & \multicolumn{1}{c}{} & \multicolumn{4}{c}{King / Guttman.} \\
+ & $n$\hspace{0.25cm} & \hspace{0.125cm} \rpc & \pnr & \pmax & \pmin \\
+\hline
+\multicolumn{2}{l}{\bf{Case a)}} \\ 
+\hline
+ & 4\hspace{0.25cm} & 1/16 & 4/16 & 0.5 & 1.0 \\
+ & 6\hspace{0.25cm} & 2/16 & 5/16 & 1.0 & 0.6
+\end{tabular}
+\\[0.25cm]
+\begin{tabular}{cr|cccc}
+ & \multicolumn{1}{c}{} & \multicolumn{4}{c}{Primitive / Strong.} \\
+ & $n$\hspace{0.25cm} & \hspace{0.125cm} \rpc & \pnr & \pmax & \pmin \\
+\hline
+\multicolumn{2}{l}{\bf{Case a)}} \\ 
+\hline
+ & 4\hspace{0.25cm} & 1/16 & 4/16 & 0.5 & 1.0 \\
+ & 6\hspace{0.25cm} & 2/16 & 7/16 & 1.0 & 3/7
+\end{tabular}
+\\[0.25cm]
+\begin{tabular}{cr|cccc}
+ & \multicolumn{1}{c}{} & \multicolumn{4}{c}{All criteria.} \\
+ & $n$\hspace{0.25cm} & \hspace{0.125cm} \rpc & \pnr & \pmax & \pmin \\
+\hline
+\multicolumn{2}{l}{\bf{Case b)}} \\ 
+\hline
+ & 4\hspace{0.25cm} & 1/16 &  4/16 & 1.0 & 1.0 \\
+ & 6\hspace{0.25cm} & 2/16 & 12/16 & 1.0 & 1.0
+\\
+\hline
+\multicolumn{2}{l}{\bf{Case c)}} \\ 
+\hline
+ & 4\hspace{0.25cm} & 1/16 &  4/16 & 0.75 & 1.0 \\
+ & 6\hspace{0.25cm} & 2/16 & 12/16 & 1.0  & 11/12 
+\\
+\hline
+\multicolumn{2}{l}{\bf{Case d)}} \\ 
+\hline
+ & 4\hspace{0.25cm} & 1/16 &  4/16 & 1.0 & 1.0 \\
+ & 6\hspace{0.25cm} & 2/16 & 11/16 & 1.0 & 1.0
+\\
+\hline
+\multicolumn{2}{l}{\bf{Case e) $\to$ f)}} \\ 
+\hline
+ & 4\hspace{0.25cm} & 1/16 &  4/16 & 0.5 & 1.0 \\
+ & 6\hspace{0.25cm} & 2/16 & 12/16 & 1.0 & 10/12
+\\
+\hline
+\multicolumn{2}{l}{{\bf{Case g) $\to$ i)}}} \\ 
+\hline
+ & 4\hspace{0.25cm} & 1/16 &  4/16 & 0.75 & 1.0 \\
+ & 6\hspace{0.25cm} & 2/16 & 11/16 &  1.0 & 10/11
+\end{tabular}}
+{Connectivity profiles results of the ring statistics for the networks presented in figure~\ref{664}.}
+{Connectivity profiles results of the ring statistics for the networks presented in figure~\ref{664}.}
+\\ \pmax\ and \pmin\ give information about the \con\ of the rings with each other as a function of their size. 
+If a ring of size $n$ is found using a particular node to initiate the search, \pmax\ gives the probability that this ring is the longest ring which can be found using this node to initiate the search. 
+At the opposite, \pmin\ gives the probability that this ring is the shortest ring which can be found using this node to initiate the search. \\
+Thereafter we will use the terms '\conp' to designate the results of a \rstat\ analysis. 
+This profile is related to the definition of rings used in the search and is made of the 4 values defined in our method: \rpc, \pnr, \pmax\ and \pmin. \\
+\\
+The \atomes\ program provides access to the connectivity profile of the system under study and allows to choose the study the connectivity using all the different methods used to define a ring. Thus King's rings, Guttman's rings, Primitive rings as well as Strong rings analysis are available.
+\clearpage
+\subsection{Bond defects in ring statistics}
+\label{rdef}
+\subsubsection{ABAB and BABA rings}
+\label{ababrings}
+
+The \rstat\ of amorphous networks are often focused on finding rings made of a succession of atoms with an alternation of chemical species, called ABAB rings. 
+The most common examples come from the alternation of Si and O atoms (in silica polymorphs) or Ge and S (in \ges\ polymorphs). 
+These solids are usually built with tetrahedra (SiO$_4$ or GeS$_4$) therefore we study the network distribution of tetrahedra. \\
+The ideal technique to setup the analysis of such systems is to choose the atoms of highest coordination to initiate the search, respectively Si in \sio\ and Ge in \ges. 
+In most cases all rings can be found using this method. 
+Nevertheless we can demonstrate that some solutions, so some rings, can be ignored by this analysis. 
+This is highlighted in figure~\ref{abba} which represents a cluster of atoms isolated from an AB$_2$ amorphous network. \\ 
+\myfigure{h}{abba}{\image{15.5}{img/phys/abba}}{Cluster of atoms with a bond defect isolated from an AB$_2$ amorphous network.}
+{Cluster of atoms isolated from an AB$_2$ amorphous network. 
+A bond defect is located on an atom of the chemical species B (blue square). 
+When looking for King's shortest paths [S.~\ref{sking}] using the chemical species A to initiate the search the central ring with 10 nodes is ignored. 
+However among the solutions of the analysis (with the initial nodes circled in green) other rings with 10 nodes are found in the network.}
+\laf We can see that this piece of network is characterized by a bond defect. 
+An atom of the B species appears to be over-coordinated by three atoms of the A species. 
+When looking for rings, using the King's criterion [S.~\ref{sking}] and initiating the search using the A atoms, the central ring with 10 nodes is ignored. 
+Nevertheless other rings with 10 nodes are found and stored as solutions of the analysis. 
+In order to find the central ring the search has to be initiated from the overcoordinated B atom. \\
+By analogy with the terminology ABAB this ring can be called a BABA ring. 
+Indeed the alternation of chemical species is well respected. 
+Therefore it is legitimate to question the relevance of the analysis without this result. 
+In other words we have to check out if this BABA ring is, or not, an ABAB ring. \\
+The properties of this ring meet the definition and can therefore improve the description of the \con\ of the network. 
+This kind of coordination defect [Fig.~\ref{abba}] is uncommon in vitreous silica \cite{PhysRevB.47.3053, PhysRevB.48.9359}, nevertheless it is frequent in chalcogenide glasses \cite{2004PhRvB..69f4201B, JPCM-19.196102-2007}. 
+
+\subsubsection{Homopolar bonds}
+\label{homorings}
+
+In amorphous materials the homopolar bond defects can have a significant influence on the \rstat. 
+This is true in particular for AB$_2$ chalcogenide glasses. 
+Figure~\ref{homopges} illustrates standard cases that may be encountered when looking for rings in an AB$_2$ system which contains homopolar bonds. \\ 
+\myfigure{h}{homopges}{\image{11}{img/phys/ex-homo}}{Illustration of the  influence of homopolar bonds in ABAB rings.}
+{Illustration of the  influence of homopolar bonds in ABAB rings: in both examples the smallest rings found 
+when initiating the search using the circled nodes (green color) contain an homopolar bond A-A or B-B.}
+\laf The smallest rings found when initiating the search using the circled nodes (green color) are not ABAB rings. 
+Therefore their size must be given using the total number of nodes. 
+In figure~\ref{homopges} the smallest rings are a ring with 9 nodes and a ring with 11 nodes containing respectively an A-A and a B-B homopolar bond. 
+These rings are significantly smaller than the shortest ABAB ring with 18 nodes that may be found when looking for rings using the same green-circled nodes to initiate the analysis [Fig.~\ref{homopges}]. \\
+\\
+The \atomes\ program provides options to take into account or avoid A-B-A-B rings as well as homopolar bonds.
+
+\subsection{Number of rings not found and that "potentially exist"}
+\label{rpe}
+
+One of the first information it is possible to extract from ring statistics, except the number of rings, is the number of rings not found by the analysis. 
+Indeed calculation times do strongly depend on the maximum search depth, ie. the maximum size of a ring. 
+To carry out the analysis this value has to be chosen to get the best possible compromise between CPU time and quality of the description. \\
+Nevertheless whatever this limiting value is, some rings of a size bigger than the maximum search depth may not be found by the analysis. 
+In the King~\ref{sking} and the Guttman's criteria~\ref{sppc} it is possible to evaluate the number of "potentially not found" rings or rings that "potentially exist". \\
+Thus for a given atom {\bf{At}} we can consider that a closed path exists and is not found: 
+\begin{enumerate}
+\item If the atom {\bf{At}} has at least 2 nearest neighbors
+\item If no closed path is found:
+\begin{enumerate}
+\item[a-] Starting from one neighbor to go back on the considered atom {\bf{At}} (Guttman's criterion)
+\item[b-] Between one couple of neighbors of the atom {\bf{At}} (King's criterion)
+\end{enumerate}
+\item If the 2 nearest neighbors of the atom {\bf{At}} have at least 2 nearest neighbors (to avoid non bridging atoms)  
+\end{enumerate}
+Thus if during the analysis these 3 conditions are full filled (1, 2-a, 3 for the Guttman's criterion, and 1, 2-b, 3 for the King's criterion) then we can say that this analysis has potentially missed a ring between the neighbors of atom {\bf{At}}. 
+The smaller this number of "potentially" missed rings will be the better this analysis will be and the better the description of the connectivity of the material studied will be. 
+The term "potentially" has been chosen because the method only allows to avoid first neighbor non bridging atoms. \\
+\\
+Following this method \atomes\ gives access to the number of rings that "potentially exist" and not found during the analysis.
+\clearpage
+\section{Chain statistics}
+\label{cstat}
+
+To get information on the connectivity of a material one can also rely on chain statistics. \\
+The idea of this calculation is to look for path between 2 atoms A and B, respecting the following rules:
+\begin{itemize}
+\item Total coordination for A ($\alpha$) must be $\ne$ 2
+\item Total coordination for B ($\beta$) must be $\ne$ 2
+\item Total coordination for all atom(s) between A and B must be equal to 2.
+\end{itemize}
+Chains are then litteraly succession of atoms isolated from the rest of the material. \\ 
+\atomes\ offers several options to enforce specific definition of a chain for the search:
+\begin{itemize}
+\item Total coordination for A and B can be restricted to 1: searching for chains would mean searching for isolated 1 dimensional (on a coordination point of view) structures in the material. 
+\item The chemistry of the atoms in the chain(s) can be considered:
+\begin{itemize}
+\item Only searching for AAAA ($\alpha\alpha\alpha\alpha$) chains (homopolar bonds exclusively).
+\item Excluding homopolar bonds from the search (heteropolar bonds exclusively).
+\item Only searching for ABAB ($\alpha\beta\alpha\beta$) chains (perfect alternate of heteropolar bonds. 
+\end{itemize}
+\end{itemize}
+\section{Invariants of spherical harmonics as atomic order parameters}
+
+Invariants formed from bond spherical harmonics allow to obtain quantitative information on the local atomic symmetries in materials.
+The analysis starts by associating a set of spherical harmonics with every bond linking an atom to its nearest neighbors.
+For a given bond defined by a vector $\vec{r}$ a spherical harmonic may be defined as:
+\begin{equation}
+Q_{lm}(\vec{r})\  =\   Y_{lm} \langle \theta (\vec{r}), \psi (\vec{r}) \rangle
+\end{equation}
+where $Y_{lm}(\theta, \psi)$ is the spherical harmonic associated to the bond, $\theta$ and $\psi$ are the angular components of the spherical coordinates of the bond which Cartesian coordinates are defined by $\vec{r}$. \\
+\\
+Because the $Q_{lm}$ for a given $l$ can be scrambled by changing to a rotated coordinate system, it is important to consider rotational invariant combinations, such as \cite{PhysRevB.28.784, ChemSocFar.83-1335}:
+\begin{equation}
+Q_l\ =\ \left[\frac{4\pi}{2l+1} \sum_{m=-l}^{l} \left| \bar{Q}_{lm} \right|^2 \right]^{1/2}
+\end{equation}
+where $\bar{Q}_{lm}$ is defined by:
+\begin{equation}
+\bar{Q}_{lm}\ =\ \langle Q_{lm}( \vec{r} ) \rangle
+\end{equation}
+and represents an average of the $Y_{lm}(\theta, \psi)$ over all $\vec{r}$ vectors in the system whether these vectors belong to the same atomic configuration or not.
+Just as the angular momentum quantum number, $l$, is a characteristic quantity of the 'shape' of an atomic orbital, the quantity $Q_l$ is a rotationally invariant characteristic value of the shape/symmetry of a given local atomic configuration (if the average is not taken on all bonds of the system but only within a given configuration) or an average of such values for a set of configurations.
+Thus it is possible to compare $Q_l$'s computed for well known crystal structures (e.g. FCC, HFC ...) and some local atomic configurations in a material's model. The results of the comparison gives information for the presence/absence of a particular local atomic symmetry. \\
+\\
+\atomes\ allows to compute the average $Q_l$'s for each chemical species as well as the average $Q_l$'s for a user specified local atomic coordination.
+
+\section{Mean square displacement of atoms}
+
+Atoms in solids, liquids and gases move constantly at any given temperature, i.e. they are subject to a "thermal" displacement from their average positions. 
+This displacement is particularly important in the case of a liquids. 
+Atomic displacement does not follow a simple trajectory: "collisions" with other atoms render atomic trajectories quite complex shaped in space. \\
+The trajectory followed by an atom in a liquid resembles that of a pedestrian random walk. 
+Mathematically this represents a sequence of steps done one after another where each step follows a random direction which does not depend on the one of the previous step (Markov's chain of events). \\
+In the case of a one-dimensional system (straight line) the displacement of the atom will therefore be either a forward step (+) or a backward step (-). 
+Furthermore it will be impossible to predict one or the other direction (forward or backward) since they have an equal probability to occur. \\
+One can conclude that the distance an atom may travel is close to zero. 
+Nevertheless if we choose not to sum the displacements themselves (+/-) but the square of these displacements then we will end up with a non-zero, positive quantity of the total squared distance traveled. 
+Consequently this allows to obtain a better evaluation of the real (square) distance traveled by an atom. \\
+The {\bf{M}}ean {\bf{S}}quare {\bf{D}}isplacement MSD is defined by the relation:
+\begin{equation}
+\label{dyna1}
+MSD(t)\ =\ \langle {\bf{r}}^{2}(t)\rangle\ =\ \left\langle |{\bf{r}}_{i}(t)-{\bf{r}}_{i}(0)|^{2}  \right\rangle
+\end{equation}
+where ${\bf{r}}_{i}$(t) is the position of the atom $i$ at the time $t$, and the $\rangle\ \langle$ represent an average on the time steps and/or the particles. \\
+However, during the analysis of the results of molecular dynamics simulations it is important to subtract the drift of the center of mass of the simulation box:
+\begin{equation}
+\label{dyna2}
+MSD(t)\ =\ \left\langle \left|{\bf{r}}_{i}(t)-{\bf{r}}_{i}(0) - \left[{\bf{r}}_{cm}(t)-{\bf{r}}_{cm}(0)\right]\right|^{2}  \right\rangle
+\end{equation}
+where ${\bf{r}}_{cm}$(t) represents the position of the center of mass of the system at the time $t$. \\
+The MSD also contains information on the diffusion of atoms. 
+If the system is solid (frozen) then MSD "saturate", and the kinetic energy is not sufficient enough to reach a diffusive behavior. 
+Nevertheless if the system is not frozen (e.g. liquid) then the MSD will grow linearly in time. 
+In such a case it is possible to investigate the behavior of the system looking at the slope of the MSD. The slope of the MSD or the so called diffusion constant D is defined by:
+\begin{equation}
+\label{dyna3}
+D\ =\ \lim_{t \to \infty}\ \frac{1}{6t}\ \langle {\bf{r}}^{2}(t) \rangle
+\end{equation}
+\\
+\atomes\ provides access to the several MSD related functions:
+\begin{itemize}
+\item[$\bullet$] MSD for each chemical species with autocorrelation on all the dynamics
+\item[$\bullet$] MSD for each chemical species without autocorrelation on all the dynamics (step by step)
+\item[$\bullet$] Directional MSD (x, y, z, xy, xz, yz) for each chemical species with autocorrelation on all the dynamics
+\item[$\bullet$] Directional MSD (x, y, z, xy, xz, yz) for each chemical species without autocorrelation on all the dynamics (step by step)
+\item[$\bullet$] Drift of the center of mass (x, y, z)
+\item[$\bullet$] Correction applied to correct the drift of the center of mass in equation [Eq. \ref{dyna2}] (x, y, z)
+\end{itemize}

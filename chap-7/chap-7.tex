@@ -1,0 +1,529 @@
+\chapter{Preparing molecular dynamics calculations in \atomes}
+\markboth{Preparing molecular dynamics calculations in \atomes}{\scshape \thesection}
+\label{md}
+
+\atomes\ proposes assistants dedicated to the creation/preparation/modification of input files for (massively parallel) molecular dynamics calculations: 
+\begin{itemize}
+\item Classical MD:
+\begin{itemize}
+\item \dlpoly\ \cite{DLPOLY}
+\item \lammps\ \cite{LAMMPS}
+\end{itemize}
+\item {\em{ab-initio}} MD:
+\begin{itemize}
+\item \cpmd\ \cite{CPMD}
+\item \cptk\ \cite{CP2K}
+\end{itemize}
+\item QM-MM (Mixed {\em{ab-initio}} - classical) MD:
+\begin{itemize}
+\item \cpmd\ \cite{CPMD}
+\item \cptk\ \cite{CP2K}
+\end{itemize}
+\end{itemize}
+
+\section{Classical MD}
+
+\subsection{DL-POLY v4.09}
+
+The \atomes\ helper for the \dlpoly\ calculation offers to prepare input files for {\bf{DL-POLY~v4.09}}. 
+The {\bf{CONTROL}}, {\bf{FIELD}} and {\bf{CONFIG}} files can be entirely designed. \\
+Before going further it is strongly advised to read the DL-POLY user manual: \\[0.25cm]
+
+\href{ftp://ftp.dl.ac.uk/ccp5/DL\_POLY/DL\_POLY\_4.0/DOCUMENTS/USRMAN4.pdf}{ftp://ftp.dl.ac.uk/ccp5/DL\_POLY/DL\_POLY\_4.0/DOCUMENTS/USRMAN4.pdf}
+
+\subsubsection{Initializing the force field}
+
+\myfigure{t}{finit0}{\image{15}{img/md/dlpoly/init/init-0}}{Initializing the force field in the DL-POLY calculation assistant.}{Initializing the force field in the DL-POLY calculation assistant.}
+The mandatory first step in the \dlpoly\ calculation assistant is to initialize the force field, as illustrated in figure~\ref{finit0} it required to select both: 
+\begin{itemize}
+\item The force field to be used, ie. the data source for many of the \aob{FIELD} file parameters including: bonds, angles, dihedrals and inversions. \\
+The {\bf{FIELD}} file parameters can be imported from the following force fields: \\[0.35cm]
+{\footnotesize{
+\begin{minipage}{8cm}
+\begin{itemize}
+\item {\bf{OPLS force fields}}:
+\begin{itemize}
+\item OPLS All-atoms for proteins
+\item OPLS All-atoms for RNA \\
+\end{itemize}
+\item {\bf{CHARMM force fields}}:
+\begin{itemize}
+\item CHARMM 22 proteins
+\item CHARMM 22 proteins and metals
+\item CHARMM 35 ethers
+\item CHARMM 36 carbenes
+\item CHARMM 36 general
+\item CHARMM 36 lipids
+\item CHARMM 36 Nucleid acids
+\item CHARMM 36 proteins
+\item CHARMM 36 proteins and metals
+\item CHARMM silicates
+\end{itemize}
+\end{itemize}
+\end{minipage}
+\hspace{0.5cm}
+\begin{minipage}{7cm}
+\begin{itemize}
+\item {\bf{AMBER force fields}}:
+\begin{itemize}
+\item AMBER 94
+\item AMBER 96
+\item AMBER 98
+\item AMBER 99 \\
+\end{itemize}
+\item {\bf{Consistent force fields}}:
+\begin{itemize}
+\item CVFF
+\item CVFF Augmented
+\item CFF 91
+\item PCFF
+\item COMPASS
+\end{itemize}
+\end{itemize}
+\end{minipage}
+}}
+\\[0.5cm]
+Theses parameters are read by \atomes\ on the fly / by request from the corresponding files located in the directory: \mbox{\aob{bin\slash library\slash force\_fields}}. 
+\item The atoms description to initiate the force field, ie. the first "rough" type of field atoms for the initial description of the force field:
+\begin{itemize}
+\item The atomic species
+\item The atomic species and the total coordination(s)
+\item The atomic species and the partial coordination(s)
+\end{itemize}
+\end{itemize}
+Once the force field has been initialized the default pages populates the assistant: \\ 
+\myfigure{h}{finit}{\image{13}{img/md/dlpoly/init/init-1}}{The initialized force field in the DL-POLY calculation assistant.}{The initialized force field in the DL-POLY calculation assistant.}
+
+\subsubsection{The \aob{CONTROL} file}
+
+When the force field has been initialized and providing the \aob{CONTROL} file is to be prepared, it is possible to adjust the corresponding options. \\
+These options are regrouped in 8 tabs illustrated in figure~\ref{fcontrol}, 
+and almost all options from the \dlpoly\ user guide are available, 
+with the exception of the Plumed calculation options and some options for the two-temperature \aob{ttm} model.
+
+\myfigure{h}{fcontrol}{\hspace{-0.5cm}\image{17}{img/md/dlpoly/control/control}}
+{The \aob{CONTROL} file options in the DL-POLY calculation assistant.}
+{The \aob{CONTROL} file options in the DL-POLY calculation assistant.}
+
+\clearpage
+
+\subsubsection{The \aob{FIELD} file}
+
+If the \aob{FIELD} file is to be prepared then the corresponding tabs are also made available in the assistant. 
+
+\subsubsection*{Force field elements}
+
+The first tab related to the \aob{FIELD} file allows to enable or disable all kind of component(s) for the force field to be created: \\
+\myfigure{h}{felem}{\image{16}{img/md/dlpoly/field/f1}}
+{\aob{Select the component(s) of the force field} tab in the DL-POLY calculation assistant.}
+{\aob{Select the component(s) of the force field} tab in the DL-POLY calculation assistant.}
+\laf The \aob{Energy unit} combo box, allows to change the energy units for the field parameters, 
+please note that changing the energy unit will convert all parameters in the \aob{FIELD} file to the new unit. \\[0.25cm]
+The other options are divided in 2 categories, the \aob{Intra-molecular interaction(s)} options and the \aob{Non-bonded interaction(s)} options. 
+To enable / disable any feature simply check / uncheck the corresponding button in this tab, then the associated page will 
+be inserted / removed from the list of pages available in the assistant.
+
+\clearpage
+\subsubsection*{General behavior of the \aob{FIELD} file part of the assistant}
+
+Each page of the assistant is dedicated to a particular property, the first pages (up to 13 pages) being dedicated to intra-molecular interactions 
+and the latest pages (up to 6 pages) being dedicated to non-bonded interactions. \\[0.25cm]
+Each page contains a table presenting the list of the associated properties,
+double clicking on a line with the mouse left button will allow to edit the corresponding line/property, 
+while the mouse right button will open a contextual menu with different set of actions including the edition available otherwise. \\[0.25cm]
+For almost each and every intra or inter-molecular property listed in the corresponding tab, corresponds a \aob{Use} check button. 
+It is mandatory to check-in the \aob{Use} button for the property to be used when building the \aob{FIELD} (remember that few are mutually exclusive), 
+if not then the information is simply stored for further usage. \\[0.25cm]
+Any objects selection is associated with a visualization in the model, ie. if an atom/a bond/an angle ... is selected then 
+this object will be highlighted with a particular color in the 3D window, also the associated line in the selection dialog will be colored as well and using the same
+color. \\[0.25cm]
+Each page will be briefly introduced thereafter. 
+
+\subsubsection*{The \aob{Molecule(s)} tab}
+
+The \aob{Molecule(s)} tab, see figure~\ref{molinit}, lists all the different molecules in the model: \\
+\myfigure{h}{molinit}{\image{16}{img/md/dlpoly/field/mol/mol-init}}
+{\aob{Molecule(s)} tab in the DL-POLY calculation assistant.}
+{\aob{Molecule(s)} tab in the DL-POLY calculation assistant.}
+\clearpage
+\noindent Each line corresponds to a molecule, and for each molecule the information is as follow: 
+\begin{enumerate}
+\item ID in the force field
+\item Name in the force field (can be changed by double clicking on the line)
+\item Multiplicity (number of times the same molecule appears in the model)
+\item Chemistry
+\item Total number of atoms
+\item Number of chemical species
+\item\label{vizm} Check button to visualize the molecule in the model
+\item\label{vizn} Check button to visualize the atom number within the molecule
+\end{enumerate}
+In the \aob{Ni-Phth} example used here, two distinct molecules are found, 8 identical and standard Ni-phthalocyanine molecules 
+that constitute the bottom surface and 1 modified Ni-phthalocyanine molecule, with a H atom missing on top of it. \\
+As illustrated in figure~\ref{ivizm} the effect of the first check button \ref{vizm} is to help visualizing the different molecule(s) 
+in the model. 
+For each molecule a color is defined and applied to both the atom(s) in the model and the corresponding line in the \aob{Molecule(s)} tab. \\
+\myfigure{h}{ivizm}{\hspace{-1cm}\image{17.5}{img/md/dlpoly/field/mol/mol-col}}
+{Visualizing the \aob{Molecule(s)} using the DL\_POLY calculation assistant.}
+{Visualizing the \aob{Molecule(s)} using the DL\_POLY calculation assistant.}
+\laf Whereas as illustrated in figure~\ref{ivizn} the effect of the second check button \ref{vizn} is to help visualizing the atom numbers
+as assigned in the \aob{FIELD} file, numbers range from 1 to the total number of atom(s) in the molecule. 
+\newpage
+\myfigure{h}{ivizn}{\hspace{-1cm}\image{17.5}{img/md/dlpoly/field/mol/mol-id}}
+{Visualizing the atom(s) number(s) within the \aob{Molecule(s)}}
+{Visualizing the atom(s) number(s) within the \aob{Molecule(s)}, 
+to clarify the representation a single fragment from the \aob{NiPhth} example is displayed.}
+\noindent Some mouse options are available in the \aob{Molecule(s)} tab:
+\begin{itemize} 
+\item Double click anywhere on the line to edit the name of the molecule.
+\item Use the right click to open the contextual menu to edit the name/add/remove molecule(s).
+\end{itemize}
+As illustrated in figures~\ref{moladd} and \ref{molrem} it is possible to add molecule(s) to the force field, 
+or to merge existing molecules from the force field into a single description:
+\begin{itemize}
+\item Providing that the multiplicity of a molecule is higher than 1, and therefore than several identical molecular fragment exist, 
+it is possible to split the existing molecule, preserving the old description for the non-selected fragment(s) and creating a copy for the selected fragment(s). 
+This process is illustrated in figure~\ref{moladd}.
+\item Providing that some molecules in the force field have the same chemistry and connectivity it is possible to merge the description 
+this two separates molecules as one. 
+This process is illustrated in figure~\ref{molrem}.
+\end{itemize}
+\myfigure{h}{moladd}{\hspace{-0.5cm}\image{16.5}{img/md/dlpoly/field/mol/mol-split}}
+{Adding molecules to the force field using the DL\_POLY calculation assistant.}
+{Adding molecules to the force field using the DL\_POLY calculation assistant.}
+\myfigure{h}{molrem}{\hspace{-0.5cm}\image{16.5}{img/md/dlpoly/field/mol/mol-merge}}
+{Merging molecules from the force field using the DL\_POLY calculation assistant.}
+{Merging molecules from the force field using the DL\_POLY calculation assistant.}
+
+\clearpage
+
+\subsubsection*{The \aob{Atom(s)} tab}
+
+When molecules have been properly defined, the next tab allows to configure the atom(s) description, this has to be done for each molecule: \\ 
+\myfigure{h}{atab}{\hspace{-0.5cm}\image{16.5}{img/md/dlpoly/field/atoms/atoms-init}}
+{The \aob{Atom(s)} tab in the DL-POLY assistant.}
+{The \aob{Atom(s)} tab in the DL-POLY assistant.}
+\laf As illustrated in figure~\ref{atab} the first element to notice in the \aob{Atom(s)} tab is the combo box for the choice of the molecule to work on, 
+that same combo box will be inserted in any tab dedicated to intra-molecular interactions. \\
+\\Each line corresponds to a particular atom for the molecule specified above, and for each atom the information is as follow: 
+\begin{enumerate}
+\item ID in the molecule
+\item Name in the molecule
+\item Element
+\item Mass
+\item Charge
+\item Number of frozen atoms for this type
+\item Total number of atoms for this type
+\item Check button to visualize the atom in the model
+\end{enumerate}
+\clearpage 
+\myfigure{h}{a-add}{\hspace{-0.5cm}\image{16.5}{img/md/dlpoly/field/atoms/add-atoms}}
+{Inserting a new atom description in the \aob{Atom(s)} tab.}
+{Inserting a new atom description in the \aob{Atom(s)} tab.}
+\myfigure{h}{a-rem}{\hspace{-0.5cm}\image{16.5}{img/md/dlpoly/field/atoms/merge-atoms}}
+{Merging two existing atom descriptions in the \aob{Atom(s)} tab.}
+{Merging two existing atom descriptions in the \aob{Atom(s)} tab.}
+\clearpage
+\noindent Before editing an atom property it might be necessary to add or remove some atom types from the existing description, 
+these actions are available using the mouse right button contextual menu. 
+As illustrated in figure~\ref{a-add} it is possible to create a new type of atom from an existing atom type that contains more that 1 atom. 
+And as illustrated in figure~\ref{a-rem} it is possible to merge an existing atom description with any other atom type of the same chemical species. 
+Whether it is for inserting or merging an atom it is important to specify that all existing atomic descriptions, a part for the new one or the 
+one to be removed, will be preserved and thus that no information will be lost in this process. \\
+\\
+Editing an atom properties, by double clicking on the atom line or using the contextual menu, will open the \aob{Atom parameter(s)} dialog: \\
+\myfigure{h}{a-edit}{\image{13.5}{img/md/dlpoly/field/atoms/edit-atoms}}{Editing an atom description in the \aob{Atom(s)} tab.}{Editing an atom description in the \aob{Atom(s)} tab.}
+\laf The \aob{Field parameters} combo allows to switch between \aob{Manual} (user defined only) and \aob{Automatic} force field parameters (if any available). 
+By default the choice is set on \aob{Manual} and the \aob{Force field type} combo is inactive. 
+The \aob{Frozen} button allows to pick atom(s) to be frozen among the edited atom type (see figure~\ref{a-edit}). 
+\clearpage
+\noindent When selecting \aob{Automatic} for the \aob{Field parameters} combo, providing that some force field parameters are found \aob{Force field type} combo becomes active 
+and offers to choose between available description(s): \\
+\myfigure{h}{f-edit}{\image{13.5}{img/md/dlpoly/field/atoms/field-atoms}}
+{Choosing a force field description for the atom type in the \aob{Atom(s)} tab.}
+{Choosing a force field description for the atom type in the \aob{Atom(s)} tab. In this example available parameters are from the Amber 99 force field.}
+\laf As soon as a selection has been made a dialog (see fig.~\ref{amb-at}) pops up to update the \aob{FIELD} file with the available parameters in the force field selected
+at the initializing stage of the assistant (Amber 99 in this example). \\
+%\clearpage
+\myfigure{h}{amb-at}{\image{9.5}{img/md/dlpoly/field/atoms/amb-atoms}}
+{The \aob{Update FIELD file with the force field parameters} dialog.}{The \aob{Update FIELD file with the force field parameters} dialog.}
+
+\clearpage
+\noindent The number of lines in the table in figure~\ref{amb-at} depends on both the option(s) (\aob{Flexible chemical bond(s), Bond angle(s) ...}) selected to create the \aob{FIELD} file, 
+the line will appears only if the option was selected, and the availability of the data for that particular type of atom in the selected force field. 
+In this example all the properties presented were selected to create the \aob{FIELD} file and some data exist in the force field for the \aob{CB} atom type with each particular property. 
+\noindent This dialog helps to update quickly any parameters to be used to create the \aob{FIELD} file: 
+\myfigure{h}{amb-li}{\image{16}{img/md/dlpoly/field/atoms/amb-ligne}}
+{Updating parameters for the \aob{FIELD} file using the \aob{CB} atom(s) in the \aob{Amber 99} force field.}
+{Updating parameters for the \aob{FIELD} file, using field parameters for the \aob{CB} atom(s) in the \aob{Amber 99} force field.}
+\laf As illustrated in figure~\ref{amb-li} to update any \aob{FIELD} file value simply browse the property tree, select the desired force field parameters among available data, 
+remember to check the \aob{update} button at the end of the line, and finally pressed the \aob{Apply} button.
+
+\clearpage
+
+\subsubsection*{\aob{Core-shell unit(s)}}
+\vspace{-0.125cm}
+\myfigure{h}{css}{\image{16}{img/md/dlpoly/field/intra/cs}}{\aob{Core-shell unit(s)} tab in the \aob{DL-POLY} assistant.}{\aob{Core-shell unit(s)} tab in the \aob{DL-POLY} assistant.}
+
+\clearpage
+
+\subsubsection*{\aob{Constraint bond(s)}}
+\vspace{-0.125cm}
+\myfigure{h}{cbs}{\image{16}{img/md/dlpoly/field/intra/cb}}{\aob{Constrains bond(s)} tab in the \aob{DL-POLY} assistant.}{\aob{Constrains bond(s)} tab in the \aob{DL-POLY} assistant.}
+
+\clearpage
+
+\subsubsection*{\aob{Mean force potential(s)}}
+\vspace{-0.125cm}
+\myfigure{h}{mpfs}{\image{16}{img/md/dlpoly/field/intra/mpf}}{\aob{Mean force potential(s)} tab in the \aob{DL-POLY} assistant.}{\aob{Mean force potential(s)} tab in the \aob{DL-POLY} assistant.}
+
+\clearpage
+
+\subsubsection*{\aob{Rigid unit(s)}}
+\vspace{-0.125cm}
+\myfigure{h}{rus}{\image{16}{img/md/dlpoly/field/intra/ru}}{\aob{Rigid unit(s)} tab in the \aob{DL-POLY} assistant.}{\aob{Rigid unit(s)} tab in the \aob{DL-POLY} assistant.}
+
+\clearpage
+
+\subsubsection*{\aob{Tethering potential(s)}}
+\vspace{-0.125cm}
+\myfigure{h}{teth}{\image{16}{img/md/dlpoly/field/intra/tet}}{\aob{Tethering potential(s)} tab in the \aob{DL-POLY} assistant.}{\aob{Tethering potential(s)} tab in the \aob{DL-POLY} assistant.}
+
+\newpage
+\subsubsection*{\aob{Flexible chemical bond(s)} and \aob{Bond restraint(s)}}
+
+The tabs for the \aob{Flexible chemical bond(s)} and the \aob{Bond restraint(s)} being extremely similar, 
+this manual presents only the part related to \aob{Flexible chemical bond(s)}. \\
+As illustrated in figure~\ref{bds} the bonds, for the selected molecule, are listed by type depending on the nature of the field atoms involved, 
+also for each type of bond it is possible to display every single bond in the molecule. \\
+\myfigure{h}{bds}{\image{16}{img/md/dlpoly/field/bonds/bonds}}{\aob{Flexible chemical bond(s)} tab in the \aob{DL-POLY} assistant.}{\aob{Flexible chemical bond(s)} tab in the \aob{DL-POLY} assistant.}
+\laf Each line corresponds to a either to a bond type, or a particular bond, for the molecule specified above, and for each bond the information is as follow:
+\begin{enumerate}
+\item ID in the molecule (if the line refers to a bond type).
+\item Name for atom type 1 (bond type), or field number for atom 1 (bond).
+\item Name for atom type 2 (bond type), or field number for atom 2 (bond).
+\item Value measured in the model: average for all bonds for that type, or, value (or average if the multiplicity for the molecule is > 1) for that particular bond.
+\item Visualize all bonds of that type or that particular bond in the model.
+\item Use to create the \aob{FIELD} file, if not checked the bond / type will not be used.
+\item Potential to use to describe all bonds of that type (\aob{Default:} value) or that particular bond in the model.
+\item Numerical value(s) for the parameters of the selected potential.
+\end{enumerate}
+The description of the bond(s) can be modified simultaneously for all bond(s) of the same type using the root line that type, 
+or one by one by browsing the list and picking any line. 
+It is therefore possible to choose a different parametrization for every single bond in the molecule. 
+Some parameters can be modified directly in the table, 
+otherwise a simple double click using the mouse left button will open the bond edition dialog illustrated in figure~\ref{bded}. 
+\myfigure{h}{bded}{\image{15}{img/md/dlpoly/field/bonds/bd-edit}}
+{\aob{Flexible chemical bond(s)} edition dialog in the \aob{DL-POLY} assistant.}{\aob{Flexible chemical bond(s)} edition dialog in the \aob{DL-POLY} assistant.}
+\clearpage
+\noindent In figure~\ref{bded} the \aob{Field parameters} combo box presents the list of matching parameters, chemical species wise, 
+found in the force field selected at the initialization stage. \\[0.5cm]
+The next tabs of the assistant dedicated to intra-molecular properties are as follow:
+\begin{itemize}
+\item \aob{Bond angle(s)}
+\item \aob{Angular restraint(s)}
+\item \aob{Dihedral angle(s)}
+\item \aob{Torsional restraint(s)}
+\item \aob{Improper angle(s)}
+\item \aob{Inversion angle(s)}
+\end{itemize}
+For all these properties the philosophy is similar to the one presented above for the \aob{Flexible chemical bond(s)}. 
+Hence will only briefly illustrate the different tabs without more details. 
+
+\subsubsection*{\aob{Bond angle(s)} and \aob{Angular restraint(s)}}
+
+\myfigure{h}{ans}{\image{16}{img/md/dlpoly/field/intra/angles}}{\aob{Bond angle(s)} tab in the \aob{DL-POLY} assistant.}{\aob{Bond angle(s)} tab in the \aob{DL-POLY} assistant.}
+\newpage
+
+\subsubsection*{\aob{Dihedral angle(s)} and \aob{Torsional restraint(s)}}
+
+\myfigure{h}{dihs}{\image{16}{img/md/dlpoly/field/intra/dih}}{\aob{Dihedral angle(s)} tab in the \aob{DL-POLY} assistant.}{\aob{Dihedral angle(s)} tab in the \aob{DL-POLY} assistant.}
+\vspace{-0.5cm}
+
+\subsubsection*{\aob{Improper angle(s)}}
+
+\myfigure{h}{imps}{\image{16}{img/md/dlpoly/field/intra/imp}}{\aob{Improper angle(s)} tab in the \aob{DL-POLY} assistant.}{\aob{Improper angle(s)} tab in the \aob{DL-POLY} assistant.}
+\newpage
+
+\subsubsection*{\aob{Inversion angle(s)}}
+
+\myfigure{h}{invs}{\image{16}{img/md/dlpoly/field/intra/inv}}{\aob{Inversion angle(s)} tab in the \aob{DL-POLY} assistant.}{\aob{Inversion angle(s)} tab in the \aob{DL-POLY} assistant.}
+
+\clearpage
+
+\subsubsection*{\aob{van der Waals potential(s)}}
+\vspace{-0.125cm}
+\myfigure{h}{vdws}{\image{16}{img/md/dlpoly/field/inter/vdw}}{\aob{van der Waals potential(s)} tab in the \aob{DL-POLY} assistant.}{\aob{van der Waals potential(s)} tab in the \aob{DL-POLY} assistant.}
+
+\clearpage
+
+\subsubsection*{\aob{Metal potential(s)}}
+\vspace{-0.125cm}
+\myfigure{h}{mets}{\image{16}{img/md/dlpoly/field/inter/met}}{\aob{Metal potential(s)} tab in the \aob{DL-POLY} assistant.}{\aob{Metal potential(s)} tab in the \aob{DL-POLY} assistant.}
+
+\clearpage
+
+\subsubsection*{\aob{Tersoff potential(s)}}
+\vspace{-0.125cm}
+\myfigure{h}{ters}{\image{16}{img/md/dlpoly/field/inter/ter}}{\aob{Tersoff potential(s)} tab in the \aob{DL-POLY} assistant.}{\aob{Tersoff potential(s)} tab in the \aob{DL-POLY} assistant.}
+
+\clearpage
+
+\subsubsection*{\aob{Three body potential(s)}}
+\vspace{-0.125cm}
+\myfigure{h}{tbds}{\image{16}{img/md/dlpoly/field/inter/tbd}}{\aob{Three potential(s)} tab in the \aob{DL-POLY} assistant.}{\aob{Three potential(s)} tab in the \aob{DL-POLY} assistant.}
+
+\clearpage
+
+\subsubsection*{\aob{Four body potential(s)}}
+\vspace{-0.125cm}
+\myfigure{h}{fbds}{\image{16}{img/md/dlpoly/field/inter/fbd}}{\aob{Four body potential(s)} tab in the \aob{DL-POLY} assistant.}{\aob{Four body potential(s)} tab in the \aob{DL-POLY} assistant.}
+
+\clearpage
+
+\subsubsection*{\aob{External field(s)}}
+\vspace{-0.125cm}
+\myfigure{h}{fexts}{\image{16}{img/md/dlpoly/field/inter/fext}}{\aob{External field(s)} tab in the \aob{DL-POLY} assistant.}{\aob{External field(s)} tab in the \aob{DL-POLY} assistant.}
+
+
+\clearpage
+
+\subsubsection{\aob{Preview}}
+
+At any time when using the \aob{DL-POLY} assistant, the \aob{Preview} button allows open the \aob{DL-POLY files preview} dialog, to visualize the \aob{CONTROL}, \aob{FIELD} and \aob{CONFIG} file(s). \\
+\myfigure{h}{prevdlp}{\image{16}{img/md/dlpoly/preview}}
+{\aob{DL-POLY files preview} dialog in the \aob{DL-POLY} assistant.}{\aob{DL-POLY files preview} dialog in the \aob{DL-POLY} assistant.}
+\laf The \aob{DL-POLY files preview} dialog (fig.~\ref{prevdlp}) contains a notebook with up to 3 tabs depending on the file(s) to be created. 
+Each tab presents the content of a file, \aob{CONTROL}, \aob{FIELD} or \aob{CONFIG}, and highlights option(s) and keyword(s) using color(s) and font layout option(s). 
+
+\subsubsection{Finalizing the assistant and file(s) creation}
+
+When pressing the \aob{Apply} button on the file tab of the assistant, the user is asked to selected a folder. 
+\aob{CONTROL}, \aob{FIELD} and \aob{CONFIG} if selected, will be created in the selected directory. \\[0.25cm]
+Following the file(s) creation or if the assistant is closed anyway, the \aob{DL-POLY} force field data will be 
+preserved. 
+Therefore allowing the re-open the assistant later for further modifications. \\[0.25cm]
+All existing force field data can also saved in the \atomes\ project and/or workspace files, simply remember to save your work. 
+
+
+\newpage
+\subsection{LAMMPS}
+
+{\em{Coming soon}}
+
+\newpage
+
+\section{{\em{Ab-initio MD}}}
+
+\subsection{CPMD v4.3.0}
+
+The \atomes\ helper for the \cpmd\ calculation offers to prepare input files for {\bf{CPMD~v4.3.0}}. 
+Please note that the \cpmd\ code offers so many calculation options that it is not possible either to provide a description 
+or to offer a comprehensive usage guide for each of these options.  
+Therefore the \cpmd\ calculation assistant only provides help towards basics and / or frequently used calculation options. \\[0.25cm]
+In any case if you intent to use the \cpmd\ code please refer to the user manual: \\[0.25cm]
+\href{https://www.cpmd.org/wordpress/CPMD/getFile.php?file=manual.pdf}{https://www.cpmd.org/wordpress/CPMD/getFile.php?file=manual.pdf}\\[0.25cm]
+The \atomes\ helper for the \cpmd\ calculation provides a step by step interface to configure the different sections of the \cpmd\ input file:
+
+\subsection*{The \aob{INFO} section}
+
+\myfigure{h}{cinfo}{\image{16}{img/md/cpmd/info}}{\aob{INFO section} tab in the \aob{CPMD} assistant.}{\aob{INFO section} tab in the \aob{CPMD} assistant.}
+
+\newpage
+
+\subsection*{The \aob{CPMD} section}
+
+The creation of the \aob{CPMD} section is split over 3 tabs, dedicated respectively to the calculation, thermostat and restart option(s). 
+\subsubsection*{\aob{Calculation options}}
+
+The \aob{Calculation to be performed} [Fig.~\ref{ccpmd1}] combo allows to select the type of job: \\
+\myfigure{h}{ccpmd1}{\image{16}{img/md/cpmd/cpmd}}{\aob{CPMD section - Calculation options} tab in the \aob{CPMD} assistant.}{\aob{CPMD section - Calculation options} tab in the \aob{CPMD} assistant.}
+\laf The option(s) directly bellow the combo will change depending on the nature of the calculation, please refer
+to the \cpmd\ user manual for more information on theses options. 
+
+\newpage
+
+\subsubsection*{\aob{Thermostat options}}
+
+If a molecular dynamics calculation is to be performed then the \aob{CPMD section - Thermostat options} tab becomes accessible:  
+\myfigure{h}{ccpmd2}{\image{16}{img/md/cpmd/thermo}}{\aob{CPMD section - Thermostat options} tab in the \aob{CPMD} assistant.}{\aob{CPMD section - Thermostat options} tab in the \aob{CPMD} assistant.}
+\laf In order to access the next page of the assistant thermostat(s) must be set up properly. 
+Again for more information please refer to the \cpmd\ user manual. 
+
+\subsubsection*{\aob{RESTART options}}
+
+The \aob{CPMD section - Restart options} tab present options to restart calculation and saving options during the calculation: 
+\myfigure{h}{ccpmd3}{\image{16}{img/md/cpmd/restart}}{\aob{CPMD section - Restart options} tab in the \aob{CPMD} assistant.}{\aob{CPMD section - Restart options} tab in the \aob{CPMD} assistant.}
+
+\newpage
+
+\subsection*{The \aob{DFT} section}
+
+\myfigure{h}{cdft}{\image{16}{img/md/cpmd/dft}}{\aob{DFT section} tab in the \aob{CPMD} assistant.}{\aob{DFT section} tab in the \aob{CPMD} assistant.}
+
+\subsection*{The \aob{VDW} section}
+
+\myfigure{h}{cvdw}{\image{16}{img/md/cpmd/vdw}}{\aob{VDW section} tab in the \aob{CPMD} assistant.}{\aob{VDW section} tab in the \aob{CPMD} assistant.}
+\noindent Providing that van der Waals interactions are selected in the \aob{CPMD} section of the input file, 
+then the \aob{VDW} section becomes accessible. 
+However its content is filled automatically based on parameters selected in both the \aob{CPMD} and \aob{DFT} sections.
+\newpage
+
+\subsection*{The \aob{PROP} section}
+
+\myfigure{h}{cprop}{\image{16}{img/md/cpmd/prop}}{\aob{PROP section} tab in the \aob{CPMD} assistant.}{\aob{PROP section} tab in the \aob{CPMD} assistant.}
+\noindent Providing that the \aob{Calculation of physical properties} is selected in the \aob{CPMD} section of the input file, 
+then the \aob{PROP} section becomes accessible. 
+However its content is filled automatically based on parameters selected in the \aob{CPMD} section.
+
+\subsection*{The \aob{SYSTEM} section}
+
+\myfigure{h}{csyst}{\image{16}{img/md/cpmd/system}}{\aob{SYSTEM section} tab in the \aob{CPMD} assistant.}{\aob{SYSTEM section} tab in the \aob{CPMD} assistant.}
+
+\newpage
+
+\subsection*{The \aob{ATOMS} section}
+
+\myfigure{h}{cats}{\image{16}{img/md/cpmd/atoms}}{\aob{ATOMS section} tab in the \aob{CPMD} assistant.}{\aob{ATOMS section} tab in the \aob{CPMD} assistant.}
+
+\newpage
+
+\subsection{CP2K}
+
+The \atomes\ helper for the \cptk\ calculation offers to prepare input files for {\bf{CP2K~v9.1}}. 
+Please note that the \cptk\ code offers so many calculation options that it is not possible either to provide a description 
+or to offer a comprehensive usage guide for each of these options.  
+Therefore the \cptk\ calculation assistant only provides help towards basics and / or frequently used calculation {\it{ab-initio}} options. \\[0.25cm]
+In any case if you intent to use the \cptk\ code please refer to the user manual: \\[0.25cm]
+\href{https://www.cp2k.org/howto}{https://www.cp2k.org/howto}\\[0.25cm]
+The \atomes\ helper for the \cptk\ calculation provides a step by step interface to configure the different sections of the \cptk\ input file(s) for {\it{ab-initio}} calculations:
+
+\subsection*{The \aob{CP2K input structure} section}
+
+The CP2K input can be rather initimidating, you can decide at this stage either to have all input data gathered in a single file, 
+or alternatively split in several, content orientated, files:  
+
+
+\subsection*{The \aob{GLOBAL} section}
+
+Select the calculation to be performed, and some general options regarding the process. \\
+Note that \atomes\ provides, when available, basis set(s) and pseudo-potential(s) from the CP2K database. 
+Basis set(s) and pseudopotential(s) will be saved respectivelly in \aob{basis.inc} and \aob{pseudo.inc}. 
+
+\subsection*{The \aob{FORCE\_EVAL} section}
+
+Describe the details of the forces evaluation process.
+
+\subsection*{The \aob{SUBSYS} section}
+
+\subsection*{The \aob{MOTION} section}
+
+\section{Quantum Mechanics and Molecular Mechanics MD}
+
+\subsection{CPMD}
+
+{\em{Coming soon}}
+
+\subsection{CP2K}
+
+{\em{Coming soon}}
+

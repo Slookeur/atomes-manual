@@ -1,0 +1,110 @@
+\chapter{Physico-chemical analysis in \atomes}
+\markboth{Physico-chemical analysis in \atomes}{\scshape \thesection}
+\label{ana}
+
+In this chapter examples will be illustrated using an \atomes\ workspace presented in figure~\ref{lGeSe}, this workspace contains 3 different projects, liquid GeSe systems with a similar chemistry yet obtained using a different set of DFT-GGA functionals. \cite{Jcp.138.174505}\\
+\myfigure{h}{lGeSe}{\hspace{-1.75cm}
+\image{18}{img/curves/lGeSe}}
+{Example workspace: physico-chemical analysis}
+{Example workspace to illustrate the analysis capabilities of the \atomes\ programs containing 3 projects, named \mbox{\aob{l-GeSe~[BLYP]}}, \aob{l-GeSe~[PBE]} and \aob{l-GeSe~[PW91]}.}
+\laf When a project is opened in the \atomes\ workspace, and if this project is the \activp\ project, then it it possible to compute the properties presented in section~\ref{calc}, 
+and the parameter(s) of the calculation(s) can be adjusted via the associated dialog boxes accessible by using the \aob{Analyze} menu [Fig.~\ref{main}-d]. \\
+Some of the calculations of the \aob{Analyze menu} are immediately available when a project is opened, other require some condition(s) to be full-filled before being accessible:
+\begin{enumerate}
+\item\label{1} g(r)/G(r): requires a model box to be described.
+\item\label{2} S(q) from FFT[g(r)]: requires \ref{1} to be completed.
+\item\label{3} S(q) from Debye equation: requires a model box to be described.
+\item\label{4} g(r)/G(r) from FFT[S(q)]: requires \ref{3} to be completed.
+\item\label{5} Bonds and angles: no conditions.
+\item\label{6} Ring statistics: no conditions.
+\item\label{7} Chain statistics: no conditions.
+\item\label{8} Spherical harmonics: requires \ref{5} to be completed.
+\item\label{9} Mean Squared Displacement: requires the project have more than 1 configuration (MD trajectory).
+\end{enumerate}
+
+\section{Visualisation of the results of the calculations} 
+
+When a particular structural characteristic is computed results can be directly displayed in the main \atomes\ windows [Fig. \ref{main}-a]. 
+In addition the visualization mode of most of the computed characteristics can be controlled the \aob{Toolboxes} dialog:\\
+\myfigure{h}{tools}{\image{5}{img/main/atomes-tools}}{The \aob{Toolboxes} dialog in the \atomes\ program.}{The \aob{Toolboxes} dialog in the \atomes\ program.}
+\laf The \aob{Toolboxes} dialog contains a tree that becomes browsable for a particular calculation when that calculation is completed successfully. \\
+If closed the \aob{Toolboxes} dialog can be opened alternatively using:
+\begin{itemize}
+\item The last button of the \aob{Analyze menu} called \aob{Toolboxes} [Fig.~\ref{main}-d].
+\item The \Ctrl + \keystroke{t} keyboard shortcut over the main window of the \atomes\ program. 
+\end{itemize}
+\toolfig
+When a button in an interaction menu is activated [Fig.~\ref{tools2}] the corresponding result is instantaneously displayed as a curve or a histogram [Fig.~\ref{tools2}] depending on the nature of the computed structural characteristic, in figure~\ref{tools} the g(r) for the project \aob{l-GeSe~[PW91]} for the example workspace in figure~\ref{lGeSe}. 
+
+\clearpage
+
+\section{Data and plot edition}
+\label{dpedition}
+
+\atomes\ offers editing tools which allows to edit/save/export the data from the calculations, and configure the layout of the graphs showing result of the calculations. 
+These tools are available from both the contextual menu [Fig.~\ref{rmenu}] and the top menu of any graph window [Fig.~\ref{tools2}]. 
+
+\subsection{Data edition}
+
+As illustrated in figure~\ref{dmenu} it is possible to edit any of the data set presented in the graph window in a spreadsheet like environment (including a contextual menu accessible using the right button of the mouse). 
+\dmenufig
+\clearpage
+
+\subsection{Plot edition}
+
+\myfigure{h}{cmenu}{\image{5}{img/curves/curve-menu}}{The \aob{Curve} menu.}{The \aob{Curve} menu, and the corresponding buttons in the contextual menu of the graph window in the \atomes\ program.}
+Using the data plot editing tool [Fig. \ref{edittool}] it is possible to configure the layout of the selected graph, as well as the layout each data set which happen to be plotted on the graph, it is also possible to configure X and Y axis layout and/or position. \\
+\myfigure{h}{edittool}{\image{16.5}{img/curves/edit-curves}}{The data plot editing tool box in the \atomes\ program.}{The data plot editing tool box in the \atomes\ program.}
+\clearpage
+\noindent Furthermore depending on the calculation several data sets can be selected and plotted together with the main data set of the active window.
+Data plot edition in the \atomes\ program is illustrated with the example in figure~\ref{egr}. \\
+\egrfig
+
+\clearpage
+
+\section{Mouse interaction with the data plot}
+
+\subsection{Right button contextual menu}
+
+To use the right button of the mouse over the graph window allows to open a contextual menu [Fig.~\ref{rmenu}].\\
+\myfigure{h}{rmenu}{\image{5.5}{img/curves/right-menu}}{Mouse contextual menu over the graph window in the \atomes\ program.}{Mouse contextual menu over the graph window in the \atomes\ program.}
+\laf This menu allows the following actions:
+\begin{enumerate}
+\item\label{ed} Edit Data : essentially reproduces the \aob{Edit data} submenu from the graph window's top menu [Fig.~\ref{m-sets}-a]. 
+\item\label{sd} Save Data (see section \ref{dpedition})
+\item\label{ec} Edit Curve (see section \ref{dpedition})
+\item\label{ei} Export Image (see section \ref{dpedition})
+\item\label{ad} Add Data Set: allows to add data set(s) to the graph window, this extra data set from a similar kind of calculation can come either from the same project or any other project opened in the workspace. The submenu list of available data set(s) compatible with the present graph/calculation in the workspace and offers shortcuts to insert each of them in the graph [Fig.~\ref{m-sets}-b]. 
+\item\label{rd} Remove Data Set: allows to remove data set(s) from the graph window. Only data sets that were actually added to the graph window can be removed and not the initial data set of the graph window (in this example case the \aob{g(r) neutrons} for \aob{l-GeSe~[PW91]} project [Fig~\ref{m-sets}-c]. 
+\item\label{au} Autoscale: offers to autoscale the x and y axis for the entire set(s) of data presented in the graph window. 
+\item\label{cl} Close: closes the graph window.
+\end{enumerate}
+\setsfig
+\clearpage
+
+\subsection{Left button zoom in and out}
+
+Using the mouse over the graph window it is possible to zoom in and out, by pressing the left button and then and move up/down/left/right while keeping the button pressed. Then a rectangle will be drawn over the window [Fig.~\ref{lzoom}], starting at the point where the button was first pressed, and ending at the point the mouse is hanging over. The effect of the zoom action will be specified by a text inscription at the origin point of the rectangle, and by the color of the rectangle: 
+\begin{itemize}
+\item Zoom in(x) and in(y): direction from bottom left to top right, and \red{red color}.
+\item Zoom in(x) and out(y): direction from top left to bottom right, and \violet{violet color}.
+\item Zoom out(x) and in(y): direction from bottom right to top left, and \blue{blue color}.
+\item Zoom out(x) and out(y): direction from top right to bottom left, and \green{green color}.
+\end{itemize} 
+\zoomfig
+
+\clearpage
+
+\section{Saving the data}
+
+Results computed by \atomes\ can be easily saved using the standard copy and paste method (for the results presented in the edition window [Fig.~\ref{dmenu}] or in the main \atomes\ window [Fig.~\ref{main}]) 
+or using the \aob{Data menu} [Fig.~\ref{dmenu}]. 
+It is possible to export data either in a raw ASCII format (simple two columns file with x and y) or in the Xmgrace format which can be used immediately in the
+Grace WYSIWYG 2D plotting tool \cite{XMGR} for further analysis. \\
+Note that if more than one data sets are presented on the same graph window, then all data sets will be written in the same file when saving the data. 
+Thus, for a particular calculation, if all data sets are added to the graph window using the data plot editing tool [Fig.~\ref{edittool}], 
+then all the data result of this analysis can be saved at once. This is true for both ASCII and Xmgrace file formats.
+
+\section{Keyboard shortcuts}
+
+\kbdcurve

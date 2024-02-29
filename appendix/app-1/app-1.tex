@@ -1,0 +1,43 @@
+\chapter{Supported atomic coordinates file formats}
+\label{inout}
+The current version of \atomes\ can import atomic coordinates in the following formats: \\
+\mytable{h}{inputs}{
+\begin{tabular}{l}
+$-$\qquad XYZ \cite{XYZ} $^{*}$ \\[0.25cm]
+$-$\qquad Chem3D \cite{Chem3D} \\[0.25cm]
+$-$\qquad CPMD trajectory \cite{CPMD} $^{*}$ $^{**}$ \\[0.25cm]
+$-$\qquad VASP trajectory \cite{VASP} $^{*}$ $^{***}$ \\[0.25cm]
+$-$\qquad \href{https://isaacs.sourceforge.net}{ISAACS} Project File \cite{ISAACS}  \\[0.25cm]
+%\item Using the Open Babel library:
+%\begin{itemize}
+$-$\qquad PDB/ENT (Protein Data Bank) {\bf{v3.30}} \\[0.25cm]
+$-$\qquad CIF (Crystallographic information) \\[0.25cm]
+$-$\qquad DL-POLY History file $^{*}$ \\[0.25cm]
+%\item Molden file \\
+%\item Accelrys/Biosym MSI text file \\
+%\item Accelrys/Biosym/Insight CAR file \\
+%\item ADF input file \\
+%\item Gaussian 98 input file \\
+%\item Gaussian 96 output file \\
+%\item GROMOS96 input file \\
+%\item GAMESS input file \\
+%\item ChemDraw CDX file \\
+%\item ChemDraw CDX XML file \\
+%\item Chemical Markup Language \\
+%\item MOPAC Cartesian file \\
+%\item Hyperchem HIN file \\
+%\end{itemize} 
+%\end{itemize}
+\end{tabular}}
+{Atomic coordinates file formats read by \atomes.}
+{Atomic coordinates file formats read by \atomes.}
+\\$^{*}$ including NPT trajectories. \\
+$^{**}$ atomic units are assumed in the case of CPMD trajectories. \\
+$^{**}$ and $^{***}$ require to enter extra parameters through an interactive dialog box: 
+\begin{itemize}
+\item Total number of atoms
+\item Number of chemical species
+\item Label and number of each atomic species
+\end{itemize}
+the input order, label and number of each atomic species will be the one assumed when reading the coordinates from the trajectory file. \\
+\atomes\ can also export atomic coordinates in XYZ or Chem3D format.

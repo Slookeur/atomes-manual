@@ -1,0 +1,277 @@
+\chapter{Features}
+\markboth{Features}{\scshape \thesection}
+
+\section{Main window}
+
+\mainfig
+The main interface of the \atomes\ program [Fig.~\ref{main}-a] gives access to:
+\begin{itemize}
+\item The \aob{Workspace menu} [Fig.~\ref{main}-b] to open and save files, including \atomes\ workspace and project files.
+\item The \aob{Edit menu} [Fig.~\ref{main}-c] to adjust chemical / physical of a system to be studied/edited.
+\item The \aob{Compute menu} [Fig.~ \ref{main}-d] to run some analysis on the \activp\ project (see section \ref{calc} for details).
+\item The \aob{Help menu} [Fig.~\ref{main}-e] to access the documentation and a periodic table.
+\end{itemize}
+
+\atomes\ allows to build, edit, study, analyse and compare multiple systems within the same instance of the program. 
+Each system (molecule(s)/material ...) is defined in a data structure called {\bf{project}}, \atomes\ projects (*.apf files) can be opened/saved separately, 
+the list of opened project(s) appears in the left side of the main window in a browsable tree-like structure. 
+The entire list of project(s) displayed in this part of the main window is a data structure called {\bf{workspace}}, 
+and \atomes\ workspace files (*.awf files) can also be opened and saved, allowing to back up the entire list of projects at once, 
+preserving the possible connections, data exchanges, between each projects. \\
+An illustration is presented in figure~\ref{overview}, many different projects being opened in the workspace. 
+To each of these project is assigned an OpenGL 3D window, few of them being visible in figure~\ref{overview}.  
+Double-clicking on the \aob{Workspace} word at the top root of the tree, the list of all projects appears in the right side window. 
+This list includes, in bold green font, the name of the \activp\ project (see section~\ref{calc} for details).
+
+\subsection*{Keyboard shortcuts}
+\vspace{0.5cm}
+\kbdmain
+\clearpage
+
+\section{Workspace and project tree}
+
+In \atomes\ each project, as soon as it is created and whether it is new (empty) or contains atomic coordinates, is immediately:
+\begin{itemize}
+\item inserted into the workspace tree: a branch will appear bearing the project name [Fig.~\ref{ptree}].
+\item assigned an OpenGL window for visualization, analysis and edition. 
+\item the \aob{Toolboxes} dialog [Fig.~\ref{tools}] is refreshed, and if required open, to present the data of this project.
+\end{itemize}
+Figure \ref{ptree} illustrates the structure of project tree branch in the \atomes\ workspace. \\
+\treefig
+\laf On each line/tree branch in the workspace tree the double-click with the left button of the mouse has an effect: 
+\begin{itemize}
+\item \aob{Workspace} line: displays workspace information, lists all opened project(s) and gives the name of the \activp\ project in bold green font [Fig.~\ref{overview}].
+\item \aob{Project's name} line: activates the project (see section~\ref{calc} for details), when the project is \activp\ its name is displayed in bold font.
+\item \aob{Settings} line: provides general information about the project.
+\item \aob{Visualization} line: open/close the OpenGL visualization window, and display OpenGL/hardware information. 
+\item Each of the calculation lines (ex: \aob{g(r)/G(r)}): if the calculation was performed for that project displays summary of the calculation, used parameters, and results. 
+\end{itemize}
+As illustrated in figure~\ref{wlc} the right click of the mouse display a menu basically reproduces the Workspace menu [Fig.~\ref{main}-b], 
+but also introduces two new buttons to activate the project (see section~\ref{calc} for details) and edit its name.\\ 
+\myfigure{h}{wlc}{\image{8}{img/p-tree/atomes-wlc}}{Mouse left click menu in the workspace tree of the \atomes\ program.}{Mouse left click menu in the workspace tree of the \atomes\ program.}
+\laf The name of the project supports Pango markup\cite{pangomarkup}: \\
+\\
+{\small{
+\begin{tabular}{p{5cm}p{5cm}p{5cm}}
+$\bullet$ <sub> </sub> for $_{\text{underscore}}$ & $\bullet$ <i> </i> for {\it{italic}} & $\bullet$ <u> </u> for {\uline{underline}} \\
+\\
+$\bullet$ <sup> </sup> for $^{\text{exponent}}$ & $\bullet$ <b> </b> for {\bf{bold}} & $\bullet$ <tt> </tt> for {\texttt{monospace}} \\
+\\
+\multicolumn{3}{l}{and more ... see: \href{https://docs.gtk.org/Pango/pango\_markup.html}{https://docs.gtk.org/Pango/pango\_markup.html}}
+\end{tabular}
+}}
+
+\section{Files}
+
+\subsection{Importing atomic coordinates}
+\label{import}
+
+The list of the supported format of atomic coordinates is presented in appendix~\ref{inout}. \\ 
+\href{https://isaacs.sourceforge.net}{ISAACS} files contains all the information required to prepare analysis and visualization. 
+For the other file formats, and after reading the atomic coordinates, dialog boxes appears automatically in the following order:
+\subsubsection*{1) The \aob{Chemistry and physics} dialog [Fig.~\ref{cpd}]}
+\myfigure{h}{cpd}{\image{8}{img/main/atomes-cpd}}
+{The \aob{Chemistry and physics} dialog in the \atomes\ program.}{The \aob{Chemistry and physics} dialog in the \atomes\ program.}
+This dialog allows to tweak the chemical and physical properties of the elements found in the coordinates file (see figure~\ref{cpd}). \\
+Particular attention should be given to the selection of the neutrons and X-rays scattering length, 
+for the former parameters are included in \atomes\ (see chapter~\ref{datab}), 
+for the latter two possibilities are offered to the user:
+\begin{itemize}
+\item Use the exact Q dependent method to compute X-rays S(Q) related properties.
+\item Use an approximation with the X-rays scattering length equal to the atomic number of the element.
+\end{itemize}
+%\clearpage
+\subsubsection*{2) The \aob{Box and periodicity} dialog [Fig.~\ref{bpd}]}
+\bpdfig
+This dialog allows to define the periodicity and if needed adjust the model box proportions, or lattice vectors (see [Fig.~\ref{bpd}]). 
+\subsubsection*{3) The \aob{Bond cutoffs} dialog [Fig.~\ref{bcd}]}
+\myfigure{h}{bcd}{\image{8}{img/main/atomes-bcd}}{The \aob{Bond cutoffs} dialog in the \atomes\ program.}{The \aob{Bond cutoffs} dialog in the \atomes\ program.}
+This dialog allows to adjust the cutoff distances used to define the existence or absence of chemical bonds (see figure~\ref{bcd}), 
+both for the calculations (see section~\ref{calc}) sensitive to these parameters and for the 3D visualization in the OpenGL window (see section~\ref{visu}). \\ 
+%\clearpage
+As soon as the \aob{Bond cutoffs} dialog closes \atomes\ will have everything required to setup the 3D model and the OpenGL window will appear. \\
+\\
+The 3 dialog boxes \aob{Chemistry and physics}, \aob{Box and periodicity} and \aob{Bond cutoffs} can be re-opened again later on using the \aob{Edit} menu [Fig.~\ref{main}-c]. 
+However in that case only the \activp\ project parameters can to be modified. Therefore remember to activate the project you want to edit before using the edit menu.
+\clearpage
+
+\subsection{Reading \atomes\ project file(s)}
+\label{apf}
+
+The \atomes\ project file allows to store:
+\begin{itemize}
+\item The atomic coordinates, including MD trajectories.
+\item The results/data of all calculations performed within \atomes. 
+\item The results of all modifications of the calculations data, including graph windows (see chapter~\ref{ana}). 
+\item The parameters of the OpenGL window, so that when re-opened the project appears exactly as it was when saved. 
+\end{itemize}
+The main idea being to be able to resume work exactly where it was before saving the \atomes\ project file. \\
+\\The \atomes\ project files have the extension: {\bf{.apf}} \\
+\\
+To open \atomes\ project file(s) use the \aob{Open Project File(s)} dialog [Fig.~\ref{oapf}]. \\
+This can be done using alternatively: 
+\begin{itemize}
+\item The workspace menu.
+\item The right click menu obtained with the mouse button of the workspace tree.
+\item The keyboard shortcut \Ctrl + \keystroke{o} on top of the \atomes\ program main window.
+\end{itemize}
+Many \atomes\ project files can be opened simultaneously, simply select all projects to be opened in the \aob{Open Project File(s)} dialog, click \aob{Open} and they will appear in the workspace tree: \\
+\oapfig
+\laf Later on when using the \atomes\ program remember that any window specifically dedicated to a project will have the name of this project in its title bar. 
+\clearpage
+
+\subsection{Reading \atomes\ workspace file(s)}
+\label{awf}
+
+The \atomes\ workspace file allows to store:
+\begin{itemize}
+\item A collection of \atomes\ projects. 
+\item The relations between these projects, data exchanges, comparisons ...
+\end{itemize}
+Again the idea is to be able to resume work exactly where it was before saving the \atomes\ workspace file. \\
+\\The \atomes\ workspace files have the extension: {\bf{.awf}}\\
+\\
+To open \atomes\ workspace file use the \aob{Open Workspace} dialog [Fig.~\ref{owpf}]. \\
+This can be done using alternatively: 
+\begin{itemize}
+\item The workspace menu.
+\item The right click menu obtained with the mouse button of the workspace tree.
+\item The keyboard shortcut \Ctrl + \keystroke{w} on top of the \atomes\ program main window. 
+\end{itemize}
+Only a single \atomes\ workspace file can be opened at a time, if needed close the opened workspace, then open the new one: 
+\owpfig
+
+\clearpage
+
+\section{Analyzing models using \atomes}
+\label{calc}
+
+\atomes\ can compute the following structural characteristics of a 3D structure model:
+{\small{
+\begin{itemize}
+\item Radial distribution functions g(r) (RDFs) \cite{AlTilde} including $^{\circ}$:
+\begin{itemize}
+\item Total RDFs for neutrons and X-rays.
+\item Partial RDFs.
+\item Bhatia-Thornton RDFs \cite{2007JNCS..353.2959S}
+\end{itemize}
+$^{\circ}$ Radial distribution functions can be computed by i) direct real space calculation and/or ii) Fourier transforming of the structure factor calculated using the Debye formalism \cite{EurJM.14-233.2002}
+\item Structure factors S(q) \cite{EurJM.14-233.2002} including $^{\circ\circ}$:
+\begin{itemize}
+\item Total structure factors S(q) for neutrons and X-rays.
+\item Total Q(q) \cite{EurJM.14-233.2002,jac.17-61.1984} for neutrons and X-rays.
+\item Partial S(q):
+\begin{itemize}
+\item Faber-Ziman \cite{PhilMag.11.153} partial S(q)
+\item Ashcroft-Langreth \cite{PhysRev.156.685,PhysRev.159.500,PhysRev.166.934.2} partial S(q)
+\item Bhatia-Thornton \cite{PhysRevB.2.3004} partial S(q)
+\end{itemize}
+\end{itemize}
+$^{\circ\circ}$ Structure factors can be computed by i) Fourier transforming of the radial distribution functions and/or ii) using the Debye formalism \cite{EurJM.14-233.2002}
+\item Interatomic bond properties
+\begin{itemize}
+\item Coordination numbers
+\item Atomic near neighbor distribution
+\item Fraction of links between tetrahedra
+\item Fraction of tetrahedral units
+\item Bond lengths distribution for the first coordination sphere
+\end{itemize}
+\item Distribution of Bond angles
+\item Distribution of Dihedral angles
+\item Ring statistics, according to several definitions:
+\begin{itemize}
+\item All closed paths (no rules)
+\item King's rings \cite{Nature.213.1112,PhysRevB.44.4925}
+\item Guttman's rings \cite{Guttman-116-145}
+\item Primitive rings \cite{Goetzke-127.215,YuanCormack-24-343} (or Irreducible \cite{Wooten-bk0109})
+\item Strong rings \cite{Goetzke-127.215,YuanCormack-24-343}
+\end{itemize}
+And including options to:
+\begin{itemize}
+\item search only for ABAB rings
+\item exclude rings with homopolar bonds (A-A or B-B) from the analysis
+\end{itemize}
+Ring statistics is presented according to the R.I.N.G.S. method \cite{RINGS}.
+\item Chain statistics, including options to:
+\begin{itemize}
+\item search only for AAAA chains
+\item search only for ABAB chains
+\item exclude chains with homopolar bonds (A-A or B-B) from the analysis
+\item search only for 1-(2)$_n$-1 chains
+\end{itemize}
+\item Spherical harmonics invariant, $Q_l$, as local atomic ordering symmetry identifiers \cite{PhysRevB.28.784}
+\begin{itemize}
+\item Average Q$_l$ for each chemical species
+\item Average Q$_l$ for a user specified structural unit
+\end{itemize}
+%\item Bond valence sums \cite{BondValence, ActaCryst.B41.244, ActaCryst.A29.266}
+%\begin{itemize}
+%\item Average bond valence for each chemical species
+%\item Average bond valence for a user specified structural unityelke
+%\end{itemize}
+\item Mean Square Displacement of atoms (MSD)
+\begin{itemize}
+\item Atomic species MSD
+\item Directional MSD (x, y, z, xy, xz, yz)
+\item Drift of the center of mass
+\end{itemize}
+\end{itemize}
+}}
+See appendix \ref{physics} to learn more about the physics and the chemistry behind these calculations. \\
+\\
+The calculations presented in this list can only be performed on the \activp\ project, ie. the project which 
+name appears in the title bar of the \atomes\ program main window, in bold font in the \atomes\ workspace tree and in green bold font in the workspace information dialog [Fig.~\ref{overview}]. \\
+For more about running calculation using \atomes\ see chapter~\ref{ana}.
+
+\clearpage
+
+\section{Visual analysis using \atomes}
+\label{visu}
+
+Each model in the \atomes\ workspace is assigned an OpenGL window that provides an interactive experience to visualize and analyze its properties. 
+Isolated configurations as well as entire molecular dynamics trajectories can be visualized. \\ 
+Among the possibilities of the OpenGL window: 
+\begin{itemize}
+\item Advanced color map options, for both atoms and polyhedra. 
+\item Advanced coordination(s) visualization options (total, partial, fragments, molecules). 
+\item Advanced coordination polyhedra visualization options. 
+\item Measurement tools.
+\item Advanced layout system for atomic labels, measurements, MD box and model axis. 
+\item Image and movie rendering, including an intuitive interface to movie encoding that allows to record every interaction/modification made to the OpenGL window. 
+\item Advanced OpenGL configuration options.
+\end{itemize}
+For a complete description of these features see chapter~\ref{visual}. 
+
+\section{Visual edition and model creation using \atomes}
+\label{edit}
+
+Using \atomes\ \aob{Crystal builder} it is possible to build crystalline structures or even super-structures.  
+Also if the model description contains a box, then cell edition options become available:
+\begin{itemize}
+\item Wrap atoms in original cell
+\item Shift cell center
+\item Add extra cell(s)
+\item Create super cell
+\item Change the model density
+\item Cut slabs or extract atoms from the model.
+\end{itemize}
+And if the model contains only a single configuration (and not a molecular dynamics trajectory), or when an empty project is created, the atom(s) edition options/mode become available:
+\begin{itemize}
+\item Motion (random or selected atom(s))
+\item Replacement (random or selected atom(s))
+\item Removal (random or selected atom(s))
+\item Insertion
+\end{itemize}
+For a complete description of these features see chapter~\ref{edition}.
+
+\section{Preparing MD calculations in \atomes}
+
+\atomes\ provides input creation assistants for well known molecular dynamics codes:
+\begin{itemize}
+\item \cpmd\ \cite{CPMD}
+\item \cptk\ \cite{CP2K}
+\item \dlpoly\ \cite{DLPOLY}
+\item \lammps\ \cite{LAMMPS}
+\end{itemize}
+For a complete description of these features see chapter~\ref{md}.
+
