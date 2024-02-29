@@ -1,4 +1,4 @@
-# Atomes: Documentation
+# Atomes: User manual LaTeX sources
 
 ![](https://github.com/atomes/atomes-doc.io/workflows/ns/badge.svg)
 ![](https://www.codefactor.io/repository/github/atomes/atomes-doc/badge)
@@ -15,7 +15,7 @@
   <a href="https://www.ipcms.fr/"><img width="100" src="https://www.ipcms.fr/wp-content/uploads/2020/09/cropped-dessin_logo_IPCMS_couleur_vectoriel_r%C3%A9%C3%A9quilibr%C3%A9-2.png" alt="IPCMS logo" align="center"></a>
 </p>
 
-# This is repository contains the LaTeX sources of the documentation of the Atomes program
+# This is repository contains the LaTeX sources for the documentation of the Atomes program
 
 [Atomes][atomes] is a Free (Open Source) software !
 
