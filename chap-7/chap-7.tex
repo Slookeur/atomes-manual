@@ -424,15 +424,16 @@ In any case if you intent to use the \cpmd\ code please refer to the user manual
 \href{https://www.cpmd.org/wordpress/CPMD/getFile.php?file=manual.pdf}{https://www.cpmd.org/wordpress/CPMD/getFile.php?file=manual.pdf}\\[0.25cm]
 The \atomes\ helper for the \cpmd\ calculation provides a step by step interface to configure the different sections of the \cpmd\ input file:
 
-\subsection*{The \aob{INFO} section}
+\subsubsection*{The \aob{INFO} section}
 
 \myfigure{h}{cinfo}{\image{16}{img/md/cpmd/info}}{\aob{INFO section} tab in the \aob{CPMD} assistant.}{\aob{INFO section} tab in the \aob{CPMD} assistant.}
 
 \newpage
 
-\subsection*{The \aob{CPMD} section}
+\subsubsection*{The \aob{CPMD} section}
 
 The creation of the \aob{CPMD} section is split over 3 tabs, dedicated respectively to the calculation, thermostat and restart option(s). 
+
 \subsubsection*{\aob{Calculation options}}
 
 The \aob{Calculation to be performed} [Fig.~\ref{ccpmd1}] combo allows to select the type of job: \\
@@ -456,11 +457,11 @@ The \aob{CPMD section - Restart options} tab present options to restart calculat
 
 \newpage
 
-\subsection*{The \aob{DFT} section}
+\subsubsection*{The \aob{DFT} section}
 
 \myfigure{h}{cdft}{\image{16}{img/md/cpmd/dft}}{\aob{DFT section} tab in the \aob{CPMD} assistant.}{\aob{DFT section} tab in the \aob{CPMD} assistant.}
 
-\subsection*{The \aob{VDW} section}
+\subsubsection*{The \aob{VDW} section}
 
 \myfigure{h}{cvdw}{\image{16}{img/md/cpmd/vdw}}{\aob{VDW section} tab in the \aob{CPMD} assistant.}{\aob{VDW section} tab in the \aob{CPMD} assistant.}
 \noindent Providing that van der Waals interactions are selected in the \aob{CPMD} section of the input file, 
@@ -468,26 +469,26 @@ then the \aob{VDW} section becomes accessible.
 However its content is filled automatically based on parameters selected in both the \aob{CPMD} and \aob{DFT} sections.
 \newpage
 
-\subsection*{The \aob{PROP} section}
+\subsubsection*{The \aob{PROP} section}
 
 \myfigure{h}{cprop}{\image{16}{img/md/cpmd/prop}}{\aob{PROP section} tab in the \aob{CPMD} assistant.}{\aob{PROP section} tab in the \aob{CPMD} assistant.}
 \noindent Providing that the \aob{Calculation of physical properties} is selected in the \aob{CPMD} section of the input file, 
 then the \aob{PROP} section becomes accessible. 
 However its content is filled automatically based on parameters selected in the \aob{CPMD} section.
 
-\subsection*{The \aob{SYSTEM} section}
+\subsubsection*{The \aob{SYSTEM} section}
 
 \myfigure{h}{csyst}{\image{16}{img/md/cpmd/system}}{\aob{SYSTEM section} tab in the \aob{CPMD} assistant.}{\aob{SYSTEM section} tab in the \aob{CPMD} assistant.}
 
 \newpage
 
-\subsection*{The \aob{ATOMS} section}
+\subsubsection*{The \aob{ATOMS} section}
 
 \myfigure{h}{cats}{\image{16}{img/md/cpmd/atoms}}{\aob{ATOMS section} tab in the \aob{CPMD} assistant.}{\aob{ATOMS section} tab in the \aob{CPMD} assistant.}
 
 \newpage
 
-\subsection{CP2K}
+\subsection{CP2K v9.1}
 
 The \atomes\ helper for the \cptk\ calculation offers to prepare input files for {\bf{CP2K~v9.1}}. 
 Please note that the \cptk\ code offers so many calculation options that it is not possible either to provide a description 
@@ -497,25 +498,24 @@ In any case if you intent to use the \cptk\ code please refer to the user manual
 \href{https://www.cp2k.org/howto}{https://www.cp2k.org/howto}\\[0.25cm]
 The \atomes\ helper for the \cptk\ calculation provides a step by step interface to configure the different sections of the \cptk\ input file(s) for {\it{ab-initio}} calculations:
 
-\subsection*{The \aob{CP2K input structure} section}
+\subsubsection*{The \aob{CP2K input structure} section}
 
 The CP2K input can be rather initimidating, you can decide at this stage either to have all input data gathered in a single file, 
 or alternatively split in several, content orientated, files:  
 
-
-\subsection*{The \aob{GLOBAL} section}
+\subsubsection*{The \aob{GLOBAL} section}
 
 Select the calculation to be performed, and some general options regarding the process. \\
 Note that \atomes\ provides, when available, basis set(s) and pseudo-potential(s) from the CP2K database. 
 Basis set(s) and pseudopotential(s) will be saved respectivelly in \aob{basis.inc} and \aob{pseudo.inc}. 
 
-\subsection*{The \aob{FORCE\_EVAL} section}
+\subsubsection*{The \aob{FORCE\_EVAL} section}
 
 Describe the details of the forces evaluation process.
 
-\subsection*{The \aob{SUBSYS} section}
+\subsubsection*{The \aob{SUBSYS} section}
 
-\subsection*{The \aob{MOTION} section}
+\subsubsection*{The \aob{MOTION} section}
 
 \section{Quantum Mechanics and Molecular Mechanics MD}
 
