@@ -19,7 +19,7 @@
 
 [atomes][atomes] is a Free (Open Source) software !
 
-You can download the complete documentation in PDF here: [Atoms documentation PDF][atomes-doc]
+You can download the complete documentation in PDF here: [atomes documentation PDF][atomes-doc]
 
 ## atomes tutorials
 
