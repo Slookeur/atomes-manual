@@ -24,7 +24,7 @@ When PBC are used the maximum inter-atomic distance r$_{max}$ which is taken int
 The surface/finite model size effects would therefore be small, if any. 
 In general, the larger the simulation box and the number of molecules/atoms in it, the smaller the surface/size effects will be.
 \newpage
-\section{Radial distribution functions fundamentals}
+\section{Radial distribution functions}
 \label{rdf}
 The Radial Distribution Function, R.D.F. , g(r), also called pair distribution function or pair correlation function, is an important structural characteristic, therefore computed by \atomes.
 \myfigure{h}{gr-fig}{\image{8}{img/phys/gr}}{Space discretization for the evaluation of the radial distribution function.}{Space discretization for the evaluation of the radial distribution function.}
@@ -42,7 +42,7 @@ In this notation the volume of the shell of thickness $dr$ is approximated:
 When more than one chemical species are present the so-called partial radial distribution functions $g_{\alpha\beta}(r)$ may be computed : 
 \begin{equation}
 \label{g2r_4}
-g_{\alpha \beta}(r)\ =\ \frac{dn_{\alpha \beta}(r)}{4\pi r^{2}\ dr\ \rho_{\alpha}} \qquad \text{with} \qquad \rho_{\alpha}\ =\ \frac{V}{N_\alpha}\ =\ \frac{V}{N\times c_\alpha} 
+g_{\alpha \beta}(r)\ =\ \frac{dn_{\alpha \beta}(r)}{4\pi r^{2}\ dr\ \rho_{\alpha}} \qquad \text{with} \qquad \rho_{\alpha}\ =\ \frac{N_\alpha}{V}\ =\ \frac{N\times c_\alpha}{V}
 \end{equation}
 where $c_\alpha$ represents the concentration of atomic species $\alpha$.
 \newpage

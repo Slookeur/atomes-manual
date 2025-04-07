@@ -84,9 +84,11 @@
   \begin{center}    
     \bigskip
     \vfill
-    {\large{\atomes}\\
-\href{\atomesweb}{\atomesweb}\\
-} 
+    \begin{tabular}{cp{0.125cm}c}
+    \raisebox{0.25cm}{{\large{\atomes}}} & & \includegraphics[width=1cm, keepaspectratio=true, draft=\ddst]{img/atomes}\\
+    \end{tabular}
+    \\
+    {\large{\href{\atomesweb}{\atomesweb}\\}} 
     \bigskip
     \vfill
     {\Huge{\bf{\@titleEN}}}
