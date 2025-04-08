@@ -13,6 +13,7 @@ FIGREF=$SITE_HOME/frefs
 FLOG=$SITE_HOME/flog
 TABREF=$SITE_HOME/trefs
 TLOG=$SITE_HOME/tlog
+DATE=`date +%F" "%T`
 
 if [ "$1" == "local" ]; then
   HROOT="/"
@@ -29,8 +30,8 @@ echo "---
 title: atomes&#58; user manual
 # nav_order: 0
 nav_exclude: true
-date: 2025-04-07
----
+date: "$DATE
+"---
 
 # <img width=\"50px\" height=\"50px\" style=\"position:relative; bottom:-15px\" src=\"/atomes-doc/assets/images/atomes.svg\" /> **atomes: user manual**
 
@@ -165,7 +166,7 @@ function print_sort {
     echo "parent: "$parent >> $1/$2.md  
   fi
   echo "nav_order: "$3 >> $1/$2.md
-  echo "date: "`date +%F` >> $1/$2.md
+  echo "date: "$DATE >> $1/$2.md
   echo "maths: 1"  >> $1/$2.md
   echo "---" >> $1/$2.md
   echo "" >> $1/$2.md
@@ -181,7 +182,7 @@ function print_ssort {
     echo "parent: "$parent >> $1/$2.md  
   fi
   echo "nav_order: "$3 >> $1/$2.md
-  echo "date: "`date +%F` >> $1/$2.md
+  echo "date: "$DATE >> $1/$2.md
   echo "maths: 1"  >> $1/$2.md
   echo "---" >> $1/$2.md
   echo "" >> $1/$2.md
